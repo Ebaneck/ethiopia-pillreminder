@@ -4,4 +4,6 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.eclipse.org/gemini/blueprint/schema/blueprint http://www.eclipse.org/gemini/blueprint/schema/blueprint/gemini-blueprint.xsd">
 
     <osgi:reference id="messageCampaignService" interface="org.motechproject.server.messagecampaign.service.MessageCampaignService" />
+
+    <osgi:reference id="eventListenerRegistryService" interface="org.motechproject.event.listener.EventListenerRegistryService" />
 </beans>

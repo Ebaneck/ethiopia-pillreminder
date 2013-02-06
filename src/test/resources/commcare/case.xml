@@ -1,0 +1,19 @@
+<case case_id="8dedd89c-3486-40ff-84da-bb1deda7c7a9" user_id="b1a22e12aa0104afedd5c79378d10d2b" date_modified="2013-02-06T14:52:16.352-05"
+    xmlns="http://commcarehq.org/case/transaction/v2">
+    <create>
+        <case_name>12079004321</case_name>
+        <owner_id>b1a22e12aa0104afedd5c79378d10d2b</owner_id>
+        <case_type>pill_reminder</case_type>
+    </create>
+    <update>
+        <phone_number>12079004321</phone_number>
+        <preferred_call_time>best_call_time</preferred_call_time>
+        <pref_medication_call_freq>weekdays</pref_medication_call_freq>
+        <pin>4411</pin>
+        <preferred_language>oromiffa</preferred_language>
+        <ipt_initiation_date>2013-02-06</ipt_initiation_date>
+        <clinic_id>clinic_b</clinic_id>
+        <patient_number>7025</patient_number>
+        <next_appointment>2013-02-06</next_appointment>
+    </update>
+</case>
