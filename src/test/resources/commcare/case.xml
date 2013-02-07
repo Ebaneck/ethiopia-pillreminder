@@ -10,6 +10,7 @@
         <preferred_call_time>best_call_time</preferred_call_time>
         <pref_medication_call_freq>weekdays</pref_medication_call_freq>
         <pin>4411</pin>
+        <start_date>2013-02-05</start_date>
         <preferred_language>oromiffa</preferred_language>
         <ipt_initiation_date>2013-02-06</ipt_initiation_date>
         <clinic_id>clinic_b</clinic_id>

@@ -47,6 +47,11 @@
         </dependency>
         <dependency>
             <groupId>org.motechproject</groupId>
+            <artifactId>motech-openmrs-ws-bundle</artifactId>
+            <version>${motech.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.motechproject</groupId>
             <artifactId>motech-platform-osgi-web-util</artifactId>
             <version>${motech.version}</version>
         </dependency>
@@ -110,13 +115,14 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Context-Path>pill-reminder</Context-Path>
+                        <Context-Path>icappr</Context-Path>
                         <Bundle-Activator>
                             org.motechproject.osgi.web.WebUIBundleActivator
                         </Bundle-Activator>
                         <Import-Package>
                             org.motechproject.server.config;version=${motech.version},
                             org.motechproject.server.config.service;version=${motech.version},
+                            org.motechproject.event.listener;version=${motech.version},
                             org.motechproject.event.listener.annotations;version=${motech.version},
                             org.motechproject.osgi.web;version=${motech.version},
                             org.motechproject.commons.couchdb.service;version=${motech.version},
@@ -154,6 +160,23 @@
                                 <srcFile>src/test/resources/sql/openmrs.sql</srcFile>
                             </srcFiles>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.activemq.tooling</groupId>
+                <artifactId>maven-activemq-plugin</artifactId>
+                <version>5.7.0</version>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start-activemq</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
