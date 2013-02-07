@@ -8,6 +8,7 @@
     <packaging>bundle</packaging>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <motech.version>0.17</motech.version>
         <openmrs-runtime.properties>${project.build.directory}\\test-classes\\openmrs-runtime.properties</openmrs-runtime.properties>
         <openmrs.app.data.dir>${project.build.directory}\\test-classes\\openmrs</openmrs.app.data.dir>
@@ -71,7 +72,7 @@
         <dependency>
             <groupId>org.motechproject</groupId>
             <artifactId>org.motechproject.osgi.it</artifactId>
-            <version>1.0.3-SNAPSHOT</version>
+            <version>1.0.2.RELEASE-r009</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -221,6 +222,19 @@
                             <outputFile>target/dependencies.list</outputFile>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>copy-osgi-dependencies</id>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeScope>runtime</includeScope>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <outputDirectory>
+                                ${user.home}/.motech/bundles
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -243,25 +257,6 @@
                                     </includes>
                                 </resource>
                             </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-osgi-dependencies</id>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeScope>runtime</includeScope>
-                            <overWriteIfNewer>true</overWriteIfNewer>
-                            <outputDirectory>
-                                ${user.home}/.motech/bundles
-                            </outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
