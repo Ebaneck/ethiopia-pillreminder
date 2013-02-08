@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.12, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.29, for debian-linux-gnu (i686)
 --
 -- Host: localhost    Database: openmrs
 -- ------------------------------------------------------
--- Server version	5.5.12
+-- Server version	5.5.29-0ubuntu0.12.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -528,7 +528,7 @@ CREATE TABLE `concept_name` (
 
 LOCK TABLES `concept_name` WRITE;
 /*!40000 ALTER TABLE `concept_name` DISABLE KEYS */;
-INSERT INTO `concept_name` VALUES (1,'Vero','it',1,'2013-02-06 12:17:44',1,0,NULL,NULL,NULL,'35bc9aab-0589-4b17-b782-4f1f57791399',NULL,0),(1,'Sì','it',1,'2013-02-06 12:17:44',2,0,NULL,NULL,NULL,'336ac687-84f9-48c2-ba6e-2ee47fb048f2',NULL,0),(1,'Verdadeiro','pt',1,'2013-02-06 12:17:44',3,0,NULL,NULL,NULL,'7700dd5c-43ca-44df-abfe-94ab3097b280',NULL,0),(1,'Sim','pt',1,'2013-02-06 12:17:44',4,0,NULL,NULL,NULL,'c14aaf7b-9b17-418b-b675-dc4f95613246',NULL,0),(1,'Vrai','fr',1,'2013-02-06 12:17:44',5,0,NULL,NULL,NULL,'9ba2755e-ad23-473d-bc70-e99e462c0545',NULL,0),(1,'Oui','fr',1,'2013-02-06 12:17:44',6,0,NULL,NULL,NULL,'d5ba747b-bbac-4707-b127-9f85cb6e0c49',NULL,0),(1,'True','en',1,'2013-02-06 12:17:44',7,0,NULL,NULL,NULL,'3e10e8df-ff3a-4e62-9a3c-271fc45e5581','FULLY_SPECIFIED',0),(1,'Yes','en',1,'2013-02-06 12:17:44',8,0,NULL,NULL,NULL,'ff6a3dc0-95c9-415d-be9a-7cae8f018b1b',NULL,0),(1,'Verdadero','es',1,'2013-02-06 12:17:44',9,0,NULL,NULL,NULL,'738b84f3-f144-4fd1-9c18-13f955dbc9e5',NULL,0),(1,'Sí','es',1,'2013-02-06 12:17:44',10,0,NULL,NULL,NULL,'246ab882-3875-4f1a-8353-009caaa0ee7e',NULL,0),(2,'Falso','it',1,'2013-02-06 12:17:44',11,0,NULL,NULL,NULL,'4c67ffe8-85bc-46eb-bfed-78f29dacfa2e',NULL,0),(2,'No','it',1,'2013-02-06 12:17:44',12,0,NULL,NULL,NULL,'b0362623-0b81-4637-8b86-c6b0dba697ca',NULL,0),(2,'Falso','pt',1,'2013-02-06 12:17:44',13,0,NULL,NULL,NULL,'c962551f-5fa0-4324-8fe8-6d028ee01715',NULL,0),(2,'Não','pt',1,'2013-02-06 12:17:44',14,0,NULL,NULL,NULL,'0e7d4be1-8b3c-4f35-b615-e4cce6d87963',NULL,0),(2,'Faux','fr',1,'2013-02-06 12:17:44',15,0,NULL,NULL,NULL,'783ffbad-e670-4979-83de-54af5bd236b8',NULL,0),(2,'Non','fr',1,'2013-02-06 12:17:44',16,0,NULL,NULL,NULL,'974357e2-c319-4185-aed5-db995846d07e',NULL,0),(2,'False','en',1,'2013-02-06 12:17:44',17,0,NULL,NULL,NULL,'14c202e8-a1ad-40b1-863f-7416d220c569','FULLY_SPECIFIED',0),(2,'No','en',1,'2013-02-06 12:17:44',18,0,NULL,NULL,NULL,'41f5479b-b605-4f89-bf2b-1dfc40552cf8',NULL,0),(2,'Falso','es',1,'2013-02-06 12:17:44',19,0,NULL,NULL,NULL,'f558bf8e-60a3-4768-ad50-a333fae07856',NULL,0),(2,'No','es',1,'2013-02-06 12:17:44',20,0,NULL,NULL,NULL,'99fd7282-d70f-47a0-8fda-a861a2432e2f',NULL,0);
+INSERT INTO `concept_name` VALUES (1,'Vero','it',1,'2013-02-06 12:17:44',1,0,NULL,NULL,NULL,'35bc9aab-0589-4b17-b782-4f1f57791399',NULL,0),(1,'S','it',1,'2013-02-06 12:17:44',2,0,NULL,NULL,NULL,'336ac687-84f9-48c2-ba6e-2ee47fb048f2',NULL,0),(1,'Verdadeiro','pt',1,'2013-02-06 12:17:44',3,0,NULL,NULL,NULL,'7700dd5c-43ca-44df-abfe-94ab3097b280',NULL,0),(1,'Sim','pt',1,'2013-02-06 12:17:44',4,0,NULL,NULL,NULL,'c14aaf7b-9b17-418b-b675-dc4f95613246',NULL,0),(1,'Vrai','fr',1,'2013-02-06 12:17:44',5,0,NULL,NULL,NULL,'9ba2755e-ad23-473d-bc70-e99e462c0545',NULL,0),(1,'Oui','fr',1,'2013-02-06 12:17:44',6,0,NULL,NULL,NULL,'d5ba747b-bbac-4707-b127-9f85cb6e0c49',NULL,0),(1,'True','en',1,'2013-02-06 12:17:44',7,0,NULL,NULL,NULL,'3e10e8df-ff3a-4e62-9a3c-271fc45e5581','FULLY_SPECIFIED',0),(1,'Yes','en',1,'2013-02-06 12:17:44',8,0,NULL,NULL,NULL,'ff6a3dc0-95c9-415d-be9a-7cae8f018b1b',NULL,0),(1,'Verdadero','es',1,'2013-02-06 12:17:44',9,0,NULL,NULL,NULL,'738b84f3-f144-4fd1-9c18-13f955dbc9e5',NULL,0),(1,'S','es',1,'2013-02-06 12:17:44',10,0,NULL,NULL,NULL,'246ab882-3875-4f1a-8353-009caaa0ee7e',NULL,0),(2,'Falso','it',1,'2013-02-06 12:17:44',11,0,NULL,NULL,NULL,'4c67ffe8-85bc-46eb-bfed-78f29dacfa2e',NULL,0),(2,'No','it',1,'2013-02-06 12:17:44',12,0,NULL,NULL,NULL,'b0362623-0b81-4637-8b86-c6b0dba697ca',NULL,0),(2,'Falso','pt',1,'2013-02-06 12:17:44',13,0,NULL,NULL,NULL,'c962551f-5fa0-4324-8fe8-6d028ee01715',NULL,0),(2,'N','pt',1,'2013-02-06 12:17:44',14,0,NULL,NULL,NULL,'0e7d4be1-8b3c-4f35-b615-e4cce6d87963',NULL,0),(2,'Faux','fr',1,'2013-02-06 12:17:44',15,0,NULL,NULL,NULL,'783ffbad-e670-4979-83de-54af5bd236b8',NULL,0),(2,'Non','fr',1,'2013-02-06 12:17:44',16,0,NULL,NULL,NULL,'974357e2-c319-4185-aed5-db995846d07e',NULL,0),(2,'False','en',1,'2013-02-06 12:17:44',17,0,NULL,NULL,NULL,'14c202e8-a1ad-40b1-863f-7416d220c569','FULLY_SPECIFIED',0),(2,'No','en',1,'2013-02-06 12:17:44',18,0,NULL,NULL,NULL,'41f5479b-b605-4f89-bf2b-1dfc40552cf8',NULL,0),(2,'Falso','es',1,'2013-02-06 12:17:44',19,0,NULL,NULL,NULL,'f558bf8e-60a3-4768-ad50-a333fae07856',NULL,0),(2,'No','es',1,'2013-02-06 12:17:44',20,0,NULL,NULL,NULL,'99fd7282-d70f-47a0-8fda-a861a2432e2f',NULL,0);
 /*!40000 ALTER TABLE `concept_name` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -859,7 +859,7 @@ CREATE TABLE `concept_word` (
 
 LOCK TABLES `concept_word` WRITE;
 /*!40000 ALTER TABLE `concept_word` DISABLE KEYS */;
-INSERT INTO `concept_word` VALUES (21,1,'VERDADERO','es',9,8.45679012345679),(22,1,'VRAI','fr',5,10.5),(23,1,'VERDADEIRO','pt',3,8.31),(24,1,'SÌ','it',2,15.15),(25,1,'OUI','fr',6,11.911111111111111),(26,1,'SÍ','es',10,15.15),(27,1,'SIM','pt',4,11.911111111111111),(28,1,'YES','en',8,11.911111111111111),(29,1,'VERO','it',1,10.5),(30,1,'TRUE','en',7,10.5625),(31,2,'FAUX','fr',15,10.5),(32,2,'FALSE','en',17,9.780000000000001),(33,2,'FALSO','it',11,9.72),(34,2,'NO','it',12,15.15),(35,2,'NON','fr',16,11.911111111111111),(36,2,'NO','es',20,15.15),(37,2,'NÃO','pt',14,11.911111111111111),(38,2,'FALSO','pt',13,9.72),(39,2,'NO','en',18,15.15),(40,2,'FALSO','es',19,9.72);
+INSERT INTO `concept_word` VALUES (21,1,'VERDADERO','es',9,8.45679012345679),(22,1,'VRAI','fr',5,10.5),(23,1,'VERDADEIRO','pt',3,8.31),(24,1,'S','it',2,15.15),(25,1,'OUI','fr',6,11.911111111111111),(26,1,'S','es',10,15.15),(27,1,'SIM','pt',4,11.911111111111111),(28,1,'YES','en',8,11.911111111111111),(29,1,'VERO','it',1,10.5),(30,1,'TRUE','en',7,10.5625),(31,2,'FAUX','fr',15,10.5),(32,2,'FALSE','en',17,9.780000000000001),(33,2,'FALSO','it',11,9.72),(34,2,'NO','it',12,15.15),(35,2,'NON','fr',16,11.911111111111111),(36,2,'NO','es',20,15.15),(37,2,'N?O','pt',14,11.911111111111111),(38,2,'FALSO','pt',13,9.72),(39,2,'NO','en',18,15.15),(40,2,'FALSO','es',19,9.72);
 /*!40000 ALTER TABLE `concept_word` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1532,7 +1532,7 @@ CREATE TABLE `location` (
   CONSTRAINT `parent_location` FOREIGN KEY (`parent_location`) REFERENCES `location` (`location_id`),
   CONSTRAINT `user_who_created_location` FOREIGN KEY (`creator`) REFERENCES `users` (`user_id`),
   CONSTRAINT `user_who_retired_location` FOREIGN KEY (`retired_by`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1541,7 +1541,7 @@ CREATE TABLE `location` (
 
 LOCK TABLES `location` WRITE;
 /*!40000 ALTER TABLE `location` DISABLE KEYS */;
-INSERT INTO `location` VALUES (1,'Unknown Location',NULL,'','','','','','',NULL,NULL,1,'2005-09-22 00:00:00',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,'8d6c993e-c2cc-11de-8d13-0010c6dffd0f');
+INSERT INTO `location` VALUES (1,'Unknown Location',NULL,'','','','','','',NULL,NULL,1,'2005-09-22 00:00:00',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,'8d6c993e-c2cc-11de-8d13-0010c6dffd0f'),(2,'Clinic A','Clinic A','','','','','','','','',1,'2013-02-08 13:45:44',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,'2dcf06f2-6e49-4a94-ad17-4dc2825e19d6'),(3,'Clinic B','Clinic B','','','','','','','','',1,'2013-02-08 13:45:51',NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,'3a21ceda-4229-453e-8d83-bac55469b31a');
 /*!40000 ALTER TABLE `location` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2489,7 +2489,7 @@ CREATE TABLE `person_attribute_type` (
   CONSTRAINT `attribute_type_creator` FOREIGN KEY (`creator`) REFERENCES `users` (`user_id`),
   CONSTRAINT `privilege_which_can_edit` FOREIGN KEY (`edit_privilege`) REFERENCES `privilege` (`privilege`),
   CONSTRAINT `user_who_retired_person_attribute_type` FOREIGN KEY (`retired_by`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2498,7 +2498,7 @@ CREATE TABLE `person_attribute_type` (
 
 LOCK TABLES `person_attribute_type` WRITE;
 /*!40000 ALTER TABLE `person_attribute_type` DISABLE KEYS */;
-INSERT INTO `person_attribute_type` VALUES (1,'Race','Group of persons related by common descent or heredity','java.lang.String',0,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d871386-c2cc-11de-8d13-0010c6dffd0f',6),(2,'Birthplace','Location of persons birth','java.lang.String',0,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d8718c2-c2cc-11de-8d13-0010c6dffd0f',0),(3,'Citizenship','Country of which this person is a member','java.lang.String',0,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d871afc-c2cc-11de-8d13-0010c6dffd0f',1),(4,'Mother\'s Name','First or last name of this person\'s mother','java.lang.String',0,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d871d18-c2cc-11de-8d13-0010c6dffd0f',5),(5,'Civil Status','Marriage status of this person','org.openmrs.Concept',1054,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d871f2a-c2cc-11de-8d13-0010c6dffd0f',2),(6,'Health District','District/region in which this patient\' home health center resides','java.lang.String',0,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d872150-c2cc-11de-8d13-0010c6dffd0f',4),(7,'Health Center','Specific Location of this person\'s home health center.','org.openmrs.Location',0,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d87236c-c2cc-11de-8d13-0010c6dffd0f',3);
+INSERT INTO `person_attribute_type` VALUES (1,'Race','Group of persons related by common descent or heredity','java.lang.String',0,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d871386-c2cc-11de-8d13-0010c6dffd0f',6),(2,'Birthplace','Location of persons birth','java.lang.String',0,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d8718c2-c2cc-11de-8d13-0010c6dffd0f',0),(3,'Citizenship','Country of which this person is a member','java.lang.String',0,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d871afc-c2cc-11de-8d13-0010c6dffd0f',1),(4,'Mother\'s Name','First or last name of this person\'s mother','java.lang.String',0,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d871d18-c2cc-11de-8d13-0010c6dffd0f',5),(5,'Civil Status','Marriage status of this person','org.openmrs.Concept',1054,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d871f2a-c2cc-11de-8d13-0010c6dffd0f',2),(6,'Health District','District/region in which this patient\' home health center resides','java.lang.String',0,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d872150-c2cc-11de-8d13-0010c6dffd0f',4),(7,'Health Center','Specific Location of this person\'s home health center.','org.openmrs.Location',0,0,1,'2007-05-04 00:00:00',NULL,NULL,0,NULL,NULL,NULL,NULL,'8d87236c-c2cc-11de-8d13-0010c6dffd0f',3),(8,'Phone Number','','java.lang.String',NULL,0,1,'2013-02-08 13:38:04',NULL,NULL,0,NULL,NULL,NULL,NULL,'6fa5a719-4433-43d2-9eff-99a5f23cc244',7),(9,'Pin','','java.lang.String',NULL,0,1,'2013-02-08 13:38:10',NULL,NULL,0,NULL,NULL,NULL,NULL,'6a874162-1b4c-4e36-bc8f-a1c2bab93889',8),(10,'Clinic','','java.lang.String',NULL,0,1,'2013-02-08 13:38:17',NULL,NULL,0,NULL,NULL,NULL,NULL,'d197ac84-c465-4adf-9a6c-c261519f22d6',9),(11,'Next Campaign','','java.lang.String',NULL,0,1,'2013-02-08 13:38:24',NULL,NULL,0,NULL,NULL,NULL,NULL,'2aaf4f73-c460-4939-8bef-903b3d0917e4',10);
 /*!40000 ALTER TABLE `person_attribute_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2969,7 +2969,7 @@ CREATE TABLE `scheduler_task_config` (
 
 LOCK TABLES `scheduler_task_config` WRITE;
 /*!40000 ALTER TABLE `scheduler_task_config` DISABLE KEYS */;
-INSERT INTO `scheduler_task_config` VALUES (1,'Update Concept Index','Iterates through the concept dictionary, re-creating the concept index (which are used for searcing). This task is started when using the \'Update Concept Index Storage\' page and no range is given.  This task stops itself when one iteration has completed.','org.openmrs.scheduler.tasks.ConceptIndexUpdateTask',NULL,NULL,0,0,0,1,'2005-01-01 00:00:00',2,'2013-02-06 12:18:20','7c75911e-0310-11e0-8222-18a905e044dc',NULL),(2,'Initialize Logic Rule Providers',NULL,'org.openmrs.logic.task.InitializeLogicRuleProvidersTask','2013-02-06 12:18:47',NULL,1999999999,0,1,NULL,'2013-02-06 12:18:47',NULL,'2013-02-06 12:18:47','652b3480-a99c-479c-bb93-5f1648c33534','2013-02-06 12:18:47');
+INSERT INTO `scheduler_task_config` VALUES (1,'Update Concept Index','Iterates through the concept dictionary, re-creating the concept index (which are used for searcing). This task is started when using the \'Update Concept Index Storage\' page and no range is given.  This task stops itself when one iteration has completed.','org.openmrs.scheduler.tasks.ConceptIndexUpdateTask',NULL,NULL,0,0,0,1,'2005-01-01 00:00:00',2,'2013-02-06 12:18:20','7c75911e-0310-11e0-8222-18a905e044dc',NULL),(2,'Initialize Logic Rule Providers',NULL,'org.openmrs.logic.task.InitializeLogicRuleProvidersTask','2013-02-08 13:45:36',NULL,1999999999,0,0,NULL,'2013-02-06 12:18:47',NULL,'2013-02-08 13:46:20','652b3480-a99c-479c-bb93-5f1648c33534','2013-02-08 13:45:36');
 /*!40000 ALTER TABLE `scheduler_task_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3177,4 +3177,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-06 12:21:39
+-- Dump completed on 2013-02-08 13:46:34
