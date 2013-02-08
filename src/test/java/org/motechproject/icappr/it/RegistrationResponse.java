@@ -2,6 +2,7 @@ package org.motechproject.icappr.it;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RegistrationResponse {
     private String patientId;
@@ -30,6 +31,16 @@ public class RegistrationResponse {
 
         public void setStartDate(String startDate) {
             this.startDate = startDate;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof CampaignRegistration) {
+                CampaignRegistration reg = (CampaignRegistration) obj;
+                return Objects.equals(name, reg.name) && Objects.equals(startDate, reg.startDate);
+            }
+
+            return false;
         }
 
     }
@@ -127,5 +138,17 @@ public class RegistrationResponse {
 
     public void setScheduledJobs(List<ScheduledJob> scheduledJobs) {
         this.scheduledJobs = scheduledJobs;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof RegistrationResponse) {
+            RegistrationResponse res = (RegistrationResponse) obj;
+            return Objects.equals(patientId, res.patientId) && Objects.equals(phoneNumber, res.phoneNumber)
+                    && Objects.equals(pin, res.pin) && Objects.equals(clinic, res.clinic)
+                    && Objects.equals(nextCampaign, res.nextCampaign) && Objects.equals(campaigns, res.campaigns)
+                    && Objects.equals(scheduledJobs, res.scheduledJobs);
+        }
+        return super.equals(obj);
     }
 }

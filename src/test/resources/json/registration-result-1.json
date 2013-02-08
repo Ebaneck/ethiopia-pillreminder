@@ -2,6 +2,6 @@
   "patientId": 7025,
   "phoneNumber": "12079004321",
   "pin": 4411,
-  "clinic": "clinic_b",
-  "nextCampaign": "pillReminderWeekdaysOnly",
+  "clinic": "Clinic B",
+  "nextCampaign": "weekdays"
 }

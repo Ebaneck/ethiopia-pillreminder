@@ -22,6 +22,8 @@
 
     <osgi:reference id="patientAdapterService" interface="org.motechproject.mrs.services.PatientAdapter" />
 
+    <osgi:reference id="facilityAdapterService" interface="org.motechproject.mrs.services.FacilityAdapter" />
+
     <osgi:reference id="eventListenerRegistryService" interface="org.motechproject.event.listener.EventListenerRegistryService" />
 
     <bean class="org.motechproject.event.listener.annotations.EventAnnotationBeanPostProcessor">
