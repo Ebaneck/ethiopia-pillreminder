@@ -9,7 +9,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <motech.version>0.17</motech.version>
+        <motech.version>0.17-icappr-1</motech.version>
         <openmrs-runtime.properties>${project.build.directory}/test-classes/openmrs-runtime.properties</openmrs-runtime.properties>
         <openmrs.app.data.dir>${project.build.directory}/test-classes/openmrs</openmrs.app.data.dir>
     </properties>
@@ -43,6 +43,11 @@
         <dependency>
             <groupId>org.motechproject</groupId>
             <artifactId>motech-commcare-api-bundle</artifactId>
+            <version>${motech.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.motechproject</groupId>
+            <artifactId>motech-ivr-verboice-bundle</artifactId>
             <version>${motech.version}</version>
         </dependency>
         <dependency>
@@ -83,22 +88,6 @@
     </dependencies>
 
     <build>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <includes>
-                    <include>openmrs-runtime.properties</include>
-                </includes>
-                <filtering>true</filtering>
-                <targetPath>${basedir}</targetPath>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <excludes>
-                    <exclude>openmrs-runtime.properties</exclude>
-                </excludes>
-            </testResource>
-        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -198,6 +187,22 @@
                 <mysql.password>password</mysql.password>
             </properties>
             <build>
+                <testResources>
+                    <testResource>
+                        <directory>src/test/resources</directory>
+                        <includes>
+                            <include>openmrs-runtime.properties</include>
+                        </includes>
+                        <filtering>true</filtering>
+                        <targetPath>${basedir}</targetPath>
+                    </testResource>
+                    <testResource>
+                        <directory>src/test/resources</directory>
+                        <excludes>
+                            <exclude>openmrs-runtime.properties</exclude>
+                        </excludes>
+                    </testResource>
+                </testResources>
                 <plugins>
                     <plugin>
                         <artifactId>maven-failsafe-plugin</artifactId>
@@ -208,6 +213,50 @@
                                     <goal>integration-test</goal>
                                     <goal>verify</goal>
                                 </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>2.5</version>
+                        <executions>
+                            <execution>
+                                <id>copy-commcare-settings</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <overwrite>true</overwrite>
+                                    <outputDirectory>${user.home}/.motech/config/org.motechproject.motech-commcare-api-bundle</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>src/test/resources/motech</directory>
+                                            <includes>
+                                                <include>caseEventStrategy.properties</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>copy-openmrs-settings</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <overwrite>true</overwrite>
+                                    <outputDirectory>${user.home}/.motech/config/org.motechproject.motech-openmrs-ws-bundle</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>src/test/resources/motech</directory>
+                                            <includes>
+                                                <include>openmrs.properties</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
