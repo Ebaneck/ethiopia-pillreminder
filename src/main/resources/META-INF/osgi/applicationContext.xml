@@ -12,6 +12,8 @@
 
     <osgi:reference id="couchDbManager" interface="org.motechproject.commons.couchdb.service.CouchDbManager" />
 
+    <osgi:reference id="formService" interface="org.motechproject.commcare.service.CommcareFormService" />
+
     <bean id="dbConnector" factory-bean="couchDbManager" factory-method="getConnector">
         <constructor-arg value="pill-reminder" />
     </bean>

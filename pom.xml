@@ -9,7 +9,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <motech.version>0.17-icappr-1</motech.version>
+        <motech.version>0.17-pr-2-SNAPSHOT</motech.version>
         <openmrs-runtime.properties>${project.build.directory}/test-classes/openmrs-runtime.properties</openmrs-runtime.properties>
         <openmrs.app.data.dir>${project.build.directory}/test-classes/openmrs</openmrs.app.data.dir>
     </properties>
