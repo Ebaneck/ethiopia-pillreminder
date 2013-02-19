@@ -12,7 +12,7 @@
 
     <osgi:reference id="couchDbManager" interface="org.motechproject.commons.couchdb.service.CouchDbManager" />
 
-    <osgi:reference id="formService" interface="org.motechproject.commcare.service.CommcareFormService" />
+    <osgi:reference id="formService" cardinality="0..1" interface="org.motechproject.commcare.service.CommcareFormService" />
 
     <bean id="dbConnector" factory-bean="couchDbManager" factory-method="getConnector">
         <constructor-arg value="pill-reminder" />
@@ -22,11 +22,15 @@
         <property name="moduleName" value="pill-reminder" />
     </bean>
 
-    <osgi:reference id="patientAdapterService" interface="org.motechproject.mrs.services.PatientAdapter" />
+    <osgi:reference id="patientAdapterService" cardinality="0..1" interface="org.motechproject.mrs.services.PatientAdapter" />
 
-    <osgi:reference id="facilityAdapterService" interface="org.motechproject.mrs.services.FacilityAdapter" />
+    <osgi:reference id="facilityAdapterService" cardinality="0..1" interface="org.motechproject.mrs.services.FacilityAdapter" />
 
     <osgi:reference id="eventListenerRegistryService" interface="org.motechproject.event.listener.EventListenerRegistryService" />
+    
+    <osgi:reference id="messageCampaignService" cardinality="0..1" interface="org.motechproject.server.messagecampaign.service.MessageCampaignService" />
+
+    <osgi:reference id="ivrServiceOsgi" cardinality="0..1" interface="org.motechproject.ivr.service.IVRService" />
 
     <bean class="org.motechproject.event.listener.annotations.EventAnnotationBeanPostProcessor">
         <property name="eventListenerRegistry" ref="eventListenerRegistryService" />

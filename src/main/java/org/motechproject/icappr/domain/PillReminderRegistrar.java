@@ -52,7 +52,7 @@ public class PillReminderRegistrar {
         CampaignRequest request = new CampaignRequest();
         request.setCampaignName("DailyMessageCampaign");
         request.setExternalId(registration.getPatientId());
-        request.setReferenceDate(DateUtil.now().plusDays(1).toLocalDate());
+        request.setReferenceDate(DateUtil.now().toLocalDate());
         messageCampaignService.startFor(request);
     }
 

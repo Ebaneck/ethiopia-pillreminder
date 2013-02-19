@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.motechproject.icappr</groupId>
-    <artifactId>pill-reminder</artifactId>
+    <artifactId>motech-pill-reminder</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
@@ -67,7 +67,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- These dependencies are strictly used for bundle integration tests -->
+        <!-- These dependencies are strictly used for bundle integration tests 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>org.springframework.context.support</artifactId>
@@ -84,7 +84,7 @@
             <artifactId>org.motechproject.osgi.it</artifactId>
             <version>1.0.2.RELEASE-r009</version>
             <scope>test</scope>
-        </dependency>
+        </dependency> -->
     </dependencies>
 
     <build>
