@@ -44,7 +44,8 @@ public class MrsEntityFacade {
         return (OpenMRSPatient) patientAdapter.getPatientByMotechId(motechId);
     }
 
-    public Patient createDumbyPatient(String patientMotechId) {
+
+    public Patient createGenericPatient(String patientMotechId) {
         OpenMRSPerson person = new OpenMRSPerson();
         person.firstName(DEFAULT_FIRST_NAME);
         person.lastName(DEFAULT_LAST_NAME);
