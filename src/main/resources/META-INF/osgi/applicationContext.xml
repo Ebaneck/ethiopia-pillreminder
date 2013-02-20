@@ -19,7 +19,7 @@
     </bean>
     <!-- get a settings instance to store your module's properties -->
     <bean id="settings" class="org.motechproject.server.config.SettingsFacade" autowire="byType">
-        <property name="moduleName" value="pill-reminder" />
+        <property name="moduleName" value="icap-pillreminder" />
     </bean>
 
     <osgi:reference id="patientAdapterService" cardinality="0..1" interface="org.motechproject.mrs.services.PatientAdapter" />
