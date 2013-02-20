@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.motechproject.commons.date.util.DateUtil;
+import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
 import org.motechproject.icappr.openmrs.OpenMRSConstants;
 import org.motechproject.icappr.openmrs.OpenMRSUtil;
+import org.motechproject.icappr.service.AdherenceCallEnroller;
 import org.motechproject.mrs.domain.Attribute;
 import org.motechproject.mrs.domain.Facility;
 import org.motechproject.mrs.domain.Patient;
@@ -27,7 +30,8 @@ public class PillReminderRegistrar {
     private PatientAdapter patientAdapter;
     private FacilityAdapter facilityAdapter;
     private MessageCampaignService messageCampaignService;
-
+    private AdherenceCallEnroller adherenceCallEnroller;
+    
     private static final Map<String, String> clinicMappings = new HashMap<>();
 
     static {
@@ -37,10 +41,11 @@ public class PillReminderRegistrar {
 
     @Autowired
     public PillReminderRegistrar(PatientAdapter patientAdapter, FacilityAdapter facilityAdapter,
-            MessageCampaignService messageCampaignService) {
+            MessageCampaignService messageCampaignService, AdherenceCallEnroller adherenceCallEnroller) {
         this.patientAdapter = patientAdapter;
         this.facilityAdapter = facilityAdapter;
         this.messageCampaignService = messageCampaignService;
+        this.adherenceCallEnroller = adherenceCallEnroller;
     }
 
     public void register(PillReminderRegistration registration) {
@@ -54,6 +59,19 @@ public class PillReminderRegistrar {
         request.setExternalId(registration.getPatientId());
         request.setReferenceDate(DateUtil.now().toLocalDate());
         messageCampaignService.startFor(request);
+    }
+
+    private void enrollInAdherenceCall(PillReminderRegistration registration) {
+        AdherenceCallEnrollmentRequest request = new AdherenceCallEnrollmentRequest();
+        request.setMotechId(registration.getPatientId());
+        request.setPhonenumber(registration.getPhoneNumber());
+        request.setPin(registration.getPin());
+
+        DateTime dateTime = DateUtil.now().plusMinutes(2);
+// will change based on information in form
+        request.setDosageStartTime(String.format("%02d:%02d", dateTime.getHourOfDay(), dateTime.getMinuteOfHour()));
+
+        adherenceCallEnroller.enrollPatientWithId(request);
     }
 
     private void createGenericPatient(PillReminderRegistration registration) {

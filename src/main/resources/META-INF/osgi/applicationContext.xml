@@ -18,6 +18,7 @@
         <constructor-arg value="pill-reminder" />
     </bean>
     <!-- get a settings instance to store your module's properties -->
+    
     <bean id="settings" class="org.motechproject.server.config.SettingsFacade" autowire="byType">
         <property name="moduleName" value="icap-pillreminder" />
     </bean>
@@ -31,6 +32,9 @@
     <osgi:reference id="messageCampaignService" cardinality="0..1" interface="org.motechproject.server.messagecampaign.service.MessageCampaignService" />
 
     <osgi:reference id="ivrServiceOsgi" cardinality="0..1" interface="org.motechproject.ivr.service.IVRService" />
+
+    <osgi:reference id="pillReminderServiceOsgi" cardinality="0..1"
+        interface="org.motechproject.server.pillreminder.api.service.PillReminderService" />
 
     <bean class="org.motechproject.event.listener.annotations.EventAnnotationBeanPostProcessor">
         <property name="eventListenerRegistry" ref="eventListenerRegistryService" />
