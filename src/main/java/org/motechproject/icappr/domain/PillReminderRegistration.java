@@ -6,7 +6,11 @@ public class PillReminderRegistration {
     private String clinic;
     private String nextCampaign;
     private String patientId;
-
+	private String preferredLanguage;
+	private String nextAppointment;
+	private String iptInitiationDate;
+	private String preferredCallTime;
+	
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -46,5 +50,41 @@ public class PillReminderRegistration {
     public void setNextCampaign(String string) {
         this.nextCampaign = string;
     }
+
+	public String getPreferredLanguage() {
+		return preferredLanguage;
+	}
+
+	public void setPreferredLanguage(String preferredLanguage) {
+		this.preferredLanguage = preferredLanguage;
+	}
+
+	public String getNextAppointment() {
+		return nextAppointment;
+	}
+
+	public void setNextAppointment(String nextAppointment) {
+		this.nextAppointment = nextAppointment;
+	}
+
+	public String getIptInitiationDate() {
+		return iptInitiationDate;
+	}
+
+	public void setIptInitiationDate(String iptInitiationDate) {
+		this.iptInitiationDate = iptInitiationDate;
+	}
+
+	public String getPreferredCallTime() {
+		return preferredCallTime;
+	}
+
+	public void setPreferredCallTime(String preferredCallTime) {
+		this.preferredCallTime = preferredCallTime;
+	}
+
+	public String getNextCampaign() {
+		return nextCampaign;
+	}
 
 }
