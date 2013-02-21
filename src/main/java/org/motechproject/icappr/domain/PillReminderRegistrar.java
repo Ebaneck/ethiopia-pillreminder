@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.motechproject.commons.date.model.Time;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
 import org.motechproject.icappr.openmrs.OpenMRSConstants;
@@ -58,6 +59,7 @@ public class PillReminderRegistrar {
         request.setCampaignName("DailyMessageCampaign");
         request.setExternalId(registration.getPatientId());
         request.setReferenceDate(DateUtil.now().toLocalDate());
+        request.setReferenceTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().getMinuteOfHour()));
         messageCampaignService.startFor(request);
     }
 

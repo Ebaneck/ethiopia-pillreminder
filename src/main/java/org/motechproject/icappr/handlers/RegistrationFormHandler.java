@@ -14,7 +14,11 @@ public class RegistrationFormHandler {
     private PillReminderRegistrar pillReminderRegistrar;
 
 	public void handleForm(CommcareForm form) {
-		FormValueElement topFormElement = form.getCaseElement();
+		FormValueElement topFormElement = form.getForm();
+
+		if (topFormElement == null) {
+			return;
+		}
 
 		String clinicId = getValue(topFormElement, "clinic_id");
 		String patientId = getValue(topFormElement, "patient_number");

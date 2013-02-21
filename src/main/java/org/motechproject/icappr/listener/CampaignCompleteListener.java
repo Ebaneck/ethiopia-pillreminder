@@ -1,5 +1,7 @@
 package org.motechproject.icappr.listener;
 
+import org.joda.time.DateTime;
+import org.motechproject.commons.date.model.Time;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
@@ -41,6 +43,7 @@ public class CampaignCompleteListener {
         request.setCampaignName(nextCampaign);
         request.setExternalId(externalId);
         request.setReferenceDate(DateUtil.now().toLocalDate());
+        request.setReferenceTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().getMinuteOfHour()));
 
         messageCampaignService.startFor(request);
     }

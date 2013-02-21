@@ -3,7 +3,6 @@ package org.motechproject.icappr.listener;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
-
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
 import org.motechproject.icappr.openmrs.OpenMRSConstants;
@@ -21,8 +20,8 @@ public class SendCampaignMessageListener {
 
     private PatientAdapter patientAdapter;
     private IVRService ivrService;
-    private final String HOST = "http://icappr.motechcloud.org";
-    private final String VERBOICE_CHANNEL_NAME = "didlogic2";
+    private final String HOST = "http://130.111.132.27:8080";
+    private final String VERBOICE_CHANNEL_NAME = "didlogic";
 
     @Autowired
     public SendCampaignMessageListener(PatientAdapter patientAdapter, IVRService ivrService) {
@@ -37,9 +36,11 @@ public class SendCampaignMessageListener {
 
         String phoneNumber = OpenMRSUtil.getAttrValue(OpenMRSConstants.OPENMRS_PHONE_NUM_ATTR, patient.getPerson()
                 .getAttributes());
-        CallRequest callRequest = new CallRequest(phoneNumber, 60, VERBOICE_CHANNEL_NAME);
+        CallRequest callRequest = new CallRequest(phoneNumber, 120, VERBOICE_CHANNEL_NAME);
 
         Map<String, String> payload = callRequest.getPayload();
+
+        payload.put("motechId", patientId);
 
         String callbackUrl = HOST + "/motech-platform-server/module/icappr/campaign-message";
         try {
