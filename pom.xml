@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.motechproject.icappr</groupId>
-    <artifactId>motech-pill-reminder</artifactId>
+    <artifactId>motech-icap-pr</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
