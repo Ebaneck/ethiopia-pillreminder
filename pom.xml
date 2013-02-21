@@ -72,6 +72,28 @@
             <scope>test</scope>
         </dependency>
 
+<!--  dependencies to get spring mvc working -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>org.springframework.web.servlet</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>org.springframework.core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>org.springframework.context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>org.springframework.web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
         <!-- These dependencies are strictly used for bundle integration tests 
         <dependency>
             <groupId>org.springframework</groupId>
