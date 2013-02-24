@@ -124,13 +124,10 @@ public class AdherenceCallServiceImpl implements AdherenceCallService {
      */
     @Override
     public String registerNewPatientIntoAdherenceCallRegimen(String motechId, String dosageStartTime) {
-        logger.error("Calling buildDosage");
         DosageRequest dosageRequest = buildDosageRequest(dosageStartTime);
-        logger.error("Calling Daily Regimien");
         DailyPillRegimenRequest regimenRequest = new DailyPillRegimenRequest(motechId, PILL_WINDOW_IN_HOURS,
                 REMINDER_RETRY_INTERVAL_IN_MINUTES, REMINDER_BUFFER_TIME_IN_MINUTES, Arrays.asList(dosageRequest));
 
-        logger.error("Calling pillreminderservice");
         pillReminderService.createNew(regimenRequest);
 
         return actualStartTime(dosageRequest);

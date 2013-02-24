@@ -76,7 +76,7 @@ public class AdherenceCallListener {
 
         // the callback_url is used once verboice starts a call to retrieve the
         // data for the call (e.g. TwiML)
-        String callbackUrl = settings.getMotechUrl() + "/module/pillreminder-demo/ivr/start?motech_call_id=%s";
+        String callbackUrl = settings.getMotechUrl() + "/module/icappr/ivr/start?motech_call_id=%s";
         try {
             payload.put(CallRequestDataKeys.CALLBACK_URL,
                     URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId()), "UTF-8"));
