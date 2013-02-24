@@ -3,10 +3,10 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.motechproject.icappr</groupId>
-    <artifactId>motech-icap-pr</artifactId>
+    <artifactId>motech-icappr</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>ICAP</name>
+    <name>ICAPPR</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

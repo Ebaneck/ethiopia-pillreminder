@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.joda.time.DateTime;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.commons.date.util.DateUtil;
@@ -27,6 +30,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PillReminderRegistrar {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private PatientAdapter patientAdapter;
     private FacilityAdapter facilityAdapter;
@@ -50,8 +54,11 @@ public class PillReminderRegistrar {
     }
 
     public void register(PillReminderRegistration registration) {
+        logger.error("Starting Patient Registration");
         createGenericPatient(registration);
-        enrollInDailyMessageCampaign(registration);
+        logger.error("Finishing Patient Registration");
+//      enrollInDailyMessageCampaign(registration);
+        enrollInAdherenceCall(registration);
     }
 
     private void enrollInDailyMessageCampaign(PillReminderRegistration registration) {
@@ -72,7 +79,6 @@ public class PillReminderRegistrar {
         DateTime dateTime = DateUtil.now().plusMinutes(2);
 // will change based on information in form
         request.setDosageStartTime(String.format("%02d:%02d", dateTime.getHourOfDay(), dateTime.getMinuteOfHour()));
-
         adherenceCallEnroller.enrollPatientWithId(request);
     }
 

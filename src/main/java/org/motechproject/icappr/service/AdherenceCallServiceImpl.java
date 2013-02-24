@@ -2,6 +2,8 @@ package org.motechproject.icappr.service;
 
 import java.util.Arrays;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AdherenceCallServiceImpl implements AdherenceCallService {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private static final String NO_RESPONSE_CAPTURED_YET = "No response captured yet";
 
@@ -121,10 +124,13 @@ public class AdherenceCallServiceImpl implements AdherenceCallService {
      */
     @Override
     public String registerNewPatientIntoAdherenceCallRegimen(String motechId, String dosageStartTime) {
+        logger.error("Calling buildDosage");
         DosageRequest dosageRequest = buildDosageRequest(dosageStartTime);
+        logger.error("Calling Daily Regimien");
         DailyPillRegimenRequest regimenRequest = new DailyPillRegimenRequest(motechId, PILL_WINDOW_IN_HOURS,
                 REMINDER_RETRY_INTERVAL_IN_MINUTES, REMINDER_BUFFER_TIME_IN_MINUTES, Arrays.asList(dosageRequest));
 
+        logger.error("Calling pillreminderservice");
         pillReminderService.createNew(regimenRequest);
 
         return actualStartTime(dosageRequest);
