@@ -57,8 +57,8 @@ public class PillReminderRegistrar {
         logger.error("Starting Patient Registration");
         createGenericPatient(registration);
         logger.error("Finishing Patient Registration");
-//      enrollInDailyMessageCampaign(registration);
-        enrollInAdherenceCall(registration);
+        enrollInDailyMessageCampaign(registration);
+//        enrollInAdherenceCall(registration);
     }
 
     private void enrollInDailyMessageCampaign(PillReminderRegistration registration) {
