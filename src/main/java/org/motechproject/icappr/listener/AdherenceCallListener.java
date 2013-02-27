@@ -1,18 +1,14 @@
 package org.motechproject.icappr.listener;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+
 import java.util.List;
-import java.util.Map;
 
 import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.mrs.MrsEntityFacade;
-import org.motechproject.icappr.support.CallRequestDataKeys;
+import org.motechproject.icappr.service.CallService;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
-import org.motechproject.ivr.service.CallRequest;
-import org.motechproject.ivr.service.IVRService;
 import org.motechproject.mrs.domain.Attribute;
 import org.motechproject.mrs.domain.Patient;
 import org.motechproject.server.pillreminder.api.EventKeys;
@@ -34,13 +30,13 @@ import org.springframework.stereotype.Component;
 public class AdherenceCallListener {
     private final Logger logger = LoggerFactory.getLogger(AdherenceCallListener.class);
 
-    private final IVRService ivrService;
+    private final CallService callService;
     private final MrsEntityFacade mrsEntityFacade;
     private final PillReminderSettings settings;
 
     @Autowired
-    public AdherenceCallListener(IVRService ivrService, MrsEntityFacade mrsEntityFacade, PillReminderSettings settings) {
-        this.ivrService = ivrService;
+    public AdherenceCallListener(CallService callService, MrsEntityFacade mrsEntityFacade, PillReminderSettings settings) {
+        this.callService = callService;
         this.mrsEntityFacade = mrsEntityFacade;
         this.settings = settings;
     }
@@ -61,31 +57,9 @@ public class AdherenceCallListener {
             return;
         }
 
-        initiateCall(motechId, phonenum);
+        callService.initiateCall(motechId, phonenum);
     }
-
-    private void initiateCall(String motechId, String phonenum) {
-        CallRequest callRequest = new CallRequest(phonenum, 120, settings.getVerboiceChannelName());
-
-        Map<String, String> payload = callRequest.getPayload();
-
-        // it's important that we store the motech id in the call request
-        // payload. The verboice ivr service will copy all payload data to the
-        // flow session so that we can retrieve it at a later time
-        payload.put(CallRequestDataKeys.MOTECH_ID, motechId);
-
-        // the callback_url is used once verboice starts a call to retrieve the
-        // data for the call (e.g. TwiML)
-        String callbackUrl = settings.getMotechUrl() + "/module/icappr/ivr/start?motech_call_id=%s";
-        try {
-            payload.put(CallRequestDataKeys.CALLBACK_URL,
-                    URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId()), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-        }
-
-        ivrService.initiateCall(callRequest);
-    }
-
+    
     private boolean maxRetryCountReached(MotechEvent motechEvent, int maxRetryCount) {
         return Integer.parseInt(motechEvent.getParameters().get(EventKeys.PILLREMINDER_TIMES_SENT).toString()) >= maxRetryCount;
     }
