@@ -13,7 +13,7 @@ public final class SoundFiles {
     public static final String INCORRECT_PIN = "incorrectPin";
     
     /*Sound files for IVR UI Test*/
-    public static final String CONTINUE_CALLS = "continueCalls";
+    public static final String CONTINUE_PROMPTS = "continuePrompts";
     public static final String GOODBYE = "goodbye";
     
     /*Sound files for pill reminder*/
