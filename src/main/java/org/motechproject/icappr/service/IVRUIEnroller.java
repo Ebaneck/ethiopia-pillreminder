@@ -1,6 +1,5 @@
 package org.motechproject.icappr.service;
 
-import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.domain.IVREnrollmentRequest;
 import org.motechproject.icappr.domain.IVREnrollmentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
