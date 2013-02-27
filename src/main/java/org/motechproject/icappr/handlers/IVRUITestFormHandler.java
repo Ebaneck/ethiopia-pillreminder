@@ -33,7 +33,6 @@ public class IVRUITestFormHandler {
 
 		String phoneNumber = getValue(topFormElement, "phone_number");
 		String pin = getValue(topFormElement, "pin");
-
 		CouchPerson person = couchPersonUtil.createAndSavePerson(phoneNumber, pin);
 		enrollInCalls(person);
 	}

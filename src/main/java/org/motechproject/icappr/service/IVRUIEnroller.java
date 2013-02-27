@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class IVRUIEnroller {
     
-    private final CallService callService;
+    private final CallInitiationService callService;
     
     @Autowired
-    public IVRUIEnroller(CallService callService) {
+    public IVRUIEnroller(CallInitiationService callService) {
         this.callService = callService;
     }
 

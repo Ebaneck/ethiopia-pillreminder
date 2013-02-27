@@ -6,7 +6,7 @@ import java.util.List;
 import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.mrs.MrsEntityFacade;
-import org.motechproject.icappr.service.CallService;
+import org.motechproject.icappr.service.CallInitiationService;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
 import org.motechproject.mrs.domain.Attribute;
@@ -30,12 +30,12 @@ import org.springframework.stereotype.Component;
 public class AdherenceCallListener {
     private final Logger logger = LoggerFactory.getLogger(AdherenceCallListener.class);
 
-    private final CallService callService;
+    private final CallInitiationService callService;
     private final MrsEntityFacade mrsEntityFacade;
     private final PillReminderSettings settings;
 
     @Autowired
-    public AdherenceCallListener(CallService callService, MrsEntityFacade mrsEntityFacade, PillReminderSettings settings) {
+    public AdherenceCallListener(CallInitiationService callService, MrsEntityFacade mrsEntityFacade, PillReminderSettings settings) {
         this.callService = callService;
         this.mrsEntityFacade = mrsEntityFacade;
         this.settings = settings;
