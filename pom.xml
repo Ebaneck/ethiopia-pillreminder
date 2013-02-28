@@ -48,6 +48,11 @@
         </dependency>    
         <dependency>
             <groupId>org.motechproject</groupId>
+            <artifactId>motech-appointments-api-bundle</artifactId>
+            <version>${motech.version}</version>
+        </dependency>    
+        <dependency>
+            <groupId>org.motechproject</groupId>
             <artifactId>motech-cmslite-api</artifactId>
             <version>${motech.version}</version>
         </dependency>
