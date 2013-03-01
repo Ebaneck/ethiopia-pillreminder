@@ -16,8 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Came from: http://code.google.com/p/motech-usm/source/browse/modules/commcare-openmrs-mapping/commcare-to-openmrs-mapper/src/main/java/org/motechproject/mapper/listeners/FormListener.java?repo=ethiopia-1d&name=Branch_motech-0.17
- *
+ * Came from:
+ * http://code.google.com/p/motech-usm/source/browse/modules/commcare-
+ * openmrs-mapping
+ * /commcare-to-openmrs-mapper/src/main/java/org/motechproject/mapper
+ * /listeners/FormListener.java?repo=ethiopia-1d&name=Branch_motech-0.17
+ * 
  */
 @Component
 public class CommcareStubFormListener {
@@ -27,13 +31,12 @@ public class CommcareStubFormListener {
 
 	@Autowired
 	private RegistrationFormHandler registrationFormHandler;
-	
+
 	@Autowired
 	private IVRUITestFormHandler ivrUITestFormHandler;
 
 	@MotechListener(subjects = EventSubjects.FORM_STUB_EVENT)
 	public void handleStubForm(MotechEvent event) {
-
 		Map<String, Object> parameters = event.getParameters();
 
 		String formId = (String) parameters.get(EventDataKeys.FORM_ID);
@@ -54,15 +57,16 @@ public class CommcareStubFormListener {
 			handleForm(form);
 		}
 	}
-	
+
 	private void handleForm(CommcareForm form) {
-		String xmlns = form.getForm().getAttributes().get(FormXmlnsConstants.FORM_XMLNS_ATTRIBUTE);
+		String xmlns = form.getForm().getAttributes()
+				.get(FormXmlnsConstants.FORM_XMLNS_ATTRIBUTE);
 
 		if (FormXmlnsConstants.REGISTRATION_FORM_XMLNS.equals(xmlns)) {
-			//delegate to registration form handler
+			// delegate to registration form handler
 			registrationFormHandler.handleForm(form);
 		} else if (FormXmlnsConstants.IVR_TEST_FORM_XMLNS.equals(xmlns)) {
-			//delegate to ivr test form handler
+			// delegate to ivr test form handler
 			ivrUITestFormHandler.handleForm(form);
 		}
 	}
