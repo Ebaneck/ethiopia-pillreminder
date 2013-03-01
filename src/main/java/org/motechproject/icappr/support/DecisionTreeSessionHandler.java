@@ -61,5 +61,10 @@ public class DecisionTreeSessionHandler {
         FlowSession session = flowSessionService.getSession(sessionId);
         return session.get(CallRequestDataKeys.MOTECH_ID);
     }
+    
+    public String getPhoneNumForSessionWithId(String sessionId) {
+        FlowSession session = flowSessionService.getSession(sessionId);
+        return session.getPhoneNumber();
+    }
 
 }

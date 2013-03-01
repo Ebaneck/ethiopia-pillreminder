@@ -23,7 +23,7 @@ public class CallInitiationService {
         this.settings = settings;        
     }
 
-	public void initiateCall(String motechId, String phonenum) {
+	public void initiateCall(String motechId, String phonenum, String requestType) {
         CallRequest callRequest = new CallRequest(phonenum, 120, settings.getVerboiceChannelName());
 
         Map<String, String> payload = callRequest.getPayload();
@@ -35,10 +35,12 @@ public class CallInitiationService {
 
         // the callback_url is used once verboice starts a call to retrieve the
         // data for the call (e.g. TwiML)
-        String callbackUrl = settings.getMotechUrl() + "/module/icappr/ivr/start?motech_call_id=%s";
+        String callbackUrl = settings.getMotechUrl() + "/module/icappr/ivr/start?motech_call_id=%s&request_type=%s";
+        
         try {
             payload.put(CallRequestDataKeys.CALLBACK_URL,
-                    URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId()), "UTF-8"));
+                    URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId(), requestType), "UTF-8"));
+            
         } catch (UnsupportedEncodingException e) {
         }
 

@@ -11,7 +11,6 @@ import org.motechproject.decisiontree.core.model.Node;
 import org.motechproject.decisiontree.core.model.Prompt;
 import org.motechproject.decisiontree.core.model.Transition;
 import org.motechproject.decisiontree.core.model.Tree;
-import org.motechproject.decisiontree.server.service.FlowSessionService;
 import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.content.SoundFiles;
 import org.motechproject.icappr.events.Events;
@@ -26,14 +25,12 @@ public class IVRUIDecisionTreeBuilder {
 
 	private final DecisionTreeService decisionTreeService;
 	private final PillReminderSettings settings;
-	private final FlowSessionService flowSessionService;
 
 	@Autowired
 	public IVRUIDecisionTreeBuilder(DecisionTreeService decisionTreeService,
-			PillReminderSettings settings, FlowSessionService flowSessionService) {
+			PillReminderSettings settings) {
 		this.decisionTreeService = decisionTreeService;
 		this.settings = settings;
-		this.flowSessionService = flowSessionService;
 	}
 
 	@PostConstruct

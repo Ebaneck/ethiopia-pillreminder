@@ -1,41 +1,18 @@
 package org.motechproject.icappr.domain;
 
-public class AdherenceCallEnrollmentRequest {
+public class AdherenceCallEnrollmentRequest extends Request {
+	
+	public AdherenceCallEnrollmentRequest(){
+		setType(RequestTypes.ADHERENCE_CALL);
+	}
 
-    private String motechId;
-    private String pin;
-    private String phonenumber;
-    private String dosageStarTime;
-
-    public String getMotechId() {
-        return motechId;
-    }
-
-    public void setMotechId(String motechId) {
-        this.motechId = motechId;
-    }
-
-    public String getPhonenumber() {
-        return phonenumber;
-    }
-
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
-    }
-
-    public String getPin() {
-        return pin;
-    }
-
-    public void setPin(String pin) {
-        this.pin = pin;
-    }
+    private String dosageStartTime;
 
     public void setDosageStartTime(String dosageStartTime) {
-        this.dosageStarTime = dosageStartTime;
+        this.dosageStartTime = dosageStartTime;
     }
 
     public String getDosageStartTime() {
-        return dosageStarTime;
+        return dosageStartTime;
     }
 }

@@ -15,7 +15,7 @@ public class IVRUIEnroller {
         this.callService = callService;
     }
 
-    /*
+    /**
      * Enrolls a person in the test calls. The request contains the phone
      * number, pin, motech ID, and call start time.
      */
@@ -34,16 +34,16 @@ public class IVRUIEnroller {
             return response;
         }
         
-        String motechID = request.getMotechID();
+        String motechID = request.getMotechId();
         if (motechID == null) {
-            response.addError("Motech ID with digits: " + request.getMotechID() + " was not found.");
+            response.addError("Motech ID with digits: " + request.getMotechId() + " was not found.");
             return response;
         }
 
         String actualStartTime = request.getCallStartTime();
         response.setStartTime(actualStartTime);
 
-        callService.initiateCall(motechID, phoneNum);
+        callService.initiateCall(motechID, phoneNum, request.getType());
 
         return response;
     }

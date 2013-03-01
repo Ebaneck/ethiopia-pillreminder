@@ -1,5 +1,6 @@
 package org.motechproject.icappr.listener;
 
+import org.motechproject.icappr.domain.RequestTypes;
 import org.motechproject.icappr.events.Events;
 import org.motechproject.icappr.service.CallInitiationService;
 import org.motechproject.icappr.support.DecisionTreeSessionHandler;
@@ -22,16 +23,15 @@ public class IVRUIListener {
 	}
 
 	@MotechListener(subjects = Events.PATIENT_SELECTED_CONTINUE)
-	public void handleDosageTaken(MotechEvent event) {
+	public void handleContinueSelection(MotechEvent event) {
 		String sessionId = (event.getParameters().get("flowSessionId")
 				.toString());
 
 		String motechId = decisionTreeSessionHandler
 				.getMotechIdForSessionWithId(sessionId);
-
+		
 		String phoneNum = decisionTreeSessionHandler
-				.getPhoneNumForSessionWithId(event.getParameters()
-						.get("flowSessionId").toString());
+				.getPhoneNumForSessionWithId(sessionId);
 
 		/*We wait one minute before we initiate the next phone call 
 		 */
@@ -40,7 +40,7 @@ public class IVRUIListener {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		callInitiationService.initiateCall(motechId, phoneNum);
+		callInitiationService.initiateCall(motechId, phoneNum, RequestTypes.IVR_UI);
 	}
 
 }

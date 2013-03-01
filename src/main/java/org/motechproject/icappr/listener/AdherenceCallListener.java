@@ -4,6 +4,7 @@ package org.motechproject.icappr.listener;
 import java.util.List;
 
 import org.motechproject.icappr.PillReminderSettings;
+import org.motechproject.icappr.domain.RequestTypes;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.mrs.MrsEntityFacade;
 import org.motechproject.icappr.service.CallInitiationService;
@@ -52,12 +53,12 @@ public class AdherenceCallListener {
 
         String phonenum = getPhoneFromAttributes(patient.getPerson().getAttributes());
         if (phonenum == null) {
-            logger.error("No Phone Number attribute found on patient with MoTeCH Id: " + motechId);
+            logger.error("No Phone Number attribute found on patient with MOTECH Id: " + motechId);
             logger.error("Cannot initiate a phone call without a phone number");
             return;
         }
 
-        callService.initiateCall(motechId, phonenum);
+        callService.initiateCall(motechId, phonenum, RequestTypes.ADHERENCE_CALL);
     }
     
     private boolean maxRetryCountReached(MotechEvent motechEvent, int maxRetryCount) {

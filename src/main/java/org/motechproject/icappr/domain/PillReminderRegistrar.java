@@ -72,8 +72,8 @@ public class PillReminderRegistrar {
 
     private void enrollInAdherenceCall(PillReminderRegistration registration) {
         AdherenceCallEnrollmentRequest request = new AdherenceCallEnrollmentRequest();
-        request.setMotechId(registration.getPatientId());
-        request.setPhonenumber(registration.getPhoneNumber());
+        request.setMotechID(registration.getPatientId());
+        request.setPhoneNumber(registration.getPhoneNumber());
         request.setPin(registration.getPin());
 
         DateTime dateTime = DateUtil.now().plusMinutes(2);
