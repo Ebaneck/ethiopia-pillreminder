@@ -33,8 +33,7 @@ public class IVRUIListener {
 		String phoneNum = decisionTreeSessionHandler
 				.getPhoneNumForSessionWithId(sessionId);
 
-		/*We wait one minute before we initiate the next phone call 
-		 */
+		/*We wait one minute before we initiate the next phone call	*/ 
 		try {
 			Thread.sleep(60000);
 		} catch (InterruptedException e) {
