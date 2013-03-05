@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PillReminderRegistrar {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     private PatientAdapter patientAdapter;
     private FacilityAdapter facilityAdapter;

@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AdherenceCallListener {
-    private final Logger logger = LoggerFactory.getLogger(AdherenceCallListener.class);
+	private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     private final CallInitiationService callService;
     private final MrsEntityFacade mrsEntityFacade;

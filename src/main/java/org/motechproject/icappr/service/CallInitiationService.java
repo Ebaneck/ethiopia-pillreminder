@@ -8,6 +8,8 @@ import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.support.CallRequestDataKeys;
 import org.motechproject.ivr.service.CallRequest;
 import org.motechproject.ivr.service.IVRService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,8 @@ public class CallInitiationService {
 	
     private final IVRService ivrService;
     private final PillReminderSettings settings;
+    
+    private Logger logger = LoggerFactory.getLogger("motech-icappr");
 	
 	@Autowired
     public CallInitiationService(IVRService ivrService, PillReminderSettings settings) {
@@ -24,6 +28,8 @@ public class CallInitiationService {
     }
 
 	public void initiateCall(String motechId, String phonenum, String requestType) {
+		logger.info("Initiating call with requestType " + requestType);
+		
         CallRequest callRequest = new CallRequest(phonenum, 120, settings.getVerboiceChannelName());
 
         Map<String, String> payload = callRequest.getPayload();

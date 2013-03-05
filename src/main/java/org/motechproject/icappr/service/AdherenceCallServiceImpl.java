@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AdherenceCallServiceImpl implements AdherenceCallService {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     private static final String NO_RESPONSE_CAPTURED_YET = "No response captured yet";
 

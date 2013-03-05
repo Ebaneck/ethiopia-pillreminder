@@ -2,6 +2,8 @@ package org.motechproject.icappr.service;
 
 import org.motechproject.icappr.domain.IVREnrollmentRequest;
 import org.motechproject.icappr.domain.IVREnrollmentResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +12,8 @@ public class IVRUIEnroller {
     
     private final CallInitiationService callService;
     
+    private Logger logger = LoggerFactory.getLogger("motech-icappr");
+	
     @Autowired
     public IVRUIEnroller(CallInitiationService callService) {
         this.callService = callService;
@@ -39,6 +43,8 @@ public class IVRUIEnroller {
             response.addError("Motech ID with digits: " + request.getMotechId() + " was not found.");
             return response;
         }
+        
+    	logger.debug("Initiating IVR UI Enrollment call with phone " + phoneNum + "and motechID " + motechID);
 
         String actualStartTime = request.getCallStartTime();
         response.setStartTime(actualStartTime);

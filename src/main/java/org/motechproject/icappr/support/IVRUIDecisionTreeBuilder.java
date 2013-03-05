@@ -20,8 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class IVRUIDecisionTreeBuilder {
 
-	private final Logger logger = LoggerFactory
-			.getLogger(IVRUIDecisionTreeBuilder.class);
+	private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
 	private final DecisionTreeService decisionTreeService;
 	private final PillReminderSettings settings;

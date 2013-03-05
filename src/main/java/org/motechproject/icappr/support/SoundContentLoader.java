@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SoundContentLoader {
-    private final Logger logger = LoggerFactory.getLogger(SoundContentLoader.class);
+	private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     private CMSLiteService cmsliteService;
     private ResourceLoader resourceLoader;

@@ -9,6 +9,8 @@ import org.motechproject.icappr.couchdb.CouchMrsConstants;
 import org.motechproject.icappr.couchdb.CouchPersonUtil;
 import org.motechproject.icappr.domain.IVREnrollmentRequest;
 import org.motechproject.icappr.service.IVRUIEnroller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,8 @@ public class IVRUITestFormHandler {
 
 	private final IVRUIEnroller enroller;
 	private final CouchPersonUtil couchPersonUtil;
+	
+	private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
 	@Autowired
 	public IVRUITestFormHandler(IVRUIEnroller enroller, CouchPersonUtil couchPersonUtil) {
@@ -25,6 +29,8 @@ public class IVRUITestFormHandler {
 	}
 
 	public void handleForm(CommcareForm form) {
+		logger.debug("Handling IVR UI Test form...");
+		
 		FormValueElement topFormElement = form.getForm();
 
 		if (topFormElement == null) {

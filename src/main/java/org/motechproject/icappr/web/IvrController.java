@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/ivr")
 public class IvrController {
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
 	private DecisionTreeSessionHandler decisionTreeSessionHandler;
 	private PillReminderSettings settings;
