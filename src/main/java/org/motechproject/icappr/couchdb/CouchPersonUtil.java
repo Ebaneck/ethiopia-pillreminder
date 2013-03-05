@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
 
-import org.motechproject.couch.mrs.impl.CouchPersonAdapter;
+import org.motechproject.mrs.services.PersonAdapter;
 import org.motechproject.couch.mrs.model.CouchAttribute;
 import org.motechproject.couch.mrs.model.CouchPerson;
 import org.motechproject.mrs.domain.Attribute;
@@ -18,10 +18,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class CouchPersonUtil {   
     
-    private final CouchPersonAdapter couchPersonAdapter;
+    private final PersonAdapter couchPersonAdapter;
 
     @Autowired
-    public CouchPersonUtil(CouchPersonAdapter couchPersonAdapter){
+    public CouchPersonUtil(PersonAdapter couchPersonAdapter){
             this.couchPersonAdapter = couchPersonAdapter;
     }
 

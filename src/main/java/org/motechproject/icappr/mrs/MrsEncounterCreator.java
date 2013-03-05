@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.motechproject.mrs.domain.Encounter;
 import org.motechproject.mrs.domain.Observation;
-import org.motechproject.mrs.domain.Patient;
 import org.motechproject.mrs.model.OpenMRSEncounter;
 import org.motechproject.mrs.model.OpenMRSFacility;
 import org.motechproject.mrs.model.OpenMRSObservation;
