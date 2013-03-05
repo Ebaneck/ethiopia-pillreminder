@@ -43,6 +43,8 @@ public class IvrController {
 		String requestType = request.getParameter("request_type");
 		ModelAndView view = new ModelAndView("security-pin");
 
+		logger.debug("Generating security pin twiML for motechId " + motechId + " and request type " + requestType);
+		
 		decisionTreeSessionHandler.updateFlowSessionIdToVerboiceId(motechId,
 				verboiceId);
 
