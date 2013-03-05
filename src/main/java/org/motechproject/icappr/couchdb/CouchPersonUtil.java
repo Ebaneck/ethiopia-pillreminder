@@ -27,7 +27,7 @@ public class CouchPersonUtil {
 
     public CouchPerson createAndSavePerson(String phoneNum, String pin) {
         CouchPerson person = new CouchPerson(); 
-        person.setId(UUID.randomUUID().toString());
+        person.setPersonId(UUID.randomUUID().toString());
         setAttribute(person, phoneNum, CouchMrsConstants.PHONE_NUMBER);
         setAttribute(person, pin, CouchMrsConstants.PERSON_PIN);
         couchPersonAdapter.addPerson(person);

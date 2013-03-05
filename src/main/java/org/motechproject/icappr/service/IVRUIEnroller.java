@@ -44,7 +44,7 @@ public class IVRUIEnroller {
             return response;
         }
         
-    	logger.debug("Initiating IVR UI Enrollment call with phone " + phoneNum + "and motechID " + motechID);
+    	logger.debug("Initiating IVR UI Enrollment call with phone " + phoneNum + " and motechID " + motechID);
 
         String actualStartTime = request.getCallStartTime();
         response.setStartTime(actualStartTime);
