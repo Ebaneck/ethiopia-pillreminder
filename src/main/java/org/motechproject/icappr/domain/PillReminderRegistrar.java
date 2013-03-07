@@ -8,6 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.joda.time.DateTime;
+import org.motechproject.appointments.api.service.AppointmentService;
+import org.motechproject.appointments.api.service.contract.CreateVisitRequest;
+import org.motechproject.appointments.api.service.contract.ReminderConfiguration;
+import org.motechproject.appointments.api.service.contract.ReminderConfiguration.IntervalUnit;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
@@ -36,6 +40,7 @@ public class PillReminderRegistrar {
     private FacilityAdapter facilityAdapter;
     private MessageCampaignService messageCampaignService;
     private AdherenceCallEnroller adherenceCallEnroller;
+	private AppointmentService appointmentService;
     
     private static final Map<String, String> clinicMappings = new HashMap<>();
 
@@ -46,7 +51,8 @@ public class PillReminderRegistrar {
 
     @Autowired
     public PillReminderRegistrar(PatientAdapter patientAdapter, FacilityAdapter facilityAdapter,
-            MessageCampaignService messageCampaignService, AdherenceCallEnroller adherenceCallEnroller) {
+            MessageCampaignService messageCampaignService, AdherenceCallEnroller adherenceCallEnroller, 
+            AppointmentService appointmentService) {
         this.patientAdapter = patientAdapter;
         this.facilityAdapter = facilityAdapter;
         this.messageCampaignService = messageCampaignService;
@@ -122,5 +128,21 @@ public class PillReminderRegistrar {
 
         return registration;
     }
+
+	public void registerClinicVisit(ClinicVisit clinicVisit) {
+		// TODO Auto-generated method stub
+	     CreateVisitRequest createVisitRequest = new CreateVisitRequest();
+		 createVisitRequest.setAppointmentDueDate(clinicVisit.getNextAppointment());
+		 createVisitRequest.setTypeOfVisit("test");
+		 createVisitRequest.setVisitName("tester");
+		 ReminderConfiguration appointmentReminderConfiguration = new ReminderConfiguration();
+		 appointmentReminderConfiguration.setIntervalCount(90);
+		 appointmentReminderConfiguration.setIntervalUnit(IntervalUnit.SECONDS);
+		 appointmentReminderConfiguration.setRemindFrom(480);
+		 appointmentReminderConfiguration.setRepeatCount(3);
+		 createVisitRequest.addAppointmentReminderConfiguration(appointmentReminderConfiguration);
+		 appointmentService.addVisit(clinicVisit.getPatientId(), createVisitRequest);
+		
+	}
 
 }
