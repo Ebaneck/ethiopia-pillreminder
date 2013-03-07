@@ -59,6 +59,8 @@ public class CommcareStubFormListener {
 			formHandler.handleForm(form);
 		} else if (FormXmlnsConstants.TEST_FORM_XMLNS.equals(xmlns)) {
 			//delegate to test form handler
-		}
+		} else if (FormXmlnsConstants.CLINIC_VISIT_FORM_XMLNS.equals(xmlns)) {
+		//delegate to test form handler
+	    }
 	}
 }
