@@ -28,7 +28,6 @@ public class CallInitiationService {
     }
 
 	public void initiateCall(String motechId, String phonenum, String requestType) {
-		logger.info("Initiating call with requestType " + requestType);
 		
         CallRequest callRequest = new CallRequest(phonenum, 120, settings.getVerboiceChannelName());
 
@@ -43,13 +42,17 @@ public class CallInitiationService {
         // data for the call (e.g. TwiML)
         String callbackUrl = settings.getMotechUrl() + "/module/icappr/ivr/start?motech_call_id=%s&request_type=%s";
         
+        /*try {
+            payload.put(CallRequestDataKeys.CALLBACK_URL,
+                    URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId()), "UTF-8"));*/
+        
         try {
             payload.put(CallRequestDataKeys.CALLBACK_URL,
                     URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId(), requestType), "UTF-8"));
             
         } catch (UnsupportedEncodingException e) {
         }
-
+        logger.info("Initiating call with requestType " + requestType);
         ivrService.initiateCall(callRequest);
     }
 

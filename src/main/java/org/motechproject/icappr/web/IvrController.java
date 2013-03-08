@@ -38,6 +38,7 @@ public class IvrController {
 	 */
 	@RequestMapping("/start")
 	public ModelAndView generateSecurityPinTwiML(HttpServletRequest request) {
+	    logger.info("Pill reminder controller received /start request");
 		String verboiceId = request.getParameter("CallSid");
 		String motechId = request.getParameter("motech_call_id");
 		String requestType = request.getParameter("request_type");
@@ -66,6 +67,7 @@ public class IvrController {
 	 */
 	@RequestMapping("/authenticate")
 	public ModelAndView authenticate(HttpServletRequest request) {
+	    logger.info("Authenticating pin...");
 		String sessionId = request.getParameter("CallSid");
 		String digits = request.getParameter("Digits");
 		String requestType = request.getParameter("request_type");
@@ -94,6 +96,7 @@ public class IvrController {
 	 * the proper scenario (IVR UI Test, Adherence call, etc.)
 	 */
 	private String getTwiMLForType(String requestType) {
+	    logger.info("Retrieving twiML for request type " + requestType);
 		if (requestType.matches(RequestTypes.ADHERENCE_CALL))
 			return "adherence-redirect";
 		else if (requestType.matches(RequestTypes.IVR_UI))
