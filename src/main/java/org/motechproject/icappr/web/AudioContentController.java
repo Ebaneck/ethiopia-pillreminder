@@ -8,6 +8,8 @@ import java.io.InputStream;
 import org.motechproject.cmslite.api.model.CMSLiteException;
 import org.motechproject.cmslite.api.model.StreamContent;
 import org.motechproject.cmslite.api.service.CMSLiteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,59 +18,59 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class AudioContentController {
 
-   @Autowired
-   private CMSLiteService cmsliteService;
+    @Autowired
+    private CMSLiteService cmsliteService;
+
+    private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     @RequestMapping("/loadContent")
-	    @ResponseBody
-	    public String loadContent() {
-		    String userHome = (String) System.getProperties().get("user.home");
-		    String directory = userHome + "\\.motech\\content";
-		    
-		    File file = new File(directory);
+    @ResponseBody
+    public String loadContent() {
+        String userHome = (String) System.getProperties().get("user.home");
+        String directory = userHome + "\\.motech\\content";
 
-	        // Reading directory contents
-	        File[] files = file.listFiles();
+        File file = new File(directory);
 
-	        for (int i = 0; i < files.length; i++) {
-	            upLoadDirectory(files[i]);
-	       
-	        }
+        // Reading directory contents
+        File[] files = file.listFiles();
 
-	        return (String) System.getProperties().get("user.home");
-	    }
+        for (int i = 0; i < files.length; i++) {
+            upLoadDirectory(files[i]);
 
-	private void upLoadDirectory(File languageDirectory)
-	{
-		// TODO Auto-generated method stub
+        }
+
+        return (String) System.getProperties().get("user.home");
+    }
+
+    private void upLoadDirectory(File languageDirectory) {
+        // TODO Auto-generated method stub
         // Reading directory contents
         File[] files = languageDirectory.listFiles();
         String language = languageDirectory.getName();
         for (int i = 0; i < files.length; i++) {
             upLoadAudio(files[i], language);
-       
+
         }
-	
-	}
 
-	private void upLoadAudio(File file, String language) {
-		// TODO Auto-generated method stub
-		InputStream inputStreamToResource1 = null;
-		try {
-			inputStreamToResource1 = new FileInputStream(file);
-		} catch (FileNotFoundException e) {
-		}
-        if (inputStreamToResource1 != null) 
-        	{
-        	StreamContent cron = new StreamContent(language, file.getName(), inputStreamToResource1, "checksum1", "audio/wav");
+    }
+
+    private void upLoadAudio(File file, String language) {
+        InputStream inputStreamToResource1 = null;
+        try {
+            inputStreamToResource1 = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+        }
+        if (inputStreamToResource1 != null) {
+            StreamContent cron = new StreamContent(language, file.getName(),
+                    inputStreamToResource1, "checksum1", "audio/wav");
             try {
-				cmsliteService.addContent(cron);
-			} catch (CMSLiteException e) {
+                logger.debug("Loading content with language " + cron.getLanguage() + " and file name " + file.getName() );
+                cmsliteService.addContent(cron);
+            } catch (CMSLiteException e) {
 
-			}
-       	}
- 		
-	}
+            }
+        }
 
+    }
 
 }

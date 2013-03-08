@@ -44,7 +44,8 @@ public class IvrController {
 		String requestType = request.getParameter("request_type");
 		ModelAndView view = new ModelAndView("security-pin");
 
-		logger.debug("Generating security pin twiML for motechId " + motechId + " and request type " + requestType);
+		logger.debug("Generating security pin twiML for motechId " + motechId + " and request type " + requestType + 
+		        " and audio file URL " + settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST));
 		
 		decisionTreeSessionHandler.updateFlowSessionIdToVerboiceId(motechId,
 				verboiceId);
