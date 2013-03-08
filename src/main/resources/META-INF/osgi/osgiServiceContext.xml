@@ -31,6 +31,9 @@
     <osgi:reference id="pillReminderServiceOsgi" cardinality="0..1"
         interface="org.motechproject.server.pillreminder.api.service.PillReminderService" />
 
+    <osgi:reference id="appointmentReminderServiceOsgi" cardinality="0..1"
+        interface="org.motechproject.appointments.api.service.AppointmentService" />
+
     <osgi:reference id="ivrServiceOsgi" cardinality="0..1" interface="org.motechproject.ivr.service.IVRService" />
 
     <osgi:reference id="platformSettingsServiceOsgi" cardinality="0..1"

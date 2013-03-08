@@ -54,9 +54,9 @@ public class PillReminderRegistrar {
     }
 
     public void register(PillReminderRegistration registration) {
-        logger.error("Starting Patient Registration");
+        logger.debug("Starting Patient Registration");
         createGenericPatient(registration);
-        logger.error("Finishing Patient Registration");
+        logger.debug("Finishing Patient Registration");
         enrollInDailyMessageCampaign(registration);
 //        enrollInAdherenceCall(registration);
     }
@@ -75,7 +75,6 @@ public class PillReminderRegistrar {
         request.setMotechID(registration.getPatientId());
         request.setPhoneNumber(registration.getPhoneNumber());
         request.setPin(registration.getPin());
-
         DateTime dateTime = DateUtil.now().plusMinutes(2);
 // will change based on information in form
         request.setDosageStartTime(String.format("%02d:%02d", dateTime.getHourOfDay(), dateTime.getMinuteOfHour()));

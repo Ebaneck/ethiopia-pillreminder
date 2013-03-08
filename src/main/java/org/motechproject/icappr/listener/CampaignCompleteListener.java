@@ -25,7 +25,7 @@ public class CampaignCompleteListener {
         this.messageCampaignService = messageCampaignService;
     }
 
-//    @MotechListener(subjects = { EventKeys.CAMPAIGN_COMPLETED })
+    @MotechListener(subjects = { EventKeys.CAMPAIGN_COMPLETED })
     public void handleCampaignComplete(MotechEvent event) {
         String campaignName = event.getParameters().get(EventKeys.CAMPAIGN_NAME_KEY).toString();
         if ("DailyMessageCampaign".equals(campaignName)) {
