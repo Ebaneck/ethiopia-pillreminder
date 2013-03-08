@@ -54,12 +54,12 @@ public class CommcareStubFormListener {
 	private void handleForm(CommcareForm form) {
 		String xmlns = form.getForm().getAttributes().get(FormXmlnsConstants.FORM_XMLNS_ATTRIBUTE);
 
-		if (FormXmlnsConstants.REGISTRATION_FORM_XMLNS.equals(xmlns)) {
+        if (FormXmlnsConstants.REGISTRATION_FORM_XMLNS.equals(xmlns)) {
 			//delegate to registration form handler
 			formHandler.handleForm(form);
-		} else if (FormXmlnsConstants.TEST_FORM_XMLNS.equals(xmlns)) {
+        } else if (FormXmlnsConstants.TEST_FORM_XMLNS.equals(xmlns)) {
 			//delegate to test form handler
-		} else if (FormXmlnsConstants.CLINIC_VISIT_FORM_XMLNS.equals(xmlns)) {
+        } else if (FormXmlnsConstants.CLINIC_VISIT_FORM_XMLNS.equals(xmlns)) {
 		//delegate to test form handler
 	    }
 	}

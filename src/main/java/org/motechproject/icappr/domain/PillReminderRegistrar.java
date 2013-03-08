@@ -131,18 +131,18 @@ public class PillReminderRegistrar {
 
 	public void registerClinicVisit(ClinicVisit clinicVisit) {
 		// TODO Auto-generated method stub
-	     CreateVisitRequest createVisitRequest = new CreateVisitRequest();
-		 createVisitRequest.setAppointmentDueDate(clinicVisit.getNextAppointment());
-		 createVisitRequest.setTypeOfVisit("test");
-		 createVisitRequest.setVisitName("tester");
-		 ReminderConfiguration appointmentReminderConfiguration = new ReminderConfiguration();
-		 appointmentReminderConfiguration.setIntervalCount(90);
-		 appointmentReminderConfiguration.setIntervalUnit(IntervalUnit.SECONDS);
-		 appointmentReminderConfiguration.setRemindFrom(480);
-		 appointmentReminderConfiguration.setRepeatCount(3);
-		 createVisitRequest.addAppointmentReminderConfiguration(appointmentReminderConfiguration);
-		 appointmentService.addVisit(clinicVisit.getPatientId(), createVisitRequest);
-		
-	}
+         CreateVisitRequest createVisitRequest = new CreateVisitRequest();
+         createVisitRequest.setAppointmentDueDate(clinicVisit.getNextAppointment());
+         createVisitRequest.setTypeOfVisit("test");
+         createVisitRequest.setVisitName("tester");
+         ReminderConfiguration appointmentReminderConfiguration = new ReminderConfiguration();
+         appointmentReminderConfiguration.setIntervalCount(90);
+         appointmentReminderConfiguration.setIntervalUnit(IntervalUnit.SECONDS);
+         appointmentReminderConfiguration.setRemindFrom(480);
+         appointmentReminderConfiguration.setRepeatCount(3);
+         createVisitRequest.addAppointmentReminderConfiguration(appointmentReminderConfiguration);
+         appointmentService.addVisit(clinicVisit.getPatientId(), createVisitRequest);
+ 
+     }
 
 }

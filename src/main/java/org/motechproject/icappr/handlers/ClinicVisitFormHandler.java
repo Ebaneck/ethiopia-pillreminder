@@ -13,18 +13,18 @@ import org.joda.time.format.*;
 @Component
 public class ClinicVisitFormHandler {
 	
-	@Autowired
+    @Autowired
     private PillReminderRegistrar pillReminderRegistrar;
 
-	public void handleForm(CommcareForm form) {
-		FormValueElement topFormElement = form.getForm();
+    public void handleForm(CommcareForm form) {
+        FormValueElement topFormElement = form.getForm();
 
-		if (topFormElement == null) {
-			return;
+        if (topFormElement == null) {
+           return;
 		}
 
-		String patientId = getValue(topFormElement, "patient_number");
-		String clinicVisitDateTime = getValue(topFormElement, "clinic_visit_date_time");
+        String patientId = getValue(topFormElement, "patient_number");
+        String clinicVisitDateTime = getValue(topFormElement, "clinic_visit_date_time");
         DateTime nextAppointment = ISODateTimeFormat.dateTimeNoMillis().parseDateTime(clinicVisitDateTime);
 
         ClinicVisit clinicVisit = new ClinicVisit();
@@ -35,14 +35,14 @@ public class ClinicVisitFormHandler {
         pillReminderRegistrar.registerClinicVisit(clinicVisit);
 	}
 
-	private String getValue(FormValueElement formElement, String elementName) {
+    private String getValue(FormValueElement formElement, String elementName) {
 
-		FormValueElement clinicElement = formElement.getElementByName(elementName);
+        FormValueElement clinicElement = formElement.getElementByName(elementName);
 
-		if (clinicElement == null) {
-			return null;
-		}
+        if (clinicElement == null) {
+            return null;
+        }
 
-		return clinicElement.getValue();
-	}
+        return clinicElement.getValue();
+    }
 }
