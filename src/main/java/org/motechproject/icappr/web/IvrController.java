@@ -23,8 +23,7 @@ public class IvrController {
     private PillReminderSettings settings;
 
     @Autowired
-    public IvrController(DecisionTreeSessionHandler decisionTreeSessionHandler,
-            PillReminderSettings settings) {
+    public IvrController(DecisionTreeSessionHandler decisionTreeSessionHandler, PillReminderSettings settings) {
         this.decisionTreeSessionHandler = decisionTreeSessionHandler;
         this.settings = settings;
     }
@@ -44,24 +43,13 @@ public class IvrController {
         String requestType = request.getParameter("request_type");
         ModelAndView view = new ModelAndView("security-pin");
 
-        logger.debug("Generating security pin twiML for motechId "
-                + motechId
-                + " and request type "
-                + requestType
-                + " and audio file URL "
-                + "http://130.111.132.59:8081/motech-platform-server/module/cmsliteapi/stream/Amharic/amharicPin");
-        // settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST));
+        logger.debug("Generating security pin twiML for motechId " + motechId + " and request type " + requestType
+                + " and audio file URL " + settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST));
 
-        decisionTreeSessionHandler.updateFlowSessionIdToVerboiceId(motechId,
-                verboiceId);
+        decisionTreeSessionHandler.updateFlowSessionIdToVerboiceId(motechId, verboiceId);
 
         view.addObject("path", settings.getMotechUrl());
-        logger.debug("Path is " + settings.getMotechUrl());
-        // view.addObject("audioFileUrl",
-        // settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST));
-        view.addObject(
-                "audioFileUrl",
-                "http://130.111.132.59:8081/motech-platform-server/module/cmsliteapi/stream/Amharic/amharicPin");
+        view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST));
         view.addObject("sessionId", verboiceId);
         view.addObject("requestType", requestType);
 
@@ -71,9 +59,9 @@ public class IvrController {
     /**
      * Attempts to authenticate the pin number entered by the patient. If the
      * pin is accepted, that is the digits entered by the user match the value
-     * of the Pin attribute on the MRS Patient, then it redirects to the
+     * of the Pin attribute on the MRS Patient or CouchMRS person, then it redirects to the
      * motech-verboice module to handle the rest of the request. If it is not
-     * accepted, the call ends
+     * accepted, the call ends.
      */
     @RequestMapping("/authenticate")
     public ModelAndView authenticate(HttpServletRequest request) {
@@ -84,47 +72,46 @@ public class IvrController {
         logger.info("The session id is " + sessionId);
         logger.info("The pin entered is " + digits);
         ModelAndView view = null;
+        boolean correctPin = false;
         if (requestType.matches(RequestTypes.ADHERENCE_CALL)) {
-            if (decisionTreeSessionHandler.digitsMatchPatientPin(sessionId,
-                    digits)) {
+            if (decisionTreeSessionHandler.digitsMatchPatientPin(sessionId, digits)) {
                 logger.info("The pin is correct. Forwarding request to Pill reminder decision tree enrollment...");
-                String vm = getTwiMLForType(requestType);
-                if (vm == null)
-                    logger.error("Could not retrieve request type for this call");
-                else {
-                    view = new ModelAndView(vm);
-                    view.addObject("path", settings.getMotechUrl());
-                    view.addObject("sessionId", sessionId);
-                }
-            } else {
-                view = new ModelAndView("failed-authentication");
-                view.addObject(
-                        "audioFileUrl",
-                        "http://130.111.132.59:8081/motech-platform-server/module/cmsliteapi/stream/Amharic/incorrectPin");
-                // settings.getCmsliteUrlFor(SoundFiles.INCORRECT_PIN));
+                view = generateModelAndView(requestType, sessionId);
+                correctPin = true;
             }
         }
         if (requestType.matches(RequestTypes.IVR_UI)) {
             if (decisionTreeSessionHandler.digitsMatchCouchPersonPin(sessionId, digits)) {
                 logger.info("The pin is correct. Forwarding request to IVR UI Decision tree enrollment...");
-                String vm = getTwiMLForType(requestType);
-                if (vm == null)
-                    logger.error("Could not retrieve request type for this call");
-                else {
-                    logger.info("Generating TwiML vm file with name " + vm + "...");
-                    view = new ModelAndView(vm);
-                    view.addObject("path", settings.getMotechUrl());
-                    view.addObject("sessionId", sessionId);
-                }
-            } else {
-                view = new ModelAndView("failed-authentication");
-                view.addObject(
-                        "audioFileUrl",
-                        "http://130.111.132.59:8081/motech-platform-server/module/cmsliteapi/stream/Amharic/incorrectPin");
-                // settings.getCmsliteUrlFor(SoundFiles.INCORRECT_PIN));
+                view =generateModelAndView(requestType, sessionId);
+                correctPin = true;
             }
         }
+        if (!correctPin) {
+            logger.info("The pin is incorrect.");
+            view = new ModelAndView("failed-authentication");
+            view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.INCORRECT_PIN));
+        }
+        return view;
+    }
 
+
+    /**
+     * Helper method that builds the proper model and view
+     * for a given request type
+     */
+    private ModelAndView generateModelAndView(String requestType, String sessionId) {
+        ModelAndView view = null;
+        String vm = getTwiMLForType(requestType);
+        if (vm == null)
+            logger.error("Could not retrieve request type for this call");
+        else {
+            view = new ModelAndView(vm);
+            view.addObject("path", settings.getMotechUrl());
+            view.addObject("sessionId", sessionId);
+            view.addObject("language", settings.getLanguage());
+            logger.debug("Generating view with sessionId " + sessionId + " and language " + settings.getLanguage());
+        }
         return view;
     }
 
