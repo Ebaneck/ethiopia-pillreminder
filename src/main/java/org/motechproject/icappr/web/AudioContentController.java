@@ -61,10 +61,12 @@ public class AudioContentController {
         } catch (FileNotFoundException e) {
         }
         if (inputStreamToResource1 != null) {
-            StreamContent cron = new StreamContent(language, file.getName(),
+            String soundFilename = file.getName();
+            soundFilename = soundFilename.substring(0, soundFilename.length()-4);
+            StreamContent cron = new StreamContent(language, soundFilename,
                     inputStreamToResource1, "checksum1", "audio/wav");
             try {
-                logger.debug("Loading content with language " + cron.getLanguage() + " and file name " + file.getName() );
+                logger.debug("Loading content with language " + cron.getLanguage() + " and file name " + soundFilename );
                 cmsliteService.addContent(cron);
             } catch (CMSLiteException e) {
 
