@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
-	<Gather action="$path/module/icappr/ivr/authenticate?sessionId=$sessionId&request_type=$requestType" 
+	<Gather action="$path/module/icappr/ivr/authenticate?sessionId=$sessionId&amp;requestType=$requestType" 
 			timeout="10" 
-			numDigits="4">
+			numDigits="3">
         <Play>$audioFileUrl</Play>
     </Gather>
 	<Say>Unable to capture your response.</Say>

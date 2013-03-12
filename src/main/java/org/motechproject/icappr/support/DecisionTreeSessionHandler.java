@@ -5,10 +5,13 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.decisiontree.server.service.FlowSessionService;
+import org.motechproject.icappr.couchdb.CouchMrsConstants;
+import org.motechproject.icappr.couchdb.CouchPersonUtil;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.mrs.MrsEntityFacade;
 import org.motechproject.mrs.domain.Attribute;
 import org.motechproject.mrs.domain.Patient;
+import org.motechproject.couch.mrs.model.CouchPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +20,13 @@ public class DecisionTreeSessionHandler {
 
     private final MrsEntityFacade mrsEntityFacade;
     private final FlowSessionService flowSessionService;
+    private final CouchPersonUtil couchPersonUtil;
 
     @Autowired
-    public DecisionTreeSessionHandler(MrsEntityFacade mrsEntityFacade, FlowSessionService flowSessionService) {
+    public DecisionTreeSessionHandler(MrsEntityFacade mrsEntityFacade, FlowSessionService flowSessionService, CouchPersonUtil couchPersonUtil) {
         this.mrsEntityFacade = mrsEntityFacade;
         this.flowSessionService = flowSessionService;
+        this.couchPersonUtil = couchPersonUtil;
     }
 
     public boolean updateFlowSessionIdToVerboiceId(String oldSessionId, String newSessionId) {
@@ -32,6 +37,18 @@ public class DecisionTreeSessionHandler {
 
         flowSessionService.updateSessionId(oldSessionId, newSessionId);
         return true;
+    }
+    
+    public boolean digitsMatchCouchPersonPin(String sessionId, String digits) {
+        String motechId = getMotechIdForSessionWithId(sessionId);
+        CouchPerson person = couchPersonUtil.getPersonByID(motechId);
+        String pin = readPinAttributeForCouchPerson(person);
+
+        if (StringUtils.isNotBlank(digits) && digits.equals(pin)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean digitsMatchPatientPin(String sessionId, String digits) {
@@ -51,6 +68,17 @@ public class DecisionTreeSessionHandler {
         String pin = null;
         for (Attribute attr : attrs) {
             if (MrsConstants.PERSON_PIN_ATTR_NAME.equals(attr.getName())) {
+                pin = attr.getValue();
+            }
+        }
+        return pin;
+    }
+    
+    private String readPinAttributeForCouchPerson(CouchPerson person){
+        List<Attribute> attrs = person.getAttributes();
+        String pin = null;
+        for (Attribute attr : attrs) {
+            if (CouchMrsConstants.PERSON_PIN.equals(attr.getName())) {
                 pin = attr.getValue();
             }
         }
