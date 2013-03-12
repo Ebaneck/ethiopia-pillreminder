@@ -53,6 +53,6 @@
     </bean>
     <!-- get a settings instance to store your module's properties -->
        
-    <osgi:reference id="messageCampaignService" cardinality="0..1" interface="org.motechproject.server.messagecampaign.service.MessageCampaignService" />
+    <osgi:reference id="messageCampaignService" cardinality="0..1" interface="org.motechproject.messagecampaign.service.MessageCampaignService" />
 
 </beans>
