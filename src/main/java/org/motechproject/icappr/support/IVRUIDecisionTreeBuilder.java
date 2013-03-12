@@ -17,7 +17,9 @@ import org.motechproject.icappr.events.Events;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class IVRUIDecisionTreeBuilder {
 
 	private Logger logger = LoggerFactory.getLogger("motech-icappr");
@@ -48,7 +50,7 @@ public class IVRUIDecisionTreeBuilder {
 	private void deleteOldTree() {
 		List<Tree> trees = decisionTreeService.getDecisionTrees();
 		for (Tree tree : trees) {
-			if ("IVRUITestTree".equals(tree.getName())) {
+			if ("IVRUITree".equals(tree.getName())) {
 				decisionTreeService.deleteDecisionTree(tree.getId());
 				break;
 			}
@@ -57,7 +59,7 @@ public class IVRUIDecisionTreeBuilder {
 
 	private void createDecisionTree() {
 		Tree tree = new Tree();
-		tree.setName("IVRUITestTree");
+		tree.setName("IVRUITree");
 		Transition rootTransition = new Transition();
 
 		/*
