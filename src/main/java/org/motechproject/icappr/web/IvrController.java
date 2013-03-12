@@ -83,7 +83,7 @@ public class IvrController {
         if (requestType.matches(RequestTypes.IVR_UI)) {
             if (decisionTreeSessionHandler.digitsMatchCouchPersonPin(sessionId, digits)) {
                 logger.info("The pin is correct. Forwarding request to IVR UI Decision tree enrollment...");
-                view =generateModelAndView(requestType, sessionId);
+                view = generateModelAndView(requestType, sessionId);
                 correctPin = true;
             }
         }
@@ -109,7 +109,15 @@ public class IvrController {
             view = new ModelAndView(vm);
             view.addObject("path", settings.getMotechUrl());
             view.addObject("sessionId", sessionId);
-            view.addObject("language", settings.getLanguage());
+            if (requestType.matches(RequestTypes.ADHERENCE_CALL)){
+                //TODO: Replace with logic that sets language to
+                //that given in the CommCare form. This will probably
+                //require adding the preferred language as an attribute
+                //to the OpenMRS entity.
+                view.addObject("language", settings.getLanguage());
+            }
+            if (requestType.matches(RequestTypes.IVR_UI))
+                view.addObject("language", settings.getLanguage());
             logger.debug("Generating view with sessionId " + sessionId + " and language " + settings.getLanguage());
         }
         return view;
