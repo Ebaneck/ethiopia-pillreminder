@@ -111,6 +111,7 @@ public class IvrController {
                 if (vm == null)
                     logger.error("Could not retrieve request type for this call");
                 else {
+                    logger.info("Generating TwiML vm file with name " + vm + "...");
                     view = new ModelAndView(vm);
                     view.addObject("path", settings.getMotechUrl());
                     view.addObject("sessionId", sessionId);
