@@ -8,6 +8,7 @@ import org.motechproject.event.listener.EventRelay;
 import org.motechproject.event.listener.annotations.MotechListener;
 import org.motechproject.icappr.openmrs.OpenMRSConstants;
 import org.motechproject.icappr.openmrs.OpenMRSUtil;
+import org.motechproject.icappr.support.CallRequestDataKeys;
 import org.motechproject.ivr.service.CallRequest;
 import org.motechproject.ivr.service.IVRService;
 import org.motechproject.messagecampaign.EventKeys;
@@ -45,11 +46,11 @@ public class SendCampaignMessageListener {
 
 		Map<String, String> payload = callRequest.getPayload();
 
-		payload.put("motechId", patientId);
+        payload.put(CallRequestDataKeys.MOTECH_ID, patientId);
 
 		String callbackUrl = HOST + "/motech-platform-server/module/icappr/campaign-message";
 
-		String callbackStatusUrl = HOST + "/motech-platform-server/module/verboice/ivr/callstatus";
+		String callbackStatusUrl = HOST + "/motech-platform-server/module/verboice/ivr/callstatus?motech_call_id=" + callRequest.getCallId();
 
 		try {
 			payload.put("callback_url", URLEncoder.encode(callbackUrl, "UTF-8"));
