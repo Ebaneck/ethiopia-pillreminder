@@ -48,8 +48,12 @@ public class SendCampaignMessageListener {
 		payload.put("motechId", patientId);
 
 		String callbackUrl = HOST + "/motech-platform-server/module/icappr/campaign-message";
+
+		String callbackStatusUrl = HOST + "/motech-platform-server/module/verboice/ivr/callstatus";
+
 		try {
 			payload.put("callback_url", URLEncoder.encode(callbackUrl, "UTF-8"));
+			payload.put("status_callback_url", URLEncoder.encode(callbackStatusUrl, "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 		}
 
