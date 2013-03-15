@@ -6,6 +6,7 @@ public abstract class Request {
 	private String pin;
 	private String phonenumber;
 	private String type;
+	private String language;
 
 	public String getType() {
 		return type;
@@ -38,5 +39,13 @@ public abstract class Request {
 	public void setMotechID(String motechID) {
 		this.motechId = motechID;
 	}
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
 }

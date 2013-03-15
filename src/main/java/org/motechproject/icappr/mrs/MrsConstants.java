@@ -1,10 +1,7 @@
 package org.motechproject.icappr.mrs;
 
-/**
- * This is a listing of constants that are assumed to be present within the OpenMRS application.
- * They should be configured within the OpenMRS application before running the demo
- */
-public interface MrsConstants {
+public interface MRSConstants {
+    
 
     final String PILL_TAKEN_CONCEPT_NAME = "PILL TAKEN";
 
@@ -13,7 +10,8 @@ public interface MrsConstants {
 
     final String PILL_REMINDER_ENCOUNTER_TYPE = "PILL REMINDER";
 
-    final String PERSON_PHONE_NUMBER_ATTR_NAME = "Phone Number";
-    final String PERSON_PIN_ATTR_NAME = "Pin";
-
+    String MRS_PHONE_NUM_ATTR = "Phone Number";
+    String MRS_PIN_ATTR = "Pin";
+    String MRS_NEXT_CAMPAIGN_ATTR = "Next Campaign";
+    String MRS_LANGUAGE_ATTR = "Language";
 }

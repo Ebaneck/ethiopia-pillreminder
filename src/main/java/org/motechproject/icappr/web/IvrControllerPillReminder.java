@@ -41,15 +41,16 @@ public class IvrControllerPillReminder {
         String verboiceId = request.getParameter("CallSid");
         String motechId = request.getParameter("motech_call_id");
         String requestType = request.getParameter("request_type");
+        String language = request.getParameter("language");
         ModelAndView view = new ModelAndView("security-pin");
 
-        logger.debug("Generating security pin twiML for motechId " + motechId + " and request type " + requestType
-                + " and audio file URL " + settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST, "English"));
+        logger.debug("Generating security pin twiML for request type " + requestType + " and language " + language
+                + " and audio file URL " + settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST, language));
 
         decisionTreeSessionHandler.updateFlowSessionIdToVerboiceId(motechId, verboiceId);
 
         view.addObject("path", settings.getMotechUrl());
-        view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST, "English"));
+        view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST, language));
         view.addObject("sessionId", verboiceId);
         view.addObject("requestType", requestType);
 
@@ -69,21 +70,23 @@ public class IvrControllerPillReminder {
         String sessionId = request.getParameter("CallSid");
         String digits = request.getParameter("Digits");
         String requestType = request.getParameter("requestType");
+        String language = request.getParameter("language");
         logger.info("The session id is " + sessionId);
         logger.info("The pin entered is " + digits);
+        logger.info("The language is " + language);
         ModelAndView view = null;
         boolean correctPin = false;
         if (requestType.matches(RequestTypes.ADHERENCE_CALL)) {
             if (decisionTreeSessionHandler.digitsMatchPatientPin(sessionId, digits)) {
                 logger.info("The pin is correct. Forwarding request to Pill reminder decision tree enrollment...");
-                view = generateModelAndView(requestType, sessionId);
+                view = generateModelAndView(requestType, sessionId, language);
                 correctPin = true;
             }
         }
         if (requestType.matches(RequestTypes.IVR_UI)) {
             if (decisionTreeSessionHandler.digitsMatchCouchPersonPin(sessionId, digits)) {
                 logger.info("The pin is correct. Forwarding request to IVR UI Decision tree enrollment...");
-                view = generateModelAndView(requestType, sessionId);
+                view = generateModelAndView(requestType, sessionId, language);
                 correctPin = true;
             }
         }
@@ -100,7 +103,7 @@ public class IvrControllerPillReminder {
      * Helper method that builds the proper model and view
      * for a given request type
      */
-    private ModelAndView generateModelAndView(String requestType, String sessionId) {
+    private ModelAndView generateModelAndView(String requestType, String sessionId, String language) {
         ModelAndView view = null;
         String vm = getTwiMLForType(requestType);
         if (vm == null)
@@ -110,15 +113,11 @@ public class IvrControllerPillReminder {
             view.addObject("path", settings.getMotechUrl());
             view.addObject("sessionId", sessionId);
             if (requestType.matches(RequestTypes.ADHERENCE_CALL)){
-                //TODO: Replace with logic that sets language to
-                //that given in the CommCare form. This will probably
-                //require adding the preferred language as an attribute
-                //to the OpenMRS entity.
-                view.addObject("language", "English");
+                view.addObject("language", language);
             }
             if (requestType.matches(RequestTypes.IVR_UI))
-                view.addObject("language", "English");
-            logger.debug("Generating view with sessionId " + sessionId + " and language " + "English");
+                view.addObject("language", language);
+            logger.debug("Generating view with sessionId " + sessionId + " and language " + language);
         }
         return view;
     }

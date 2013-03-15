@@ -2,8 +2,6 @@ package org.motechproject.icappr.support;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.motechproject.decisiontree.core.DecisionTreeService;
 import org.motechproject.decisiontree.core.model.AudioPrompt;
 import org.motechproject.decisiontree.core.model.EventTransition;
@@ -26,6 +24,8 @@ public class IVRUIDecisionTreeBuilder {
 
     private final DecisionTreeService decisionTreeService;
     private final PillReminderSettings settings;
+    
+    private String language;
 
     @Autowired
     public IVRUIDecisionTreeBuilder(DecisionTreeService decisionTreeService, PillReminderSettings settings) {
@@ -33,7 +33,6 @@ public class IVRUIDecisionTreeBuilder {
         this.settings = settings;
     }
 
-    @PostConstruct
     public void buildTree() {
         logger.info("Creating a new ivr-ui-test decision tree");
         new Thread(new Runnable() {
@@ -69,7 +68,7 @@ public class IVRUIDecisionTreeBuilder {
         rootTransition.setDestinationNode(new Node()
                 .setNoticePrompts(
                         new Prompt[] { new AudioPrompt().setAudioFileUrl(settings
-                                .getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, "English")) }).setTransitions(
+                                .getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, language)) }).setTransitions(
                         new Object[][] { { "1", getContinueTransition() }, { "3", getStopTransition() } }));
         tree.setRootTransition(rootTransition);
 
@@ -80,7 +79,7 @@ public class IVRUIDecisionTreeBuilder {
         EventTransition transition = new EventTransition();
         transition.setEventSubject(Events.PATIENT_SELECTED_STOP);
         transition.setDestinationNode(new Node().setPrompts(new AudioPrompt().setAudioFileUrl(settings
-                .getCmsliteUrlFor(SoundFiles.GOODBYE, "English"))));
+                .getCmsliteUrlFor(SoundFiles.GOODBYE, language))));
         transition.setName("stop");
         return transition;
     }
@@ -90,9 +89,17 @@ public class IVRUIDecisionTreeBuilder {
         EventTransition transition = new EventTransition();
         transition.setEventSubject(Events.PATIENT_SELECTED_CONTINUE);
         transition.setDestinationNode(new Node().setNoticePrompts(new Prompt[] { new AudioPrompt()
-                .setAudioFileUrl(settings.getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, "English")) }));
+                .setAudioFileUrl(settings.getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, language)) }));
         transition.setName("continue");
         return transition;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
 }

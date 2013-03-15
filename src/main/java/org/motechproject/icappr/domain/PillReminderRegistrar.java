@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
-import org.motechproject.icappr.openmrs.OpenMRSConstants;
+import org.motechproject.icappr.mrs.MRSConstants;
 import org.motechproject.icappr.openmrs.OpenMRSUtil;
 import org.motechproject.icappr.service.AdherenceCallEnroller;
 import org.motechproject.mrs.domain.Attribute;
@@ -95,10 +95,10 @@ public class PillReminderRegistrar {
         person.setLastName("MOTECH Generic Patient");
         person.setGender("M");
         person.setDateOfBirth(DateUtil.now());
-        person.addAttribute(new OpenMRSAttribute(OpenMRSConstants.OPENMRS_LANGUAGE_ATTR, registration.getPreferredLanguage()));
-        person.addAttribute(new OpenMRSAttribute(OpenMRSConstants.OPENMRS_PHONE_NUM_ATTR, registration.getPhoneNumber()));
-        person.addAttribute(new OpenMRSAttribute(OpenMRSConstants.OPENMRS_PIN_ATTR, registration.getPin()));
-        person.addAttribute(new OpenMRSAttribute(OpenMRSConstants.OPENMRS_NEXT_CAMPAIGN_ATTR, registration
+        person.addAttribute(new OpenMRSAttribute(MRSConstants.MRS_LANGUAGE_ATTR, registration.getPreferredLanguage()));
+        person.addAttribute(new OpenMRSAttribute(MRSConstants.MRS_PHONE_NUM_ATTR, registration.getPhoneNumber()));
+        person.addAttribute(new OpenMRSAttribute(MRSConstants.MRS_PIN_ATTR, registration.getPin()));
+        person.addAttribute(new OpenMRSAttribute(MRSConstants.MRS_NEXT_CAMPAIGN_ATTR, registration
                 .nextCampaign()));
 
         OpenMRSPatient patient = new OpenMRSPatient(registration.getPatientId(), person, facility);
@@ -116,9 +116,9 @@ public class PillReminderRegistrar {
         registration.setPatientId(patientId);
 
         List<Attribute> attrs = patient.getPerson().getAttributes();
-        registration.setNextCampaign(OpenMRSUtil.getAttrValue(OpenMRSConstants.OPENMRS_NEXT_CAMPAIGN_ATTR, attrs));
-        registration.setPhoneNumber(OpenMRSUtil.getAttrValue(OpenMRSConstants.OPENMRS_PHONE_NUM_ATTR, attrs));
-        registration.setPin(OpenMRSUtil.getAttrValue(OpenMRSConstants.OPENMRS_PIN_ATTR, attrs));
+        registration.setNextCampaign(OpenMRSUtil.getAttrValue(MRSConstants.MRS_NEXT_CAMPAIGN_ATTR, attrs));
+        registration.setPhoneNumber(OpenMRSUtil.getAttrValue(MRSConstants.MRS_PHONE_NUM_ATTR, attrs));
+        registration.setPin(OpenMRSUtil.getAttrValue(MRSConstants.MRS_PIN_ATTR, attrs));
 
         return registration;
     }

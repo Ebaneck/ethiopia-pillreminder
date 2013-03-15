@@ -44,12 +44,18 @@ public class IVRUIEnroller {
             return response;
         }
         
-    	logger.debug("Initiating IVR UI Enrollment call with phone " + phoneNum + " and motechID " + motechID);
+        String language = request.getLanguage();
+        if (language == null) {
+            response.addError("Language " + language + " was not found.");
+            return response;
+        }
+        
+    	logger.debug("Initiating IVR UI Enrollment call with phone " + phoneNum + " and language " + language);
 
         String actualStartTime = request.getCallStartTime();
         response.setStartTime(actualStartTime);
 
-        callService.initiateCall(motechID, phoneNum, request.getType());
+        callService.initiateCall(request);
 
         return response;
     }

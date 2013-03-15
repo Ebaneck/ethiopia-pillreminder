@@ -4,8 +4,8 @@ package org.motechproject.icappr.listener;
 import java.util.List;
 
 import org.motechproject.icappr.PillReminderSettings;
-import org.motechproject.icappr.domain.RequestTypes;
-import org.motechproject.icappr.mrs.MrsConstants;
+import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
+import org.motechproject.icappr.mrs.MRSConstants;
 import org.motechproject.icappr.mrs.MrsEntityFacade;
 import org.motechproject.icappr.service.CallInitiationService;
 import org.motechproject.event.MotechEvent;
@@ -57,8 +57,19 @@ public class AdherenceCallListener {
             logger.error("Cannot initiate a phone call without a phone number");
             return;
         }
+        
+        String language = getLanguageFromAttributes(patient.getPerson().getAttributes());
+        if (language == null) {
+            logger.error("No Language attribute found on patient with MOTECH Id: " + motechId);
+            logger.error("Cannot initiate a phone call without a phone number");
+            return;
+        }
+        AdherenceCallEnrollmentRequest request = new AdherenceCallEnrollmentRequest();
+        request.setLanguage(language);
+        request.setPhoneNumber(phonenum);
+        request.setMotechID(motechId);
 
-        callService.initiateCall(motechId, phonenum, RequestTypes.ADHERENCE_CALL);
+        callService.initiateCall(request);
     }
     
     private boolean maxRetryCountReached(MotechEvent motechEvent, int maxRetryCount) {
@@ -67,7 +78,17 @@ public class AdherenceCallListener {
 
     private String getPhoneFromAttributes(List<Attribute> attributes) {
         for (Attribute attr : attributes) {
-            if (MrsConstants.PERSON_PHONE_NUMBER_ATTR_NAME.equals(attr.getName())) {
+            if (MRSConstants.MRS_PHONE_NUM_ATTR.equals(attr.getName())) {
+                return attr.getValue();
+            }
+        }
+
+        return null;
+    }
+    
+    private String getLanguageFromAttributes(List<Attribute> attributes) {
+        for (Attribute attr : attributes) {
+            if (MRSConstants.MRS_LANGUAGE_ATTR.equals(attr.getName())) {
                 return attr.getValue();
             }
         }

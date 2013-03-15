@@ -43,14 +43,14 @@ public class MrsEncounterCreator {
         OpenMRSFacility facility = mrsEntityFacade.findMotechFacility();
 
         Encounter encounter = new OpenMRSEncounter.MRSEncounterBuilder().withDate(new Date()).withObservations(allObs)
-                .withFacility(facility).withEncounterType(MrsConstants.PILL_REMINDER_ENCOUNTER_TYPE)
+                .withFacility(facility).withEncounterType(MRSConstants.PILL_REMINDER_ENCOUNTER_TYPE)
                 .withProvider(provider).withPatient(patient).build();
         return encounter;
     }
 
     private Set<Observation> createObservationGroup() {
-        OpenMRSObservation obs = new OpenMRSObservation(new Date(), MrsConstants.PILL_TAKEN_CONCEPT_NAME,
-                MrsConstants.PILL_TAKEN_CONCEPT_YES_ANSWER);
+        OpenMRSObservation obs = new OpenMRSObservation(new Date(), MRSConstants.PILL_TAKEN_CONCEPT_NAME,
+                MRSConstants.PILL_TAKEN_CONCEPT_YES_ANSWER);
         Set<Observation> allObs = new HashSet<>();
         allObs.add(obs);
         return allObs;

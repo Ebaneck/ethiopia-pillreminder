@@ -25,11 +25,12 @@ public class CouchPersonUtil {
             this.couchPersonAdapter = couchPersonAdapter;
     }
 
-    public CouchPerson createAndSavePerson(String phoneNum, String pin) {
+    public CouchPerson createAndSavePerson(String phoneNum, String pin, String language) {
         CouchPerson person = new CouchPerson(); 
         person.setPersonId(UUID.randomUUID().toString());
         setAttribute(person, phoneNum, CouchMrsConstants.PHONE_NUMBER);
         setAttribute(person, pin, CouchMrsConstants.PERSON_PIN);
+        setAttribute(person, language, CouchMrsConstants.LANGUAGE);
         couchPersonAdapter.addPerson(person);
         return person;
     }

@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 import org.motechproject.icappr.PillReminderSettings;
+import org.motechproject.icappr.domain.Request;
 import org.motechproject.icappr.support.CallRequestDataKeys;
 import org.motechproject.ivr.service.CallRequest;
 import org.motechproject.ivr.service.IVRService;
@@ -27,9 +28,19 @@ public class CallInitiationService {
         this.settings = settings;        
     }
 
-	public void initiateCall(String motechId, String phonenum, String requestType) {
+	/**This method initiates a call for a given Request. Currently the definitive
+	 * request types are AdherenceCallEnrollmentRequest and IVREnrollmentRequest.
+	 * This method assumes that phone number, language, motech ID, and request type 
+	 * have been specified within the request payload.
+	 * @param request
+	 */
+	public void initiateCall(Request request) {
+	    String phoneNum = request.getPhonenumber();
+	    String language = request.getLanguage();
+	    String motechId = request.getMotechId();
+	    String requestType = request.getType();
 		
-        CallRequest callRequest = new CallRequest(phonenum, 120, settings.getVerboiceChannelName());
+        CallRequest callRequest = new CallRequest(phoneNum, 120, settings.getVerboiceChannelName());
 
         Map<String, String> payload = callRequest.getPayload();
 
@@ -40,15 +51,15 @@ public class CallInitiationService {
 
         // the callback_url is used once verboice starts a call to retrieve the
         // data for the call (e.g. TwiML)
-        String callbackUrl = settings.getMotechUrl() + "/module/icappr/ivr/start?motech_call_id=%s&request_type=%s";
+        String callbackUrl = settings.getMotechUrl() + "/module/icappr/ivr/start?motech_call_id=%s&request_type=%s&language=%s";
         
         try {
             payload.put(CallRequestDataKeys.CALLBACK_URL,
-                    URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId(), requestType), "UTF-8"));
+                    URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId(), requestType, language), "UTF-8"));
             
         } catch (UnsupportedEncodingException e) {
         }
-        logger.info("Initiating call with requestType " + requestType);
+        logger.info("Initiating call with requestType " + requestType + " and language " + language);
         ivrService.initiateCall(callRequest);
     }
 

@@ -5,7 +5,7 @@ import org.motechproject.commons.date.model.Time;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
-import org.motechproject.icappr.openmrs.OpenMRSConstants;
+import org.motechproject.icappr.mrs.MRSConstants;
 import org.motechproject.icappr.openmrs.OpenMRSUtil;
 import org.motechproject.mrs.domain.Patient;
 import org.motechproject.mrs.services.PatientAdapter;
@@ -36,7 +36,7 @@ public class CampaignCompleteListener {
 
     private void enrollInNextCampaign(String externalId) {
         Patient patient = patientAdapter.getPatientByMotechId(externalId);
-        String nextCampaign = OpenMRSUtil.getAttrValue(OpenMRSConstants.OPENMRS_NEXT_CAMPAIGN_ATTR, patient.getPerson()
+        String nextCampaign = OpenMRSUtil.getAttrValue(MRSConstants.MRS_NEXT_CAMPAIGN_ATTR, patient.getPerson()
                 .getAttributes());
         CampaignRequest request = new CampaignRequest();
         request.setCampaignName(nextCampaign);

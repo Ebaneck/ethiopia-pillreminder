@@ -7,7 +7,7 @@ import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.decisiontree.server.service.FlowSessionService;
 import org.motechproject.icappr.couchdb.CouchMrsConstants;
 import org.motechproject.icappr.couchdb.CouchPersonUtil;
-import org.motechproject.icappr.mrs.MrsConstants;
+import org.motechproject.icappr.mrs.MRSConstants;
 import org.motechproject.icappr.mrs.MrsEntityFacade;
 import org.motechproject.mrs.domain.Attribute;
 import org.motechproject.mrs.domain.Patient;
@@ -67,7 +67,7 @@ public class DecisionTreeSessionHandler {
         List<Attribute> attrs = patient.getPerson().getAttributes();
         String pin = null;
         for (Attribute attr : attrs) {
-            if (MrsConstants.PERSON_PIN_ATTR_NAME.equals(attr.getName())) {
+            if (MRSConstants.MRS_PIN_ATTR.equals(attr.getName())) {
                 pin = attr.getValue();
             }
         }
@@ -93,6 +93,11 @@ public class DecisionTreeSessionHandler {
     public String getPhoneNumForSessionWithId(String sessionId) {
         FlowSession session = flowSessionService.getSession(sessionId);
         return session.getPhoneNumber();
+    }
+    
+    public String getLanguageForSessionWithId(String sessionId) {
+        FlowSession session = flowSessionService.getSession(sessionId);
+        return session.getLanguage();
     }
 
 }

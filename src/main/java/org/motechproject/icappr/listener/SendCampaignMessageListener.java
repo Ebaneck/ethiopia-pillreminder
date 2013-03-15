@@ -7,7 +7,7 @@ import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.EventRelay;
 import org.motechproject.event.listener.annotations.MotechListener;
 import org.motechproject.icappr.PillReminderSettings;
-import org.motechproject.icappr.openmrs.OpenMRSConstants;
+import org.motechproject.icappr.mrs.MRSConstants;
 import org.motechproject.icappr.openmrs.OpenMRSUtil;
 import org.motechproject.icappr.support.CallRequestDataKeys;
 import org.motechproject.ivr.service.CallRequest;
@@ -40,7 +40,7 @@ public class SendCampaignMessageListener {
 		String patientId = event.getParameters().get(EventKeys.EXTERNAL_ID_KEY).toString();
 		Patient patient = patientAdapter.getPatientByMotechId(patientId);
 
-		String phoneNumber = OpenMRSUtil.getAttrValue(OpenMRSConstants.OPENMRS_PHONE_NUM_ATTR, patient.getPerson()
+		String phoneNumber = OpenMRSUtil.getAttrValue(MRSConstants.MRS_PHONE_NUM_ATTR, patient.getPerson()
 				.getAttributes());
 		CallRequest callRequest = new CallRequest(phoneNumber, 120, pillReminderSettings.getVerboiceChannelName());
 
@@ -48,7 +48,7 @@ public class SendCampaignMessageListener {
 
 		payload.put("motechId", patientId);
 		
-		String language = OpenMRSUtil.getAttrValue(OpenMRSConstants.OPENMRS_LANGUAGE_ATTR, patient.getPerson()
+		String language = OpenMRSUtil.getAttrValue(MRSConstants.MRS_LANGUAGE_ATTR, patient.getPerson()
                 .getAttributes());
 
 		String callbackUrl = pillReminderSettings.getMotechUrl() + "/motech-platform-server/module/icappr/campaign-message?language=%s";
