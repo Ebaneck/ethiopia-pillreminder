@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
-	<Gather action="$path/module/icappr/ivr/authenticate?sessionId=$sessionId&amp;requestType=$requestType" 
+	<Gather action="$path/module/icappr/ivr/authenticate?sessionId=$sessionId&amp;requestType=$requestType&amp;language=$language" 
 			timeout="10" 
 			numDigits="3">
         <Play>$audioFileUrl</Play>

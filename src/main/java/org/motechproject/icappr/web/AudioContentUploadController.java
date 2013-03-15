@@ -46,7 +46,7 @@ public class AudioContentUploadController {
         // TODO Auto-generated method stub
         // Reading directory contents
         File[] files = languageDirectory.listFiles();
-        String language = languageDirectory.getName();
+        String language = languageDirectory.getName().toLowerCase();
         for (int i = 0; i < files.length; i++) {
             upLoadAudio(files[i], language);
 

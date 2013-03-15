@@ -9,6 +9,8 @@ import org.motechproject.mrs.services.PersonAdapter;
 import org.motechproject.couch.mrs.model.CouchAttribute;
 import org.motechproject.couch.mrs.model.CouchPerson;
 import org.motechproject.mrs.domain.Attribute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 public class CouchPersonUtil {   
     
     private final PersonAdapter couchPersonAdapter;
+    private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     @Autowired
     public CouchPersonUtil(PersonAdapter couchPersonAdapter){
@@ -32,6 +35,7 @@ public class CouchPersonUtil {
         setAttribute(person, pin, CouchMrsConstants.PERSON_PIN);
         setAttribute(person, language, CouchMrsConstants.LANGUAGE);
         couchPersonAdapter.addPerson(person);
+        logger.info("Created person in CouchDB with phone " + phoneNum + " and language " + language);
         return person;
     }
     

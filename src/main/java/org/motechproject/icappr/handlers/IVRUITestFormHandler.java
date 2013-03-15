@@ -42,7 +42,7 @@ public class IVRUITestFormHandler {
 
 		String phoneNumber = getValue(topFormElement, "phone_number");
 		String pin = getValue(topFormElement, "pin");
-		String language = getValue(topFormElement, "language");
+		String language = getValue(topFormElement, "preferred_language");
 		CouchPerson person = couchPersonUtil.createAndSavePerson(phoneNumber, pin, language);
 		enrollInCalls(person);
 	}

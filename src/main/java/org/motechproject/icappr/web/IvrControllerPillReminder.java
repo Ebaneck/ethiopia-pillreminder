@@ -53,6 +53,7 @@ public class IvrControllerPillReminder {
         view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST, language));
         view.addObject("sessionId", verboiceId);
         view.addObject("requestType", requestType);
+        view.addObject("language", language);
 
         return view;
     }

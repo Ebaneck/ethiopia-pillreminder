@@ -85,7 +85,6 @@ public class IVRUIDecisionTreeBuilder {
     }
 
     private Transition getContinueTransition() {
-        logger.debug("Patient selected to continue phone calls.");
         EventTransition transition = new EventTransition();
         transition.setEventSubject(Events.PATIENT_SELECTED_CONTINUE);
         transition.setDestinationNode(new Node().setNoticePrompts(new Prompt[] { new AudioPrompt()
