@@ -18,7 +18,6 @@ public class PillReminderSettings {
     private static final String MOTECH_URL_PROPERTY = "motech.url";
     private static final String VERBOICE_CHANNEL_NAME_PROPERTY = "verboice.channel.name";
     private static final String CMSLITE_STREAM_PATH = "/module/cmsliteapi/stream/";
-    private static final String LANGUAGE = "language";
 
     private SettingsFacade settingsFacade;
 
@@ -46,11 +45,8 @@ public class PillReminderSettings {
         return settingsFacade.getProperty(VERBOICE_CHANNEL_NAME_PROPERTY);
     }
 
-    public String getCmsliteUrlFor(String soundFilename) {
-        return getMotechUrl() + CMSLITE_STREAM_PATH + getLanguage() + "/" + soundFilename;
+    public String getCmsliteUrlFor(String soundFilename, String language) {
+        return getMotechUrl() + CMSLITE_STREAM_PATH + language + "/" + soundFilename;
     }
-    
-    public String getLanguage() {
-        return settingsFacade.getProperty(LANGUAGE);
-    }
+
 }

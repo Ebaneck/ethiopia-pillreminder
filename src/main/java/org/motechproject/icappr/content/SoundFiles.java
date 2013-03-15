@@ -21,5 +21,8 @@ public final class SoundFiles {
     public static final String DOSAGE_ANSWER_NO = "dosageAnswerNo";
     public static final String DOSAGE_QUESTION_1 = "dosageQuestion1";
     public static final String DOSAGE_QUESTION_2 = "dosageQuestion2";
+    
+    /*Demo sound files for campaign message*/
+    public static final String CAMPAIGN_MESSAGE = "campaignMessage";
 
 }

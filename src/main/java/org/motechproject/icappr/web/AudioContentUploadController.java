@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class AudioContentController {
+public class AudioContentUploadController {
 
     @Autowired
     private CMSLiteService cmsliteService;

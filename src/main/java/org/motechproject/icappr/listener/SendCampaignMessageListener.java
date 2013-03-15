@@ -6,8 +6,10 @@ import java.util.Map;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.EventRelay;
 import org.motechproject.event.listener.annotations.MotechListener;
+import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.openmrs.OpenMRSConstants;
 import org.motechproject.icappr.openmrs.OpenMRSUtil;
+import org.motechproject.icappr.support.CallRequestDataKeys;
 import org.motechproject.ivr.service.CallRequest;
 import org.motechproject.ivr.service.IVRService;
 import org.motechproject.mrs.domain.Patient;
@@ -21,15 +23,16 @@ public class SendCampaignMessageListener {
 
 	private PatientAdapter patientAdapter;
 	private IVRService ivrService;
-	private final String HOST = "http://130.111.132.27:8080";
-	private final String VERBOICE_CHANNEL_NAME = "didlogic";
+	private PillReminderSettings pillReminderSettings;
+	
 	@Autowired
 	private EventRelay eventRelay;
 
 	@Autowired
-	public SendCampaignMessageListener(PatientAdapter patientAdapter, IVRService ivrService) {
+	public SendCampaignMessageListener(PatientAdapter patientAdapter, IVRService ivrService, PillReminderSettings pillReminderSettings) {
 		this.patientAdapter = patientAdapter;
 		this.ivrService = ivrService;
+		this.pillReminderSettings = pillReminderSettings;
 	}
 
 	@MotechListener(subjects = { EventKeys.SEND_MESSAGE })
@@ -39,15 +42,20 @@ public class SendCampaignMessageListener {
 
 		String phoneNumber = OpenMRSUtil.getAttrValue(OpenMRSConstants.OPENMRS_PHONE_NUM_ATTR, patient.getPerson()
 				.getAttributes());
-		CallRequest callRequest = new CallRequest(phoneNumber, 120, VERBOICE_CHANNEL_NAME);
+		CallRequest callRequest = new CallRequest(phoneNumber, 120, pillReminderSettings.getVerboiceChannelName());
 
 		Map<String, String> payload = callRequest.getPayload();
 
 		payload.put("motechId", patientId);
+		
+		String language = OpenMRSUtil.getAttrValue(OpenMRSConstants.OPENMRS_LANGUAGE_ATTR, patient.getPerson()
+                .getAttributes());
 
-		String callbackUrl = HOST + "/motech-platform-server/module/icappr/campaign-message";
+		String callbackUrl = pillReminderSettings.getMotechUrl() + "/motech-platform-server/module/icappr/campaign-message?language=%s";
+		
 		try {
-			payload.put("callback_url", URLEncoder.encode(callbackUrl, "UTF-8"));
+			payload.put(CallRequestDataKeys.CALLBACK_URL, 
+			        URLEncoder.encode(String.format(callbackUrl, language), "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 		}
 

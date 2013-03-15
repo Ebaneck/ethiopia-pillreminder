@@ -69,7 +69,7 @@ public class IVRUIDecisionTreeBuilder {
         rootTransition.setDestinationNode(new Node()
                 .setNoticePrompts(
                         new Prompt[] { new AudioPrompt().setAudioFileUrl(settings
-                                .getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS)) }).setTransitions(
+                                .getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, "English")) }).setTransitions(
                         new Object[][] { { "1", getContinueTransition() }, { "3", getStopTransition() } }));
         tree.setRootTransition(rootTransition);
 
@@ -80,7 +80,7 @@ public class IVRUIDecisionTreeBuilder {
         EventTransition transition = new EventTransition();
         transition.setEventSubject(Events.PATIENT_SELECTED_STOP);
         transition.setDestinationNode(new Node().setPrompts(new AudioPrompt().setAudioFileUrl(settings
-                .getCmsliteUrlFor(SoundFiles.GOODBYE))));
+                .getCmsliteUrlFor(SoundFiles.GOODBYE, "English"))));
         transition.setName("stop");
         return transition;
     }
@@ -90,7 +90,7 @@ public class IVRUIDecisionTreeBuilder {
         EventTransition transition = new EventTransition();
         transition.setEventSubject(Events.PATIENT_SELECTED_CONTINUE);
         transition.setDestinationNode(new Node().setNoticePrompts(new Prompt[] { new AudioPrompt()
-                .setAudioFileUrl(settings.getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS)) }));
+                .setAudioFileUrl(settings.getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, "English")) }));
         transition.setName("continue");
         return transition;
     }

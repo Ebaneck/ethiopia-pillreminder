@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/ivr")
-public class IvrController {
+public class IvrControllerPillReminder {
 
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
@@ -23,7 +23,7 @@ public class IvrController {
     private PillReminderSettings settings;
 
     @Autowired
-    public IvrController(DecisionTreeSessionHandler decisionTreeSessionHandler, PillReminderSettings settings) {
+    public IvrControllerPillReminder(DecisionTreeSessionHandler decisionTreeSessionHandler, PillReminderSettings settings) {
         this.decisionTreeSessionHandler = decisionTreeSessionHandler;
         this.settings = settings;
     }
@@ -44,12 +44,12 @@ public class IvrController {
         ModelAndView view = new ModelAndView("security-pin");
 
         logger.debug("Generating security pin twiML for motechId " + motechId + " and request type " + requestType
-                + " and audio file URL " + settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST));
+                + " and audio file URL " + settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST, "English"));
 
         decisionTreeSessionHandler.updateFlowSessionIdToVerboiceId(motechId, verboiceId);
 
         view.addObject("path", settings.getMotechUrl());
-        view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST));
+        view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST, "English"));
         view.addObject("sessionId", verboiceId);
         view.addObject("requestType", requestType);
 
@@ -90,7 +90,7 @@ public class IvrController {
         if (!correctPin) {
             logger.info("The pin is incorrect.");
             view = new ModelAndView("failed-authentication");
-            view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.INCORRECT_PIN));
+            view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.INCORRECT_PIN, "English"));
         }
         return view;
     }
@@ -114,11 +114,11 @@ public class IvrController {
                 //that given in the CommCare form. This will probably
                 //require adding the preferred language as an attribute
                 //to the OpenMRS entity.
-                view.addObject("language", settings.getLanguage());
+                view.addObject("language", "English");
             }
             if (requestType.matches(RequestTypes.IVR_UI))
-                view.addObject("language", settings.getLanguage());
-            logger.debug("Generating view with sessionId " + sessionId + " and language " + settings.getLanguage());
+                view.addObject("language", "English");
+            logger.debug("Generating view with sessionId " + sessionId + " and language " + "English");
         }
         return view;
     }

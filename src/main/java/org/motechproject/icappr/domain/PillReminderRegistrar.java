@@ -76,7 +76,7 @@ public class PillReminderRegistrar {
         request.setPhoneNumber(registration.getPhoneNumber());
         request.setPin(registration.getPin());
         DateTime dateTime = DateUtil.now().plusMinutes(2);
-// will change based on information in form
+        // will change based on information in form
         request.setDosageStartTime(String.format("%02d:%02d", dateTime.getHourOfDay(), dateTime.getMinuteOfHour()));
         adherenceCallEnroller.enrollPatientWithId(request);
     }
@@ -95,7 +95,7 @@ public class PillReminderRegistrar {
         person.setLastName("MOTECH Generic Patient");
         person.setGender("M");
         person.setDateOfBirth(DateUtil.now());
-
+        person.addAttribute(new OpenMRSAttribute(OpenMRSConstants.OPENMRS_LANGUAGE_ATTR, registration.getPreferredLanguage()));
         person.addAttribute(new OpenMRSAttribute(OpenMRSConstants.OPENMRS_PHONE_NUM_ATTR, registration.getPhoneNumber()));
         person.addAttribute(new OpenMRSAttribute(OpenMRSConstants.OPENMRS_PIN_ATTR, registration.getPin()));
         person.addAttribute(new OpenMRSAttribute(OpenMRSConstants.OPENMRS_NEXT_CAMPAIGN_ATTR, registration
