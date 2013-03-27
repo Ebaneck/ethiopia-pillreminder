@@ -10,6 +10,7 @@ import org.motechproject.commcare.service.CommcareFormService;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
 import org.motechproject.icappr.constants.FormXmlnsConstants;
+import org.motechproject.icappr.handlers.IVRUITestFormHandler;
 import org.motechproject.icappr.handlers.RegistrationFormHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,10 @@ public class CommcareStubFormListener {
 	private CommcareFormService formService;
 
 	@Autowired
-	private RegistrationFormHandler formHandler;
+	private RegistrationFormHandler registrationFormHandler;
+	
+	@Autowired
+	private IVRUITestFormHandler ivrUITestFormHandler;
 
 	@MotechListener(subjects = EventSubjects.FORM_STUB_EVENT)
 	public void handleStubForm(MotechEvent event) {
@@ -56,9 +60,10 @@ public class CommcareStubFormListener {
 
 		if (FormXmlnsConstants.REGISTRATION_FORM_XMLNS.equals(xmlns)) {
 			//delegate to registration form handler
-			formHandler.handleForm(form);
-		} else if (FormXmlnsConstants.TEST_FORM_XMLNS.equals(xmlns)) {
-			//delegate to test form handler
+			registrationFormHandler.handleForm(form);
+		} else if (FormXmlnsConstants.IVR_TEST_FORM_XMLNS.equals(xmlns)) {
+			//delegate to ivr test form handler
+			ivrUITestFormHandler.handleForm(form);
 		}
 	}
 }
