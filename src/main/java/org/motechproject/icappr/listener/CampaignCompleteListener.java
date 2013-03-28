@@ -7,11 +7,11 @@ import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
 import org.motechproject.icappr.mrs.MRSConstants;
 import org.motechproject.icappr.openmrs.OpenMRSUtil;
+import org.motechproject.messagecampaign.EventKeys;
+import org.motechproject.messagecampaign.contract.CampaignRequest;
+import org.motechproject.messagecampaign.service.MessageCampaignService;
 import org.motechproject.mrs.domain.Patient;
 import org.motechproject.mrs.services.PatientAdapter;
-import org.motechproject.server.messagecampaign.EventKeys;
-import org.motechproject.server.messagecampaign.contract.CampaignRequest;
-import org.motechproject.server.messagecampaign.service.MessageCampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 // @Component

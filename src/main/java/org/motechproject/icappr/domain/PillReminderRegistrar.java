@@ -14,6 +14,8 @@ import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
 import org.motechproject.icappr.mrs.MRSConstants;
 import org.motechproject.icappr.openmrs.OpenMRSUtil;
 import org.motechproject.icappr.service.AdherenceCallEnroller;
+import org.motechproject.messagecampaign.contract.CampaignRequest;
+import org.motechproject.messagecampaign.service.MessageCampaignService;
 import org.motechproject.mrs.domain.Attribute;
 import org.motechproject.mrs.domain.Facility;
 import org.motechproject.mrs.domain.Patient;
@@ -23,8 +25,6 @@ import org.motechproject.mrs.model.OpenMRSPatient;
 import org.motechproject.mrs.model.OpenMRSPerson;
 import org.motechproject.mrs.services.FacilityAdapter;
 import org.motechproject.mrs.services.PatientAdapter;
-import org.motechproject.server.messagecampaign.contract.CampaignRequest;
-import org.motechproject.server.messagecampaign.service.MessageCampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
