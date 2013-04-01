@@ -3,6 +3,7 @@ package org.motechproject.icappr.support;
 import java.util.List;
 
 import org.motechproject.decisiontree.core.DecisionTreeService;
+import org.motechproject.decisiontree.core.model.Action;
 import org.motechproject.decisiontree.core.model.AudioPrompt;
 import org.motechproject.decisiontree.core.model.EventTransition;
 import org.motechproject.decisiontree.core.model.Node;
@@ -24,7 +25,7 @@ public class IVRUIDecisionTreeBuilder {
 
     private final DecisionTreeService decisionTreeService;
     private final PillReminderSettings settings;
-    
+
     private String language;
 
     @Autowired
@@ -66,18 +67,22 @@ public class IVRUIDecisionTreeBuilder {
          * pin number, re-initiating the whole process.
          */
         rootTransition.setDestinationNode(new Node()
-                .setNoticePrompts(
-                        new Prompt[] { new AudioPrompt().setAudioFileUrl(settings
-                                .getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, language)) }).setTransitions(
-                        new Object[][] { { "1", getContinueTransition() }, { "3", getStopTransition() } }));
+        .setNoticePrompts(
+                new Prompt[] { new AudioPrompt().setAudioFileUrl(settings
+                        .getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, language)) }).setTransitions(
+                                new Object[][] { { "1", getContinueTransition() }, { "3", getStopTransition() } }));
         tree.setRootTransition(rootTransition);
 
         decisionTreeService.saveDecisionTree(tree);
     }
 
     private Transition getStopTransition() {
-        EventTransition transition = new EventTransition();
-        transition.setEventSubject(Events.PATIENT_SELECTED_STOP);
+        Transition transition = new Transition();
+        //        EventTransition transition = new EventTransition();
+        //        transition.setEventSubject(Events.PATIENT_SELECTED_STOP);
+        Action action1 = new Action();
+        action1.setEventId(Events.PATIENT_SELECTED_STOP);
+        transition.setActions(action1);
         transition.setDestinationNode(new Node().setPrompts(new AudioPrompt().setAudioFileUrl(settings
                 .getCmsliteUrlFor(SoundFiles.GOODBYE, language))));
         transition.setName("stop");
@@ -85,10 +90,14 @@ public class IVRUIDecisionTreeBuilder {
     }
 
     private Transition getContinueTransition() {
-        EventTransition transition = new EventTransition();
-        transition.setEventSubject(Events.PATIENT_SELECTED_CONTINUE);
+        Transition transition = new Transition();
+        //        EventTransition transition = new EventTransition();
+        //        transition.setEventSubject(Events.PATIENT_SELECTED_CONTINUE);
+        Action action1 = new Action();
+        action1.setEventId(Events.PATIENT_SELECTED_CONTINUE);
+        transition.setActions(action1);
         transition.setDestinationNode(new Node().setNoticePrompts(new Prompt[] { new AudioPrompt()
-                .setAudioFileUrl(settings.getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, language)) }));
+        .setAudioFileUrl(settings.getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, language)) }));
         transition.setName("continue");
         return transition;
     }
