@@ -94,7 +94,7 @@ public class IvrControllerPillReminder {
         if (!correctPin) {
             logger.info("The pin is incorrect.");
             view = new ModelAndView("failed-authentication");
-            view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.INCORRECT_PIN, "English"));
+            view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.INCORRECT_PIN, language));
         }
         return view;
     }
