@@ -51,7 +51,7 @@ public class SendCampaignMessageListener {
 		String language = OpenMRSUtil.getAttrValue(MRSConstants.MRS_LANGUAGE_ATTR, patient.getPerson()
                 .getAttributes());
 
-		String callbackUrl = pillReminderSettings.getMotechUrl() + "/motech-platform-server/module/icappr/campaign-message?language=%s";
+		String callbackUrl = pillReminderSettings.getMotechUrl() + "/module/icappr/campaign-message?language=%s";
 		
 		try {
 			payload.put(CallRequestDataKeys.CALLBACK_URL, 
