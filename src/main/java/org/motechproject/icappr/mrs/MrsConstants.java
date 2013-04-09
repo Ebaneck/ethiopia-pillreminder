@@ -1,6 +1,6 @@
 package org.motechproject.icappr.mrs;
 
-public final class MRSConstants {
+public final class MrsConstants {
     
 
 	public final static String PILL_TAKEN_CONCEPT_NAME = "PILL TAKEN";

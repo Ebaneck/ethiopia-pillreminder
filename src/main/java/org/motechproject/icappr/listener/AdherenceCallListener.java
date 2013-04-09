@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
-import org.motechproject.icappr.mrs.MRSConstants;
+import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.mrs.MrsEntityFacade;
 import org.motechproject.icappr.service.CallInitiationService;
 import org.motechproject.event.MotechEvent;
@@ -78,7 +78,7 @@ public class AdherenceCallListener {
 
     private String getPhoneFromAttributes(List<Attribute> attributes) {
         for (Attribute attr : attributes) {
-            if (MRSConstants.MRS_PHONE_NUM_ATTR.equals(attr.getName())) {
+            if (MrsConstants.MRS_PHONE_NUM_ATTR.equals(attr.getName())) {
                 return attr.getValue();
             }
         }
@@ -88,7 +88,7 @@ public class AdherenceCallListener {
     
     private String getLanguageFromAttributes(List<Attribute> attributes) {
         for (Attribute attr : attributes) {
-            if (MRSConstants.MRS_LANGUAGE_ATTR.equals(attr.getName())) {
+            if (MrsConstants.MRS_LANGUAGE_ATTR.equals(attr.getName())) {
                 return attr.getValue();
             }
         }

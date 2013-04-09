@@ -15,7 +15,7 @@ import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.couchdb.CouchMrsConstants;
 import org.motechproject.icappr.couchdb.CouchPersonUtil;
 import org.motechproject.icappr.domain.IVREnrollmentRequest;
-import org.motechproject.icappr.mrs.MRSConstants;
+import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.openmrs.OpenMRSUtil;
 import org.motechproject.icappr.service.IVRUIEnroller;
 import org.motechproject.icappr.support.CallRequestDataKeys;
