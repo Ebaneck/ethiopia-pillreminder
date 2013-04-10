@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.motechproject.decisiontree.core.FlowSession;
-import org.motechproject.decisiontree.server.service.FlowSessionService;
+import org.motechproject.callflow.service.FlowSessionService;
 import org.motechproject.icappr.couchdb.CouchMrsConstants;
 import org.motechproject.icappr.couchdb.CouchPersonUtil;
 import org.motechproject.icappr.mrs.MrsConstants;

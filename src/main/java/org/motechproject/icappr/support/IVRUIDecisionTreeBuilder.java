@@ -1,11 +1,9 @@
 package org.motechproject.icappr.support;
 
 import java.util.List;
-
 import org.motechproject.decisiontree.core.DecisionTreeService;
 import org.motechproject.decisiontree.core.model.Action;
 import org.motechproject.decisiontree.core.model.AudioPrompt;
-import org.motechproject.decisiontree.core.model.EventTransition;
 import org.motechproject.decisiontree.core.model.Node;
 import org.motechproject.decisiontree.core.model.Prompt;
 import org.motechproject.decisiontree.core.model.Transition;
@@ -78,8 +76,6 @@ public class IVRUIDecisionTreeBuilder {
 
     private Transition getStopTransition() {
         Transition transition = new Transition();
-        //        EventTransition transition = new EventTransition();
-        //        transition.setEventSubject(Events.PATIENT_SELECTED_STOP);
         Action action1 = new Action();
         action1.setEventId(Events.PATIENT_SELECTED_STOP);
         transition.setActions(action1);
@@ -91,8 +87,6 @@ public class IVRUIDecisionTreeBuilder {
 
     private Transition getContinueTransition() {
         Transition transition = new Transition();
-        //        EventTransition transition = new EventTransition();
-        //        transition.setEventSubject(Events.PATIENT_SELECTED_CONTINUE);
         Action action1 = new Action();
         action1.setEventId(Events.PATIENT_SELECTED_CONTINUE);
         transition.setActions(action1);

@@ -5,7 +5,7 @@
        http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 
     <osgi:reference cardinality="0..1" id="flowSessionServiceOsgi"
-        interface="org.motechproject.decisiontree.server.service.FlowSessionService" />
+        interface="org.motechproject.callflow.service.FlowSessionService" />
 
     <osgi:reference cardinality="0..1" id="mrsPatientAdapterOsgi" interface="org.motechproject.mrs.services.PatientAdapter" bean-name="patientAdapter"/>
 
@@ -20,8 +20,8 @@
     <osgi:reference cardinality="0..1" id="decisionTreeServiceOsgi"
         interface="org.motechproject.decisiontree.core.DecisionTreeService" />
 
-    <osgi:reference cardinality="0..1" id="decisionTreeServerOsgi"
-        interface="org.motechproject.decisiontree.server.service.DecisionTreeServer" />
+    <osgi:reference cardinality="0..1" id="callFlowServerOsgi"
+        interface="org.motechproject.callflow.service.CallFlowServer" />
 
     <osgi:reference cardinality="0..1" id="eventRelayOsgi" interface="org.motechproject.event.listener.EventRelay" />
 
