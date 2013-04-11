@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.commons.date.util.DateUtil;
+import org.motechproject.icappr.couchdb.CouchPersonUtil;
 import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.openmrs.OpenMRSUtil;
@@ -34,6 +35,7 @@ public class PillReminderRegistrar {
 
     private PatientAdapter patientAdapter;
     private FacilityAdapter facilityAdapter;
+    private CouchPersonUtil couchPersonUtil;
     private MessageCampaignService messageCampaignService;
     private AdherenceCallEnroller adherenceCallEnroller;
     
@@ -45,17 +47,19 @@ public class PillReminderRegistrar {
     }
 
     @Autowired
-    public PillReminderRegistrar(PatientAdapter patientAdapter, FacilityAdapter facilityAdapter,
+    public PillReminderRegistrar(PatientAdapter patientAdapter, FacilityAdapter facilityAdapter, CouchPersonUtil couchPersonUtil,
             MessageCampaignService messageCampaignService, AdherenceCallEnroller adherenceCallEnroller) {
         this.patientAdapter = patientAdapter;
         this.facilityAdapter = facilityAdapter;
+        this.couchPersonUtil = couchPersonUtil;
         this.messageCampaignService = messageCampaignService;
         this.adherenceCallEnroller = adherenceCallEnroller;
     }
 
     public void register(PillReminderRegistration registration) {
         logger.debug("Starting Patient Registration");
-        createGenericPatient(registration);
+        couchPersonUtil.createAndSaveGenericPatient(registration);
+        //createGenericPatient(registration);
         logger.debug("Finishing Patient Registration");
         enrollInDailyMessageCampaign(registration);
 //        enrollInAdherenceCall(registration);

@@ -66,11 +66,11 @@
             <artifactId>motech-ivr-verboice-bundle</artifactId>
             <version>${motech.version}</version>
         </dependency>
-        <dependency>
+      <!--   <dependency>
             <groupId>org.motechproject</groupId>
             <artifactId>motech-openmrs-ws-bundle</artifactId>
             <version>${motech.version}</version>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>org.motechproject</groupId>
             <artifactId>motech-platform-osgi-web-util</artifactId>

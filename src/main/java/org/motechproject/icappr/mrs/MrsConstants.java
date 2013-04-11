@@ -14,4 +14,5 @@ public final class MrsConstants {
 	public final static String MRS_PIN_ATTR = "Pin";
 	public final static String MRS_NEXT_CAMPAIGN_ATTR = "Next Campaign";
 	public final static String MRS_LANGUAGE_ATTR = "Language";
+	public final static String MRS_FACILITY_ATTR = "Facility";
 }

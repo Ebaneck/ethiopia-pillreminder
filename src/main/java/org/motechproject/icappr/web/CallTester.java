@@ -86,8 +86,8 @@ public class CallTester {
         IVREnrollmentRequest request = new IVREnrollmentRequest();
         String language = couchPersonUtil.getAttribute(person, CouchMrsConstants.LANGUAGE).getValue();
         request.setLanguage(language);
-        request.setPhoneNumber(couchPersonUtil.getAttribute(person, CouchMrsConstants.PHONE_NUMBER).getValue());
-        request.setPin(couchPersonUtil.getAttribute(person, CouchMrsConstants.PERSON_PIN).getValue());
+        request.setPhoneNumber(couchPersonUtil.getAttribute(person, CouchMrsConstants.PHONE_NUMBER_ATTR).getValue());
+        request.setPin(couchPersonUtil.getAttribute(person, CouchMrsConstants.PERSON_PIN_ATTR).getValue());
         request.setMotechID(person.getId());
         DateTime dateTime = DateUtil.now().plusMinutes(2);
         request.setCallStartTime(String.format("%02d:%02d",

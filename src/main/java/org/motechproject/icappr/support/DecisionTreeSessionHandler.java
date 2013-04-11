@@ -78,7 +78,7 @@ public class DecisionTreeSessionHandler {
         List<Attribute> attrs = person.getAttributes();
         String pin = null;
         for (Attribute attr : attrs) {
-            if (CouchMrsConstants.PERSON_PIN.equals(attr.getName())) {
+            if (CouchMrsConstants.PERSON_PIN_ATTR.equals(attr.getName())) {
                 pin = attr.getValue();
             }
         }
