@@ -1,5 +1,6 @@
 package org.motechproject.icappr.domain;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,15 +17,15 @@ import org.motechproject.icappr.openmrs.OpenMRSUtil;
 import org.motechproject.icappr.service.AdherenceCallEnroller;
 import org.motechproject.messagecampaign.contract.CampaignRequest;
 import org.motechproject.messagecampaign.service.MessageCampaignService;
-import org.motechproject.mrs.domain.Attribute;
-import org.motechproject.mrs.domain.Facility;
-import org.motechproject.mrs.domain.Patient;
-import org.motechproject.mrs.model.OpenMRSAttribute;
-import org.motechproject.mrs.model.OpenMRSFacility;
-import org.motechproject.mrs.model.OpenMRSPatient;
-import org.motechproject.mrs.model.OpenMRSPerson;
-import org.motechproject.mrs.services.FacilityAdapter;
-import org.motechproject.mrs.services.PatientAdapter;
+import org.motechproject.mrs.domain.MRSAttribute;
+import org.motechproject.mrs.domain.MRSFacility;
+import org.motechproject.mrs.domain.MRSPatient;
+import org.motechproject.mrs.domain.MRSPerson;
+import org.motechproject.mrs.model.MRSAttributeDto;
+import org.motechproject.mrs.model.MRSPatientDto;
+import org.motechproject.mrs.model.MRSPersonDto;
+import org.motechproject.mrs.services.MRSFacilityAdapter;
+import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,8 +33,8 @@ import org.springframework.stereotype.Component;
 public class PillReminderRegistrar {
 	private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
-    private PatientAdapter patientAdapter;
-    private FacilityAdapter facilityAdapter;
+    private MRSPatientAdapter patientAdapter;
+    private MRSFacilityAdapter facilityAdapter;
     private MessageCampaignService messageCampaignService;
     private AdherenceCallEnroller adherenceCallEnroller;
     
@@ -45,7 +46,7 @@ public class PillReminderRegistrar {
     }
 
     @Autowired
-    public PillReminderRegistrar(PatientAdapter patientAdapter, FacilityAdapter facilityAdapter,
+    public PillReminderRegistrar(MRSPatientAdapter patientAdapter, MRSFacilityAdapter facilityAdapter,
             MessageCampaignService messageCampaignService, AdherenceCallEnroller adherenceCallEnroller) {
         this.patientAdapter = patientAdapter;
         this.facilityAdapter = facilityAdapter;
@@ -82,31 +83,33 @@ public class PillReminderRegistrar {
     }
 
     private void createGenericPatient(PillReminderRegistration registration) {
-        List<? extends Facility> facilities = facilityAdapter
+        List<? extends MRSFacility> facilities = facilityAdapter
                 .getFacilities(clinicMappings.get(registration.getClinic()));
         if (facilities.size() == 0) {
             throw new RuntimeException("Could not find OpenMRS Facility with name: "
                     + clinicMappings.get(registration.getClinic()));
         }
-        OpenMRSFacility facility = (OpenMRSFacility) facilities.get(0);
+        MRSFacility facility = facilities.get(0);
 
-        OpenMRSPerson person = new OpenMRSPerson();
-        person.firstName("MOTECH Generic Patient");
+        MRSPerson person = new MRSPersonDto();
+        person.setFirstName("MOTECH Generic Patient");
         person.setLastName("MOTECH Generic Patient");
         person.setGender("M");
         person.setDateOfBirth(DateUtil.now());
-        person.addAttribute(new OpenMRSAttribute(MrsConstants.MRS_LANGUAGE_ATTR, registration.getPreferredLanguage()));
-        person.addAttribute(new OpenMRSAttribute(MrsConstants.MRS_PHONE_NUM_ATTR, registration.getPhoneNumber()));
-        person.addAttribute(new OpenMRSAttribute(MrsConstants.MRS_PIN_ATTR, registration.getPin()));
-        person.addAttribute(new OpenMRSAttribute(MrsConstants.MRS_NEXT_CAMPAIGN_ATTR, registration
-                .nextCampaign()));
+        List<MRSAttribute> attributes = new ArrayList<MRSAttribute>();
+        attributes.add(new MRSAttributeDto(MrsConstants.MRS_LANGUAGE_ATTR, registration.getPreferredLanguage()));
+        attributes.add(new MRSAttributeDto(MrsConstants.MRS_PHONE_NUM_ATTR, registration.getPhoneNumber()));
+        attributes.add(new MRSAttributeDto(MrsConstants.MRS_PIN_ATTR, registration.getPin()));
+        attributes.add(new MRSAttributeDto(MrsConstants.MRS_NEXT_CAMPAIGN_ATTR, registration.nextCampaign()));
 
-        OpenMRSPatient patient = new OpenMRSPatient(registration.getPatientId(), person, facility);
+        person.setAttributes(attributes);
+
+        MRSPatient patient = new MRSPatientDto(null, facility, person, registration.getPatientId());
         patientAdapter.savePatient(patient);
     }
 
     public PillReminderRegistration getRegistrationForPatient(String patientId) {
-        Patient patient = patientAdapter.getPatientByMotechId(patientId);
+        MRSPatient patient = patientAdapter.getPatientByMotechId(patientId);
         if (patient == null) {
             return null;
         }
@@ -115,7 +118,7 @@ public class PillReminderRegistrar {
         registration.setClinic(patient.getFacility().getName());
         registration.setPatientId(patientId);
 
-        List<Attribute> attrs = patient.getPerson().getAttributes();
+        List<MRSAttribute> attrs = patient.getPerson().getAttributes();
         registration.setNextCampaign(OpenMRSUtil.getAttrValue(MrsConstants.MRS_NEXT_CAMPAIGN_ATTR, attrs));
         registration.setPhoneNumber(OpenMRSUtil.getAttrValue(MrsConstants.MRS_PHONE_NUM_ATTR, attrs));
         registration.setPin(OpenMRSUtil.getAttrValue(MrsConstants.MRS_PIN_ATTR, attrs));

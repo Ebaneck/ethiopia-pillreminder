@@ -4,14 +4,15 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.motechproject.mrs.domain.Encounter;
-import org.motechproject.mrs.domain.Observation;
-import org.motechproject.mrs.model.OpenMRSEncounter;
-import org.motechproject.mrs.model.OpenMRSFacility;
-import org.motechproject.mrs.model.OpenMRSObservation;
-import org.motechproject.mrs.model.OpenMRSPatient;
-import org.motechproject.mrs.model.OpenMRSProvider;
-import org.motechproject.mrs.services.EncounterAdapter;
+import org.joda.time.DateTime;
+import org.motechproject.mrs.domain.MRSEncounter;
+import org.motechproject.mrs.domain.MRSFacility;
+import org.motechproject.mrs.domain.MRSObservation;
+import org.motechproject.mrs.domain.MRSPatient;
+import org.motechproject.mrs.domain.MRSProvider;
+import org.motechproject.mrs.model.MRSEncounterDto;
+import org.motechproject.mrs.model.MRSObservationDto;
+import org.motechproject.mrs.services.MRSEncounterAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,36 +23,41 @@ import org.springframework.stereotype.Component;
 public class MrsEncounterCreator {
 
     private final MrsEntityFacade mrsEntityFacade;
-    private final EncounterAdapter encounterAdapter;
+    private final MRSEncounterAdapter encounterAdapter;
 
     @Autowired
-    public MrsEncounterCreator(MrsEntityFacade mrsEntityFacade, EncounterAdapter encounterAdapter) {
+    public MrsEncounterCreator(MrsEntityFacade mrsEntityFacade, MRSEncounterAdapter encounterAdapter) {
         this.mrsEntityFacade = mrsEntityFacade;
         this.encounterAdapter = encounterAdapter;
     }
 
     public void createPillTakenEncounterForPatient(String motechId) {
-        OpenMRSPatient patient = mrsEntityFacade.findPatientByMotechId(motechId);
-        Set<Observation> allObs = createObservationGroup();
-        Encounter encounter = createEncounter(patient, allObs);
+        MRSPatient patient = mrsEntityFacade.findPatientByMotechId(motechId);
+        Set<MRSObservation> allObs = createObservationGroup();
+        MRSEncounter encounter = createEncounter(patient, allObs);
 
         encounterAdapter.createEncounter(encounter);
     }
 
-    private Encounter createEncounter(OpenMRSPatient patient, Set<Observation> allObs) {
-        OpenMRSProvider provider = mrsEntityFacade.findMotechUser();
-        OpenMRSFacility facility = mrsEntityFacade.findMotechFacility();
+    private MRSEncounter createEncounter(MRSPatient patient, Set<MRSObservation> allObs) {
+        MRSProvider provider = mrsEntityFacade.findMotechUser();
+        MRSFacility facility = mrsEntityFacade.findMotechFacility();
+        
+        MRSEncounter encounter = new MRSEncounterDto();
+        encounter.setDate(new DateTime());
+        encounter.setObservations(allObs);
+        encounter.setFacility(facility);
+        encounter.setEncounterType(MrsConstants.PILL_REMINDER_ENCOUNTER_TYPE);
+        encounter.setProvider(provider);
+        encounter.setPatient(patient);
 
-        Encounter encounter = new OpenMRSEncounter.MRSEncounterBuilder().withDate(new Date()).withObservations(allObs)
-                .withFacility(facility).withEncounterType(MrsConstants.PILL_REMINDER_ENCOUNTER_TYPE)
-                .withProvider(provider).withPatient(patient).build();
         return encounter;
     }
 
-    private Set<Observation> createObservationGroup() {
-        OpenMRSObservation obs = new OpenMRSObservation(new Date(), MrsConstants.PILL_TAKEN_CONCEPT_NAME,
+    private Set<MRSObservation> createObservationGroup() {
+        MRSObservation obs = new MRSObservationDto(new Date(), MrsConstants.PILL_TAKEN_CONCEPT_NAME,
                 MrsConstants.PILL_TAKEN_CONCEPT_YES_ANSWER);
-        Set<Observation> allObs = new HashSet<>();
+        Set<MRSObservation> allObs = new HashSet<>();
         allObs.add(obs);
         return allObs;
     }

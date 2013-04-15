@@ -1,7 +1,5 @@
 package org.motechproject.icappr.web;
 
-import java.io.File;
-
 import org.joda.time.DateTime;
 import org.motechproject.appointments.api.service.AppointmentService;
 import org.motechproject.appointments.api.service.contract.CreateVisitRequest;

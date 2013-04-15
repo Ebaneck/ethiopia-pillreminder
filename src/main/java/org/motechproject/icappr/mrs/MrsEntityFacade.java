@@ -1,12 +1,13 @@
 package org.motechproject.icappr.mrs;
 
 import org.motechproject.commons.date.util.DateUtil;
-import org.motechproject.mrs.domain.Patient;
-import org.motechproject.mrs.model.OpenMRSFacility;
-import org.motechproject.mrs.model.OpenMRSPatient;
-import org.motechproject.mrs.model.OpenMRSPerson;
-import org.motechproject.mrs.model.OpenMRSProvider;
-import org.motechproject.mrs.services.PatientAdapter;
+import org.motechproject.mrs.domain.MRSPatient;
+import org.motechproject.mrs.domain.MRSFacility;
+import org.motechproject.mrs.domain.MRSPerson;
+import org.motechproject.mrs.domain.MRSProvider;
+import org.motechproject.mrs.model.MRSPatientDto;
+import org.motechproject.mrs.model.MRSPersonDto;
+import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,39 +21,39 @@ public class MrsEntityFacade {
     private static final String DEFAULT_LAST_NAME = "MOTECH Last Name";
     private static final String DEFAULT_GENDER = "M";
 
-    private PatientAdapter patientAdapter;
+    private MRSPatientAdapter patientAdapter;
     private MrsUserResolver userResolver;
     private MrsFacilityResolver facilityResolver;
 
     @Autowired
-    public MrsEntityFacade(PatientAdapter patientAdapter, MrsUserResolver userResolver,
+    public MrsEntityFacade(MRSPatientAdapter patientAdapter, MrsUserResolver userResolver,
             MrsFacilityResolver facilityResolver) {
         this.patientAdapter = patientAdapter;
         this.userResolver = userResolver;
         this.facilityResolver = facilityResolver;
     }
 
-    public OpenMRSProvider findMotechUser() {
+    public MRSProvider findMotechUser() {
         return userResolver.resolveMotechUser();
     }
 
-    public OpenMRSFacility findMotechFacility() {
+    public MRSFacility findMotechFacility() {
         return facilityResolver.resolveMotechFacility();
     }
 
-    public OpenMRSPatient findPatientByMotechId(String motechId) {
-        return (OpenMRSPatient) patientAdapter.getPatientByMotechId(motechId);
+    public MRSPatient findPatientByMotechId(String motechId) {
+        return (MRSPatient) patientAdapter.getPatientByMotechId(motechId);
     }
 
 
-    public Patient createGenericPatient(String patientMotechId) {
-        OpenMRSPerson person = new OpenMRSPerson();
-        person.firstName(DEFAULT_FIRST_NAME);
-        person.lastName(DEFAULT_LAST_NAME);
-        person.gender(DEFAULT_GENDER);
+    public MRSPatient createGenericPatient(String patientMotechId) {
+        MRSPerson person = new MRSPersonDto();
+        person.setFirstName(DEFAULT_FIRST_NAME);
+        person.setLastName(DEFAULT_LAST_NAME);
+        person.setGender(DEFAULT_GENDER);
         person.setDateOfBirth(DateUtil.now());
 
-        OpenMRSPatient patient = new OpenMRSPatient(patientMotechId, person, facilityResolver.resolveMotechFacility());
+        MRSPatient patient = new MRSPatientDto(null, facilityResolver.resolveMotechFacility(), person, patientMotechId);
         return patientAdapter.savePatient(patient);
     }
 }

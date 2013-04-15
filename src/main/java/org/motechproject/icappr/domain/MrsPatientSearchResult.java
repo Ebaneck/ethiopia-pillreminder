@@ -1,7 +1,7 @@
 package org.motechproject.icappr.domain;
 
-import org.motechproject.mrs.domain.Patient;
-import org.motechproject.mrs.domain.Person;
+import org.motechproject.mrs.domain.MRSPatient;
+import org.motechproject.mrs.domain.MRSPerson;
 
 
 public class MrsPatientSearchResult {
@@ -10,7 +10,7 @@ public class MrsPatientSearchResult {
     private String lastName;
     private String motechId;
 
-    public void setFieldsFromMrsPerson(Person person) {
+    public void setFieldsFromMrsPerson(MRSPerson person) {
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
     }
@@ -39,7 +39,7 @@ public class MrsPatientSearchResult {
         this.motechId = motechId;
     }
 
-    public static MrsPatientSearchResult fromMrsPatient(Patient findPatientByMotechId) {
+    public static MrsPatientSearchResult fromMrsPatient(MRSPatient findPatientByMotechId) {
         MrsPatientSearchResult result = new MrsPatientSearchResult();
         if (findPatientByMotechId != null) {
             result.firstName = findPatientByMotechId.getPerson().getFirstName();

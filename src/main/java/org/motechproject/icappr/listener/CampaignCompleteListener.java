@@ -10,18 +10,18 @@ import org.motechproject.icappr.openmrs.OpenMRSUtil;
 import org.motechproject.messagecampaign.EventKeys;
 import org.motechproject.messagecampaign.contract.CampaignRequest;
 import org.motechproject.messagecampaign.service.MessageCampaignService;
-import org.motechproject.mrs.domain.Patient;
-import org.motechproject.mrs.services.PatientAdapter;
+import org.motechproject.mrs.domain.MRSPatient;
+import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 // @Component
 public class CampaignCompleteListener {
 
-    private PatientAdapter patientAdapter;
+    private MRSPatientAdapter patientAdapter;
     private MessageCampaignService messageCampaignService;
 
     @Autowired
-    public CampaignCompleteListener(PatientAdapter patientAdapter, MessageCampaignService messageCampaignService) {
+    public CampaignCompleteListener(MRSPatientAdapter patientAdapter, MessageCampaignService messageCampaignService) {
         this.patientAdapter = patientAdapter;
         this.messageCampaignService = messageCampaignService;
     }
@@ -35,7 +35,7 @@ public class CampaignCompleteListener {
     }
 
     private void enrollInNextCampaign(String externalId) {
-        Patient patient = patientAdapter.getPatientByMotechId(externalId);
+        MRSPatient patient = patientAdapter.getPatientByMotechId(externalId);
         String nextCampaign = OpenMRSUtil.getAttrValue(MrsConstants.MRS_NEXT_CAMPAIGN_ATTR, patient.getPerson()
                 .getAttributes());
         CampaignRequest request = new CampaignRequest();

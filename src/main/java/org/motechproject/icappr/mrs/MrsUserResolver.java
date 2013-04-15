@@ -2,10 +2,13 @@ package org.motechproject.icappr.mrs;
 
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.mrs.exception.UserAlreadyExistsException;
-import org.motechproject.mrs.model.OpenMRSPerson;
-import org.motechproject.mrs.model.OpenMRSProvider;
-import org.motechproject.mrs.model.OpenMRSUser;
-import org.motechproject.mrs.services.UserAdapter;
+import org.motechproject.mrs.domain.MRSPerson;
+import org.motechproject.mrs.domain.MRSProvider;
+import org.motechproject.mrs.domain.MRSUser;
+import org.motechproject.mrs.model.MRSPersonDto;
+import org.motechproject.mrs.model.MRSProviderDto;
+import org.motechproject.mrs.model.MRSUserDto;
+import org.motechproject.mrs.services.MRSUserAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,47 +20,53 @@ import org.springframework.stereotype.Component;
 public class MrsUserResolver {
 
     public static final String MOTECH_USERNAME = "motech";
-    private UserAdapter userAdapter;
+    private MRSUserAdapter userAdapter;
 
     @Autowired
-    public MrsUserResolver(UserAdapter userAdapter) {
+    public MrsUserResolver(MRSUserAdapter userAdapter) {
         this.userAdapter = userAdapter;
     }
 
-    public OpenMRSProvider resolveMotechUser() {
-        OpenMRSUser user = (OpenMRSUser) userAdapter.getUserByUserName(MOTECH_USERNAME);
+    public MRSProvider resolveMotechUser() {
+        MRSUser user = userAdapter.getUserByUserName(MOTECH_USERNAME);
         if (user == null) {
             user = createMotechUser();
         }
         
-        OpenMRSProvider provider = new OpenMRSProvider();
-        provider.setProviderId(user.getPerson().getId());
+        MRSProvider provider = new MRSProviderDto();
+        provider.setProviderId(user.getPerson().getPersonId());
         provider.setPerson(user.getPerson());
         return provider;
     }
 
-    private OpenMRSUser createMotechUser() {
-        OpenMRSUser user = createUserWithPerson(createPerson());
+    private MRSUser createMotechUser() {
+        MRSUser user = createUserWithPerson(createPerson());
         return saveMotechUser(user);
     }
 
-    private OpenMRSPerson createPerson() {
-        OpenMRSPerson person = new OpenMRSPerson();
-        person.firstName("Motech").lastName("Motech").address("None").dateOfBirth(DateUtil.now()).gender("F");
+    private MRSPerson createPerson() {
+        MRSPerson person = new MRSPersonDto();
+        person.setFirstName("Motech");
+        person.setLastName("Motech");
+        person.setAddress("None");
+        person.setDateOfBirth(DateUtil.now());
+        person.setGender("F");
         return person;
     }
 
-    private OpenMRSUser createUserWithPerson(OpenMRSPerson person) {
-        OpenMRSUser user = new OpenMRSUser();
-        user.userName(MOTECH_USERNAME).securityRole("Provider").person(person);
+    private MRSUser createUserWithPerson(MRSPerson person) {
+        MRSUser user = new MRSUserDto();
+        user.setUserName(MOTECH_USERNAME);
+        user.setSecurityRole("Provider");
+        user.setPerson(person);
         return user;
     }
 
-    private OpenMRSUser saveMotechUser(OpenMRSUser user) {
+    private MRSUser saveMotechUser(MRSUser user) {
         try {
-            user = (OpenMRSUser) userAdapter.saveUser(user).get(UserAdapter.USER_KEY);
+            user = (MRSUser) userAdapter.saveUser(user).get(MRSUserAdapter.USER_KEY);
         } catch (UserAlreadyExistsException e) {
-            user = (OpenMRSUser) userAdapter.getUserByUserName(MOTECH_USERNAME);
+            user = userAdapter.getUserByUserName(MOTECH_USERNAME);
         }
         return user;
     }

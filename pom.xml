@@ -38,17 +38,17 @@
         </dependency>
         <dependency>
             <groupId>org.motechproject</groupId>
-            <artifactId>motech-message-campaign-bundle</artifactId>
+            <artifactId>motech-message-campaign</artifactId>
             <version>${motech.version}</version>
         </dependency>
         <dependency>
             <groupId>org.motechproject</groupId>
-            <artifactId>motech-commcare-api-bundle</artifactId>
+            <artifactId>motech-commcare-api</artifactId>
             <version>${motech.version}</version>
         </dependency>    
         <dependency>
             <groupId>org.motechproject</groupId>
-            <artifactId>motech-appointments-api-bundle</artifactId>
+            <artifactId>motech-appointments-api</artifactId>
             <version>${motech.version}</version>
         </dependency>    
         <dependency>
@@ -58,12 +58,12 @@
         </dependency>
         <dependency>
             <groupId>org.motechproject</groupId>
-            <artifactId>motech-pillreminder-api-bundle</artifactId>
+            <artifactId>motech-pillreminder-api</artifactId>
             <version>${motech.version}</version>
         </dependency>
         <dependency>
             <groupId>org.motechproject</groupId>
-            <artifactId>motech-ivr-verboice-bundle</artifactId>
+            <artifactId>motech-ivr-verboice</artifactId>
             <version>${motech.version}</version>
         </dependency>
         <dependency>
@@ -78,7 +78,7 @@
         </dependency>
         <dependency>
             <groupId>org.motechproject</groupId>
-            <artifactId>motech-mrs-couchdb-bundle</artifactId>
+            <artifactId>motech-mrs-couchdb</artifactId>
             <version>${motech.version}</version>
         </dependency>
         <dependency>
