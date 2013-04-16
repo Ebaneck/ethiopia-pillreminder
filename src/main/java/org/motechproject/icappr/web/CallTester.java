@@ -4,19 +4,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.joda.time.DateTime;
-import org.motechproject.appointments.api.service.AppointmentService;
-import org.motechproject.appointments.api.service.contract.CreateVisitRequest;
-import org.motechproject.appointments.api.service.contract.ReminderConfiguration;
-import org.motechproject.appointments.api.service.contract.ReminderConfiguration.IntervalUnit;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.couch.mrs.model.CouchPerson;
 import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.couchdb.CouchMrsConstants;
 import org.motechproject.icappr.couchdb.CouchPersonUtil;
 import org.motechproject.icappr.domain.IVREnrollmentRequest;
-import org.motechproject.icappr.mrs.MrsConstants;
-import org.motechproject.icappr.openmrs.OpenMRSUtil;
 import org.motechproject.icappr.service.IVRUIEnroller;
 import org.motechproject.icappr.support.CallRequestDataKeys;
 import org.motechproject.icappr.support.IVRUIDecisionTreeBuilder;
@@ -35,13 +31,13 @@ public class CallTester {
 
     @Autowired
     private PillReminderSettings pillReminderSettings;
-    
+
     @Autowired
     private CouchPersonUtil couchPersonUtil;
-    
+
     @Autowired
     private IVRUIDecisionTreeBuilder ivrUIDecisionTreeBuilder;
-    
+
     @Autowired
     private IVRUIEnroller enroller;
 
@@ -49,9 +45,9 @@ public class CallTester {
 
     @RequestMapping("/testcall")
     @ResponseBody
-    public String testApt() {
-                
-        String phoneNumber = "12074509521";
+    public String testApt(HttpServletRequest request) {
+
+        String phoneNumber = request.getParameter("phone");
 
         CallRequest callRequest = new CallRequest(phoneNumber, 120, pillReminderSettings.getVerboiceChannelName());
 
@@ -59,11 +55,11 @@ public class CallTester {
 
 
         String language = "english";
-        
-        String pin = "123";
+
+        String pin = "1234";
 
         CouchPerson person = couchPersonUtil.createAndSavePerson(phoneNumber, pin, language);
-        
+
         String callbackUrl = pillReminderSettings.getMotechUrl() + "/module/icappr/campaign-message?language=%s";
 
         String statusUrl = pillReminderSettings.getMotechUrl() + "/module/verboice/ivr/callstatus";
@@ -92,9 +88,7 @@ public class CallTester {
         DateTime dateTime = DateUtil.now().plusMinutes(2);
         request.setCallStartTime(String.format("%02d:%02d",
                 dateTime.getHourOfDay(), dateTime.getMinuteOfHour()));
-        ivrUIDecisionTreeBuilder.setLanguage(language);
-        ivrUIDecisionTreeBuilder.buildTree();
         enroller.enrollPerson(request);
     }
-    
+
 }

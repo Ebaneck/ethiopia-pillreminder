@@ -2,7 +2,8 @@
 <Response>
 	<Gather action="$path/module/icappr/ivr/authenticate?sessionId=$sessionId&amp;requestType=$requestType&amp;language=$language" 
 			timeout="10" 
-			numDigits="4">
+			numDigits="4"
+			finishOnKey="#">
         <Play>$audioFileUrl</Play>
     </Gather>
 	<Say>Unable to capture your response.</Say>

@@ -1,7 +1,6 @@
 package org.motechproject.icappr.support;
 
 import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.callflow.service.FlowSessionService;
