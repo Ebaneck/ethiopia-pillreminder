@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Resolves the MOTECH facility from the OpenMRS. If the facility does not
+ * Resolves the MOTECH facility. If the facility does not
  * exist, then a default facility is created
  */
 @Component
