@@ -32,11 +32,13 @@ public class IVRUIDecisionTreeBuilder {
     }
 
     public void buildTree() {
-        logger.info("Creating a new ivr-ui-test decision tree");
+        logger.info("Creating ivr-ui-test decision trees");
         List<String> languages = new ArrayList<String>();
-        languages.add("Language2");
-        languages.add("language3");
         languages.add("english");
+        languages.add("amharic");
+        languages.add("harari");
+        languages.add("oromiffa");
+        languages.add("somali");
         if (languages != null ) {
             for (String language : languages) {
                 deleteOldTree(language);

@@ -27,16 +27,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class CallTester {
 
     @Autowired
-    private IVRService ivrService;
-
-    @Autowired
     private PillReminderSettings pillReminderSettings;
 
     @Autowired
     private CouchPersonUtil couchPersonUtil;
-
-    @Autowired
-    private IVRUIDecisionTreeBuilder ivrUIDecisionTreeBuilder;
 
     @Autowired
     private IVRUIEnroller enroller;
