@@ -56,9 +56,7 @@ public class CallInitiationService {
         try {
             payload.put(CallRequestDataKeys.CALLBACK_URL,
                     URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId(), requestType, language), "UTF-8"));
-
-//            payload.put(CallRequestDataKeys.STATUS_CALLBACK_URL, callbackStatusUrl);
-
+            payload.put(CallRequestDataKeys.STATUS_CALLBACK_URL, callbackStatusUrl);
         } catch (UnsupportedEncodingException e) {
         }
         logger.info("Initiating call with requestType " + requestType + " and language " + language);
