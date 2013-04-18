@@ -61,7 +61,7 @@ public class IvrControllerPillReminder {
     /**
      * Attempts to authenticate the pin number entered by the patient. If the
      * pin is accepted, that is the digits entered by the user match the value
-     * of the Pin attribute on the MRS Patient or CouchMRS person, then it redirects to the
+     * of the Pin attribute on the MRS Patient or MRS person, then it redirects to the
      * motech-verboice module to handle the rest of the request. If it is not
      * accepted, the call ends.
      */
@@ -85,7 +85,7 @@ public class IvrControllerPillReminder {
             }
         }
         if (requestType.matches(RequestTypes.IVR_UI)) {
-            if (decisionTreeSessionHandler.digitsMatchCouchPersonPin(sessionId, digits)) {
+            if (decisionTreeSessionHandler.digitsMatchPersonPin(sessionId, digits)) {
                 logger.info("The pin is correct. Forwarding request to IVR UI Decision tree enrollment...");
                 view = generateModelAndView(requestType, sessionId, language);
                 correctPin = true;

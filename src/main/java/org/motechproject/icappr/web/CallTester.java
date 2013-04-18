@@ -8,16 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
 import org.motechproject.commons.date.util.DateUtil;
-import org.motechproject.couch.mrs.model.CouchPerson;
 import org.motechproject.icappr.PillReminderSettings;
-import org.motechproject.icappr.couchdb.CouchMrsConstants;
-import org.motechproject.icappr.couchdb.CouchPersonUtil;
 import org.motechproject.icappr.domain.IVREnrollmentRequest;
+import org.motechproject.icappr.mrs.MRSPersonUtil;
+import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.service.IVRUIEnroller;
 import org.motechproject.icappr.support.CallRequestDataKeys;
-import org.motechproject.icappr.support.IVRUIDecisionTreeBuilder;
 import org.motechproject.ivr.service.CallRequest;
-import org.motechproject.ivr.service.IVRService;
+import org.motechproject.mrs.model.MRSPersonDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +28,7 @@ public class CallTester {
     private PillReminderSettings pillReminderSettings;
 
     @Autowired
-    private CouchPersonUtil couchPersonUtil;
+    private MRSPersonUtil mrsPersonUtil;
 
     @Autowired
     private IVRUIEnroller enroller;
@@ -52,7 +50,7 @@ public class CallTester {
 
         String pin = "1234";
 
-        CouchPerson person = couchPersonUtil.createAndSavePerson(phoneNumber, pin, language);
+        MRSPersonDto person = mrsPersonUtil.createAndSavePerson(phoneNumber, pin, language);
 
         String callbackUrl = pillReminderSettings.getMotechUrl() + "/module/icappr/campaign-message?language=%s";
 
@@ -65,20 +63,19 @@ public class CallTester {
                     URLEncoder.encode(String.format(statusUrl, language), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
         }
-
         enrollInCalls(person);
         //ivrService.initiateCall(callRequest);
 
         return "Success";
     }
 
-    private void enrollInCalls(CouchPerson person) {
+    private void enrollInCalls(MRSPersonDto person) {
         IVREnrollmentRequest request = new IVREnrollmentRequest();
-        String language = couchPersonUtil.getAttribute(person, CouchMrsConstants.LANGUAGE).getValue();
+        String language = mrsPersonUtil.getAttribute(person, MrsConstants.PERSON_LANGUAGE_ATTR).getValue();
         request.setLanguage(language);
-        request.setPhoneNumber(couchPersonUtil.getAttribute(person, CouchMrsConstants.PHONE_NUMBER).getValue());
-        request.setPin(couchPersonUtil.getAttribute(person, CouchMrsConstants.PERSON_PIN).getValue());
-        request.setMotechID(person.getId());
+        request.setPhoneNumber(mrsPersonUtil.getAttribute(person, MrsConstants.PERSON_PHONE_NUMBER_ATTR).getValue());
+        request.setPin(mrsPersonUtil.getAttribute(person, MrsConstants.PERSON_PIN_ATTR).getValue());
+        request.setMotechID(person.getPersonId());
         DateTime dateTime = DateUtil.now().plusMinutes(2);
         request.setCallStartTime(String.format("%02d:%02d",
                 dateTime.getHourOfDay(), dateTime.getMinuteOfHour()));

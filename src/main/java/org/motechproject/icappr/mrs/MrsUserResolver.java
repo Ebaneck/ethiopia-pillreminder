@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Resolves the Motech user from the OpenMRS application. If the Motech user
+ * Resolves the Motech user. If the Motech user
  * does not exist, it will create a new Motech user
  */
 @Component

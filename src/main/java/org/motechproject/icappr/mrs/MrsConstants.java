@@ -1,17 +1,22 @@
 package org.motechproject.icappr.mrs;
 
-public final class MrsConstants {
-    
+/**
+ * This is a listing of constants that will remain consistent
+ * throughout the application and be stored in CouchDB.
+ */
+public interface MrsConstants {
 
-	public final static String PILL_TAKEN_CONCEPT_NAME = "PILL TAKEN";
+    final String PILL_TAKEN_CONCEPT_NAME = "PILL TAKEN";
 
-	public final static String PILL_TAKEN_CONCEPT_YES_ANSWER = "TRUE";
-	public final static String PILL_TAKEN_CONCEPT_NO_ANSWER = "FALSE";
+    final String PILL_TAKEN_CONCEPT_YES_ANSWER = "TRUE";
+    final String PILL_TAKEN_CONCEPT_NO_ANSWER = "FALSE";
 
-	public final static String PILL_REMINDER_ENCOUNTER_TYPE = "PILL REMINDER";
+    final String PILL_REMINDER_ENCOUNTER_TYPE = "PILL REMINDER";
 
-	public final static String MRS_PHONE_NUM_ATTR = "Phone Number";
-	public final static String MRS_PIN_ATTR = "Pin";
-	public final static String MRS_NEXT_CAMPAIGN_ATTR = "Next Campaign";
-	public final static String MRS_LANGUAGE_ATTR = "Language";
+    final String PERSON_PHONE_NUMBER_ATTR = "Phone Number";
+    final String PERSON_PIN_ATTR = "Pin";
+    final String PERSON_LANGUAGE_ATTR = "Language";
+    final String PERSON_NUM_PIN_ATTEMPTS = "NumPinAttempts";
+	final String PERSON_NEXT_CAMPAIGN_ATTR = "NextCampaignAttr";
+
 }

@@ -78,7 +78,7 @@ public class AdherenceCallListener {
 
     private String getPhoneFromAttributes(List<MRSAttribute> attributes) {
         for (MRSAttribute attr : attributes) {
-            if (MrsConstants.MRS_PHONE_NUM_ATTR.equals(attr.getName())) {
+            if (MrsConstants.PERSON_PHONE_NUMBER_ATTR.equals(attr.getName())) {
                 return attr.getValue();
             }
         }
@@ -88,7 +88,7 @@ public class AdherenceCallListener {
     
     private String getLanguageFromAttributes(List<MRSAttribute> attributes) {
         for (MRSAttribute attr : attributes) {
-            if (MrsConstants.MRS_LANGUAGE_ATTR.equals(attr.getName())) {
+            if (MrsConstants.PERSON_LANGUAGE_ATTR.equals(attr.getName())) {
                 return attr.getValue();
             }
         }

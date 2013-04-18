@@ -44,15 +44,15 @@ public class AdherenceCallEnroller {
             return response;
         }
 
-        setAttribute(patient.getPerson(), request.getPin(), MrsConstants.MRS_PIN_ATTR);
-        setAttribute(patient.getPerson(), request.getPhonenumber(), MrsConstants.MRS_PHONE_NUM_ATTR);
+        setAttribute(patient.getPerson(), request.getPin(), MrsConstants.PERSON_PIN_ATTR);
+        setAttribute(patient.getPerson(), request.getPhonenumber(), MrsConstants.PERSON_PHONE_NUMBER_ATTR);
         try {
             patientAdapter.updatePatient(patient);
         } catch (Exception e) {
             // if OpenMRS does not have attribute types of Pin or Phone Number
             // an exception will be thrown
             response.addError("OpenMRS does not have person attribute type: Pin or Phone Number. Please add them");
-            logger.error("OpenMRS does not have person attribute types: Pin or Phone Number:" + MrsConstants.MRS_PIN_ATTR + "  " + request.getPin() + "  " + MrsConstants.MRS_PHONE_NUM_ATTR + " " + request.getPhonenumber());
+            logger.error("OpenMRS does not have person attribute types: Pin or Phone Number:" + MrsConstants.PERSON_PIN_ATTR + "  " + request.getPin() + "  " + MrsConstants.PERSON_PHONE_NUMBER_ATTR + " " + request.getPhonenumber());
             return response;
         }
 
