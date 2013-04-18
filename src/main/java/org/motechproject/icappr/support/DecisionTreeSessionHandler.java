@@ -1,7 +1,6 @@
 package org.motechproject.icappr.support;
 
 import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.callflow.service.FlowSessionService;
@@ -9,8 +8,8 @@ import org.motechproject.icappr.couchdb.CouchMrsConstants;
 import org.motechproject.icappr.couchdb.CouchPersonUtil;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.mrs.MrsEntityFacade;
-import org.motechproject.mrs.domain.Attribute;
-import org.motechproject.mrs.domain.Patient;
+import org.motechproject.mrs.domain.MRSAttribute;
+import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.couch.mrs.model.CouchPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +52,7 @@ public class DecisionTreeSessionHandler {
 
     public boolean digitsMatchPatientPin(String sessionId, String digits) {
         String motechId = getMotechIdForSessionWithId(sessionId);
-        Patient patient = mrsEntityFacade.findPatientByMotechId(motechId);
+        MRSPatient patient = mrsEntityFacade.findPatientByMotechId(motechId);
         String pin = readPinAttributeValue(patient);
 
         if (StringUtils.isNotBlank(digits) && digits.equals(pin)) {
@@ -63,10 +62,10 @@ public class DecisionTreeSessionHandler {
         }
     }
 
-    private String readPinAttributeValue(Patient patient) {
-        List<Attribute> attrs = patient.getPerson().getAttributes();
+    private String readPinAttributeValue(MRSPatient patient) {
+        List<MRSAttribute> attrs = patient.getPerson().getAttributes();
         String pin = null;
-        for (Attribute attr : attrs) {
+        for (MRSAttribute attr : attrs) {
             if (MrsConstants.MRS_PIN_ATTR.equals(attr.getName())) {
                 pin = attr.getValue();
             }
@@ -75,9 +74,9 @@ public class DecisionTreeSessionHandler {
     }
     
     private String readPinAttributeForCouchPerson(CouchPerson person){
-        List<Attribute> attrs = person.getAttributes();
+        List<MRSAttribute> attrs = person.getAttributes();
         String pin = null;
-        for (Attribute attr : attrs) {
+        for (MRSAttribute attr : attrs) {
             if (CouchMrsConstants.PERSON_PIN.equals(attr.getName())) {
                 pin = attr.getValue();
             }

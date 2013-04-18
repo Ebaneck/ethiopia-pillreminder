@@ -4,11 +4,10 @@ package org.motechproject.icappr.couchdb;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
-
-import org.motechproject.mrs.services.PersonAdapter;
+import org.motechproject.mrs.services.MRSPersonAdapter;
 import org.motechproject.couch.mrs.model.CouchAttribute;
 import org.motechproject.couch.mrs.model.CouchPerson;
-import org.motechproject.mrs.domain.Attribute;
+import org.motechproject.mrs.domain.MRSAttribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +19,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class CouchPersonUtil {   
     
-    private final PersonAdapter couchPersonAdapter;
+    private final MRSPersonAdapter couchPersonAdapter;
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     @Autowired
-    public CouchPersonUtil(PersonAdapter couchPersonAdapter){
+    public CouchPersonUtil(MRSPersonAdapter couchPersonAdapter){
             this.couchPersonAdapter = couchPersonAdapter;
     }
 
@@ -60,9 +59,9 @@ public class CouchPersonUtil {
     }
     
     private void setAttribute(CouchPerson person, String attrValue, String attrName) {
-        Iterator<Attribute> attrs = person.getAttributes().iterator();
+        Iterator<MRSAttribute> attrs = person.getAttributes().iterator();
         while (attrs.hasNext()) {
-            Attribute attr = attrs.next();
+            MRSAttribute attr = attrs.next();
             if (attrName.equalsIgnoreCase(attr.getName())) {
                 attrs.remove();
                 break;
@@ -71,10 +70,10 @@ public class CouchPersonUtil {
         person.getAttributes().add(new CouchAttribute(attrName, attrValue));
     }
     
-    public Attribute getAttribute(CouchPerson person, String attrName) {
-        Iterator<Attribute> attrs = person.getAttributes().iterator();
+    public MRSAttribute getAttribute(CouchPerson person, String attrName) {
+        Iterator<MRSAttribute> attrs = person.getAttributes().iterator();
         while (attrs.hasNext()) {
-            Attribute attr = attrs.next();
+            MRSAttribute attr = attrs.next();
             if (attrName.equalsIgnoreCase(attr.getName())) {
                 return attr;
             }

@@ -2,9 +2,9 @@ package org.motechproject.icappr.mrs;
 
 import java.util.List;
 
-import org.motechproject.mrs.domain.Facility;
-import org.motechproject.mrs.model.OpenMRSFacility;
-import org.motechproject.mrs.services.FacilityAdapter;
+import org.motechproject.mrs.domain.MRSFacility;
+import org.motechproject.mrs.model.MRSFacilityDto;
+import org.motechproject.mrs.services.MRSFacilityAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,15 +15,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class MrsFacilityResolver {
 
-    private FacilityAdapter facilityAdapter;
+    private MRSFacilityAdapter facilityAdapter;
 
     @Autowired
-    public MrsFacilityResolver(FacilityAdapter facilityAdapter) {
+    public MrsFacilityResolver(MRSFacilityAdapter facilityAdapter) {
         this.facilityAdapter = facilityAdapter;
     }
 
-    public OpenMRSFacility resolveMotechFacility() {
-        OpenMRSFacility motechFacility = searchForMotechFacility();
+    public MRSFacility resolveMotechFacility() {
+        MRSFacility motechFacility = searchForMotechFacility();
 
         if (motechFacility == null) {
             motechFacility = createMotechFacility();
@@ -32,14 +32,14 @@ public class MrsFacilityResolver {
         return motechFacility;
     }
 
-    private OpenMRSFacility searchForMotechFacility() {
-        List<? extends Facility> facilities = facilityAdapter.getFacilities("Motech");
-        return facilities.isEmpty() ? null : (OpenMRSFacility) facilities.get(0);
+    private MRSFacility searchForMotechFacility() {
+        List<? extends MRSFacility> facilities = facilityAdapter.getFacilities("Motech");
+        return facilities.isEmpty() ? null : facilities.get(0);
     }
 
-    private OpenMRSFacility createMotechFacility() {
-        OpenMRSFacility facility = new OpenMRSFacility("Motech", "USA", "King County", "Seattle", "WA");
-        facility = (OpenMRSFacility) facilityAdapter.saveFacility(facility);
+    private MRSFacility createMotechFacility() {
+        MRSFacility facility = new MRSFacilityDto("Motech", "USA", "King County", "Seattle", "WA");
+        facility = facilityAdapter.saveFacility(facility);
         return facility;
     }
 }

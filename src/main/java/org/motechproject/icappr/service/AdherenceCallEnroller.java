@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
 import org.motechproject.icappr.domain.AdherenceCallEnrollmentResponse;
 import org.motechproject.icappr.mrs.MrsConstants;
-import org.motechproject.mrs.domain.Attribute;
-import org.motechproject.mrs.domain.Patient;
-import org.motechproject.mrs.domain.Person;
-import org.motechproject.mrs.model.OpenMRSAttribute;
-import org.motechproject.mrs.services.PatientAdapter;
+import org.motechproject.mrs.domain.MRSAttribute;
+import org.motechproject.mrs.domain.MRSPatient;
+import org.motechproject.mrs.domain.MRSPerson;
+import org.motechproject.mrs.model.MRSAttributeDto;
+import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +22,10 @@ import org.springframework.stereotype.Component;
 public class AdherenceCallEnroller {
 	private Logger logger = LoggerFactory.getLogger("motech-icappr");
 	private final AdherenceCallService adherenceCallService;
-    private final PatientAdapter patientAdapter;
+    private final MRSPatientAdapter patientAdapter;
 
     @Autowired
-    public AdherenceCallEnroller(AdherenceCallService pillReminders, PatientAdapter patientAdapter) {
+    public AdherenceCallEnroller(AdherenceCallService pillReminders, MRSPatientAdapter patientAdapter) {
         this.adherenceCallService = pillReminders;
         this.patientAdapter = patientAdapter;
     }
@@ -38,7 +38,7 @@ public class AdherenceCallEnroller {
             return response;
         }
 
-        Patient patient = patientAdapter.getPatientByMotechId(request.getMotechId());
+        MRSPatient patient = patientAdapter.getPatientByMotechId(request.getMotechId());
         if (patient == null) {
             response.addError("No MRS Patient Found with id: " + request.getMotechId());
             return response;
@@ -62,17 +62,17 @@ public class AdherenceCallEnroller {
         return response;
     }
 
-    private void setAttribute(Person person, String attrValue, String attrName) {
-        Iterator<Attribute> attrs = person.getAttributes().iterator();
+    private void setAttribute(MRSPerson person, String attrValue, String attrName) {
+        Iterator<MRSAttribute> attrs = person.getAttributes().iterator();
         
         while (attrs.hasNext()) {
-            Attribute attr = attrs.next();
+            MRSAttribute attr = attrs.next();
             if (attrName.equalsIgnoreCase(attr.getName())) {
                 attrs.remove();
                 break;
             }
         }
-        person.getAttributes().add(new OpenMRSAttribute(attrName, attrValue));
+        person.getAttributes().add(new MRSAttributeDto(attrName, attrValue));
 
     }
 

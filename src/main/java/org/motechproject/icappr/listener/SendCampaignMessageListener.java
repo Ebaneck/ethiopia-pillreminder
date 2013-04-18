@@ -13,15 +13,15 @@ import org.motechproject.icappr.support.CallRequestDataKeys;
 import org.motechproject.ivr.service.CallRequest;
 import org.motechproject.ivr.service.IVRService;
 import org.motechproject.messagecampaign.EventKeys;
-import org.motechproject.mrs.domain.Patient;
-import org.motechproject.mrs.services.PatientAdapter;
+import org.motechproject.mrs.domain.MRSPatient;
+import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SendCampaignMessageListener {
 
-	private PatientAdapter patientAdapter;
+	private MRSPatientAdapter patientAdapter;
 	private IVRService ivrService;
 	private PillReminderSettings pillReminderSettings;
 	
@@ -29,7 +29,7 @@ public class SendCampaignMessageListener {
 	private EventRelay eventRelay;
 
 	@Autowired
-	public SendCampaignMessageListener(PatientAdapter patientAdapter, IVRService ivrService, PillReminderSettings pillReminderSettings) {
+	public SendCampaignMessageListener(MRSPatientAdapter patientAdapter, IVRService ivrService, PillReminderSettings pillReminderSettings) {
 		this.patientAdapter = patientAdapter;
 		this.ivrService = ivrService;
 		this.pillReminderSettings = pillReminderSettings;
@@ -38,7 +38,7 @@ public class SendCampaignMessageListener {
 	@MotechListener(subjects = { EventKeys.SEND_MESSAGE })
 	public void sendCampaignMessage(MotechEvent event) {
 		String patientId = event.getParameters().get(EventKeys.EXTERNAL_ID_KEY).toString();
-		Patient patient = patientAdapter.getPatientByMotechId(patientId);
+		MRSPatient patient = patientAdapter.getPatientByMotechId(patientId);
 
 		String phoneNumber = OpenMRSUtil.getAttrValue(MrsConstants.MRS_PHONE_NUM_ATTR, patient.getPerson()
 				.getAttributes());

@@ -1,5 +1,6 @@
 package org.motechproject.icappr.support;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.motechproject.decisiontree.core.DecisionTreeService;
 import org.motechproject.decisiontree.core.model.Action;
@@ -24,8 +25,6 @@ public class IVRUIDecisionTreeBuilder {
     private final DecisionTreeService decisionTreeService;
     private final PillReminderSettings settings;
 
-    private String language;
-
     @Autowired
     public IVRUIDecisionTreeBuilder(DecisionTreeService decisionTreeService, PillReminderSettings settings) {
         this.decisionTreeService = decisionTreeService;
@@ -34,29 +33,31 @@ public class IVRUIDecisionTreeBuilder {
 
     public void buildTree() {
         logger.info("Creating a new ivr-ui-test decision tree");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                deleteOldTree();
-                createDecisionTree();
+        List<String> languages = new ArrayList<String>();
+        languages.add("Language2");
+        languages.add("language3");
+        languages.add("english");
+        if (languages != null ) {
+            for (String language : languages) {
+                deleteOldTree(language);
+                createDecisionTree(language);
             }
-
-        }).start();
+        }
     }
 
-    private void deleteOldTree() {
+    private void deleteOldTree(String language) {
         List<Tree> trees = decisionTreeService.getDecisionTrees();
         for (Tree tree : trees) {
-            if ("IVRUITree".equals(tree.getName())) {
+            if (("IVRUITree" + language).equals(tree.getName())) {
                 decisionTreeService.deleteDecisionTree(tree.getId());
                 break;
             }
         }
     }
 
-    private void createDecisionTree() {
+    private void createDecisionTree(String language) {
         Tree tree = new Tree();
-        tree.setName("IVRUITree");
+        tree.setName("IVRUITree" + language);
         Transition rootTransition = new Transition();
 
         /*
@@ -64,17 +65,18 @@ public class IVRUIDecisionTreeBuilder {
          * "1," they will continue to receive calls that prompt them for their
          * pin number, re-initiating the whole process.
          */
+        
         rootTransition.setDestinationNode(new Node()
-        .setNoticePrompts(
+        .setPrompts(
                 new Prompt[] { new AudioPrompt().setAudioFileUrl(settings
                         .getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, language)) }).setTransitions(
-                                new Object[][] { { "1", getContinueTransition() }, { "3", getStopTransition() } }));
+                                new Object[][] { { "1", getContinueTransition(language) }, { "3", getStopTransition(language) } }));
         tree.setRootTransition(rootTransition);
 
         decisionTreeService.saveDecisionTree(tree);
     }
 
-    private Transition getStopTransition() {
+    private Transition getStopTransition(String language) {
         Transition transition = new Transition();
         Action action1 = new Action();
         action1.setEventId(Events.PATIENT_SELECTED_STOP);
@@ -85,7 +87,7 @@ public class IVRUIDecisionTreeBuilder {
         return transition;
     }
 
-    private Transition getContinueTransition() {
+    private Transition getContinueTransition(String language) {
         Transition transition = new Transition();
         Action action1 = new Action();
         action1.setEventId(Events.PATIENT_SELECTED_CONTINUE);
@@ -95,13 +97,4 @@ public class IVRUIDecisionTreeBuilder {
         transition.setName("continue");
         return transition;
     }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
 }

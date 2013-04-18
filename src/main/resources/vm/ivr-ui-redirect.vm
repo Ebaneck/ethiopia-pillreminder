@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
-	<Redirect method="GET">$path/module/verboice/ivr?CallSid=$sessionId&amp;tree=IVRUITree&amp;ln=$language</Redirect>
+	<Redirect method="GET">$path/module/verboice/ivr?CallSid=$sessionId&amp;tree=IVRUITree$language&amp;ln=$language</Redirect>
 </Response>

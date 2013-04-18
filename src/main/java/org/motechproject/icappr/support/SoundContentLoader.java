@@ -1,9 +1,7 @@
 package org.motechproject.icappr.support;
 
 import java.io.IOException;
-
 import javax.annotation.PostConstruct;
-
 import org.motechproject.cmslite.api.model.CMSLiteException;
 import org.motechproject.cmslite.api.model.StreamContent;
 import org.motechproject.cmslite.api.service.CMSLiteService;

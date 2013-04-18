@@ -10,8 +10,8 @@ import org.motechproject.icappr.mrs.MrsEntityFacade;
 import org.motechproject.icappr.service.CallInitiationService;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
-import org.motechproject.mrs.domain.Attribute;
-import org.motechproject.mrs.domain.Patient;
+import org.motechproject.mrs.domain.MRSAttribute;
+import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.server.pillreminder.api.EventKeys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +49,7 @@ public class AdherenceCallListener {
         }
 
         String motechId = motechEvent.getParameters().get(EventKeys.EXTERNAL_ID_KEY).toString();
-        Patient patient = mrsEntityFacade.findPatientByMotechId(motechId);
+        MRSPatient patient = mrsEntityFacade.findPatientByMotechId(motechId);
 
         String phonenum = getPhoneFromAttributes(patient.getPerson().getAttributes());
         if (phonenum == null) {
@@ -76,8 +76,8 @@ public class AdherenceCallListener {
         return Integer.parseInt(motechEvent.getParameters().get(EventKeys.PILLREMINDER_TIMES_SENT).toString()) >= maxRetryCount;
     }
 
-    private String getPhoneFromAttributes(List<Attribute> attributes) {
-        for (Attribute attr : attributes) {
+    private String getPhoneFromAttributes(List<MRSAttribute> attributes) {
+        for (MRSAttribute attr : attributes) {
             if (MrsConstants.MRS_PHONE_NUM_ATTR.equals(attr.getName())) {
                 return attr.getValue();
             }
@@ -86,8 +86,8 @@ public class AdherenceCallListener {
         return null;
     }
     
-    private String getLanguageFromAttributes(List<Attribute> attributes) {
-        for (Attribute attr : attributes) {
+    private String getLanguageFromAttributes(List<MRSAttribute> attributes) {
+        for (MRSAttribute attr : attributes) {
             if (MrsConstants.MRS_LANGUAGE_ATTR.equals(attr.getName())) {
                 return attr.getValue();
             }

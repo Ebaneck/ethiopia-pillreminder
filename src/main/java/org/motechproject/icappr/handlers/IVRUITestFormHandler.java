@@ -57,7 +57,6 @@ public class IVRUITestFormHandler {
 		DateTime dateTime = DateUtil.now().plusMinutes(2);
 		request.setCallStartTime(String.format("%02d:%02d",
 				dateTime.getHourOfDay(), dateTime.getMinuteOfHour()));
-		ivrUIDecisionTreeBuilder.setLanguage(language);
 		ivrUIDecisionTreeBuilder.buildTree();
 		enroller.enrollPerson(request);
 	}
