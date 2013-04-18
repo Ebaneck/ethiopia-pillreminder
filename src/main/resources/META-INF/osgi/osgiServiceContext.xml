@@ -7,13 +7,13 @@
     <osgi:reference cardinality="0..1" id="flowSessionServiceOsgi"
         interface="org.motechproject.callflow.service.FlowSessionService" />
 
-    <osgi:reference cardinality="0..1" id="mrsPatientAdapterOsgi" interface="org.motechproject.mrs.services.MRSPatientAdapter" bean-name="patientAdapter"/>
+    <osgi:reference cardinality="0..1" id="mrsPatientAdapterOsgi" interface="org.motechproject.mrs.services.MRSPatientAdapter" bean-name="couchPatientAdapter"/>
 
-    <osgi:reference cardinality="0..1" id="mrsFacilityAdapterOsgi" interface="org.motechproject.mrs.services.MRSFacilityAdapter" bean-name="facilityAdapter"/>
-
+    <osgi:reference cardinality="0..1" id="mrsFacilityAdapterOsgi" interface="org.motechproject.mrs.services.MRSFacilityAdapter" bean-name="couchFacilityAdapter"/>
+    
     <osgi:reference cardinality="0..1" id="mrsUserAdapterOsgi" interface="org.motechproject.mrs.services.MRSUserAdapter" bean-name="facilityAdapter"/>
 
-    <osgi:reference cardinality="0..1" id="mrsEncounterAdapterOsgi" interface="org.motechproject.mrs.services.MRSEncounterAdapter" bean-name="encounterAdapter"/>
+    <osgi:reference cardinality="0..1" id="mrsEncounterAdapterOsgi" interface="org.motechproject.mrs.services.MRSEncounterAdapter" bean-name="couchEncounterAdapter"/>
     
     <osgi:reference cardinality="0..1" id="couchPersonAdapter" interface="org.motechproject.mrs.services.MRSPersonAdapter" bean-name="couchPersonAdapter"/>
 
