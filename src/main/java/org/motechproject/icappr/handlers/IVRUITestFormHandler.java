@@ -9,7 +9,7 @@ import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.mrs.MRSPersonUtil;
 import org.motechproject.icappr.domain.IVREnrollmentRequest;
 import org.motechproject.icappr.service.IVRUIEnroller;
-import org.motechproject.icappr.support.IVRUIDecisionTreeBuilder;
+import org.motechproject.icappr.support.DecisionTreeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,12 @@ public class IVRUITestFormHandler {
 
 	private final IVRUIEnroller enroller;
 	private final MRSPersonUtil mrsPersonUtil;
-	private final IVRUIDecisionTreeBuilder ivrUIDecisionTreeBuilder;
+	private final DecisionTreeBuilder ivrUIDecisionTreeBuilder;
 	
 	private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
 	@Autowired
-	public IVRUITestFormHandler(IVRUIEnroller enroller, MRSPersonUtil mrsPersonUtil, IVRUIDecisionTreeBuilder ivrUIDecisionTreeBuilder) {
+	public IVRUITestFormHandler(IVRUIEnroller enroller, MRSPersonUtil mrsPersonUtil, DecisionTreeBuilder ivrUIDecisionTreeBuilder) {
 		this.enroller = enroller;
 		this.mrsPersonUtil = mrsPersonUtil;
 		this.ivrUIDecisionTreeBuilder = ivrUIDecisionTreeBuilder;

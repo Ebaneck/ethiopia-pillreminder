@@ -18,48 +18,55 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IVRUIDecisionTreeBuilder {
+public class DecisionTreeBuilder {
 
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     private final DecisionTreeService decisionTreeService;
     private final PillReminderSettings settings;
+    private List<String> languages = new ArrayList<String>();
 
     @Autowired
-    public IVRUIDecisionTreeBuilder(DecisionTreeService decisionTreeService, PillReminderSettings settings) {
+    public DecisionTreeBuilder(DecisionTreeService decisionTreeService, PillReminderSettings settings) {
         this.decisionTreeService = decisionTreeService;
         this.settings = settings;
-    }
-
-    public void buildTree() {
-        logger.info("Creating ivr-ui-test decision trees");
-        List<String> languages = new ArrayList<String>();
         languages.add("english");
         languages.add("amharic");
         languages.add("harari");
         languages.add("oromiffa");
         languages.add("somali");
-        if (languages != null ) {
-            for (String language : languages) {
-                deleteOldTree(language);
-                createDecisionTree(language);
-            }
+    }
+
+    public void buildTree() {
+        logger.info("Creating ivr-ui-test decision trees");
+        for (String language : languages) {
+            deleteOldTree("IVRUITree", language);
+            createIvrUIDecisionTree("IVRUITree", language);
         }
     }
 
-    private void deleteOldTree(String language) {
+    public void buildPillReminderTree() {
+        logger.info("Creating pill reminder decision trees");
+        for (String language : languages) {
+            deleteOldTree("PillReminderTree", language);
+            createIvrUIDecisionTree("PillReminderTree", language);
+        }
+
+    }
+
+    private void deleteOldTree(String treeName, String language) {
         List<Tree> trees = decisionTreeService.getDecisionTrees();
         for (Tree tree : trees) {
-            if (("IVRUITree" + language).equals(tree.getName())) {
+            if ((treeName + language).equals(tree.getName())) {
                 decisionTreeService.deleteDecisionTree(tree.getId());
                 break;
             }
         }
     }
 
-    private void createDecisionTree(String language) {
+    private void createIvrUIDecisionTree(String treeName, String language) {
         Tree tree = new Tree();
-        tree.setName("IVRUITree" + language);
+        tree.setName(treeName + language);
         Transition rootTransition = new Transition();
 
         /*
@@ -67,7 +74,7 @@ public class IVRUIDecisionTreeBuilder {
          * "1," they will continue to receive calls that prompt them for their
          * pin number, re-initiating the whole process.
          */
-        
+
         rootTransition.setDestinationNode(new Node()
         .setPrompts(
                 new Prompt[] { new AudioPrompt().setAudioFileUrl(settings

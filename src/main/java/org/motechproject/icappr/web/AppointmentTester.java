@@ -5,7 +5,7 @@ import org.motechproject.appointments.api.service.AppointmentService;
 import org.motechproject.appointments.api.service.contract.CreateVisitRequest;
 import org.motechproject.appointments.api.service.contract.ReminderConfiguration;
 import org.motechproject.appointments.api.service.contract.ReminderConfiguration.IntervalUnit;
-import org.motechproject.icappr.support.IVRUIDecisionTreeBuilder;
+import org.motechproject.icappr.support.DecisionTreeBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,7 @@ public class AppointmentTester {
     private AppointmentService appointmentService;
 
     @Autowired
-    private IVRUIDecisionTreeBuilder decisionTreeBuilder;
+    private DecisionTreeBuilder decisionTreeBuilder;
 
     @RequestMapping("/testapt")
     @ResponseBody
@@ -41,5 +41,6 @@ public class AppointmentTester {
     @RequestMapping("buildtree")
     public void buildTree() {
         decisionTreeBuilder.buildTree();
+        decisionTreeBuilder.buildPillReminderTree();
     }
 }
