@@ -74,10 +74,10 @@ public class CommcareStubFormListener {
 		
 		logger.debug("Handling form with xmlns" + xmlns);
 		
-		logger.debug("Checking to see if xmlns matches the registration form (" + FormXmlnsConstants.REGISTRATION_FORM_XMLNS + ")");
+		logger.debug("Checking to see if xmlns matches the registration form (" + FormXmlnsConstants.PILLREMINDER_REGISTRATION_FORM_XMLNS + ")");
 		logger.debug("Checking to see if xmlns matches the IVR UI Test form (" + FormXmlnsConstants.IVR_TEST_FORM_XMLNS + ")");
 		
-		if (FormXmlnsConstants.REGISTRATION_FORM_XMLNS.equals(xmlns)) {
+		if (FormXmlnsConstants.PILLREMINDER_REGISTRATION_FORM_XMLNS.equals(xmlns)) {
 			// delegate to registration form handler
 			registrationFormHandler.handleForm(form);
 			

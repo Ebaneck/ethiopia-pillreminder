@@ -54,8 +54,12 @@ public class PillReminderRegistrar {
 		logger.debug("Starting Patient Registration");
 		createGenericPatient(registration);
 		logger.debug("Finishing Patient Registration");
-//		enrollInDailyMessageCampaign(registration);
-		 enrollInAdherenceCall(registration);
+		enrollInDailyMessageCampaign(registration);
+//		 enrollInAdherenceCall(registration, true);
+	}
+	
+	public void update() {
+	    
 	}
 
 	private void enrollInDailyMessageCampaign(
@@ -69,7 +73,7 @@ public class PillReminderRegistrar {
 		messageCampaignService.startFor(request);
 	}
 
-	private void enrollInAdherenceCall(PillReminderRegistration registration) {
+	private void enrollInAdherenceCall(PillReminderRegistration registration, boolean updateExisting) {
 		AdherenceCallEnrollmentRequest request = new AdherenceCallEnrollmentRequest();
 		request.setMotechID(registration.getPatientId());
 		request.setPhoneNumber(registration.getPhoneNumber());
@@ -78,7 +82,7 @@ public class PillReminderRegistrar {
 		// will change based on information in form
 		request.setDosageStartTime(String.format("%02d:%02d",
 				dateTime.getHourOfDay(), dateTime.getMinuteOfHour()));
-		adherenceCallEnroller.enrollPatientWithId(request);
+		adherenceCallEnroller.enrollPatientWithId(request, updateExisting);
 	}
 
 	private void createGenericPatient(PillReminderRegistration registration) {

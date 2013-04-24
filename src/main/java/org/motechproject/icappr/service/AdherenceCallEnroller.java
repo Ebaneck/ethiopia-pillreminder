@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AdherenceCallEnroller {
-	private Logger logger = LoggerFactory.getLogger("motech-icappr");
-	private final AdherenceCallService adherenceCallService;
+    private Logger logger = LoggerFactory.getLogger("motech-icappr");
+    private final AdherenceCallService adherenceCallService;
     private final MRSPatientAdapter patientAdapter;
 
     @Autowired
@@ -30,10 +30,10 @@ public class AdherenceCallEnroller {
         this.patientAdapter = patientAdapter;
     }
 
-    public AdherenceCallEnrollmentResponse enrollPatientWithId(AdherenceCallEnrollmentRequest request) {
+    public AdherenceCallEnrollmentResponse enrollPatientWithId(AdherenceCallEnrollmentRequest request, boolean updateExistingRegimen) {
         AdherenceCallEnrollmentResponse response = new AdherenceCallEnrollmentResponse();
 
-        if (adherenceCallService.isPatientInCallRegimen(request.getMotechId())) {
+        if (!updateExistingRegimen && adherenceCallService.isPatientInCallRegimen(request.getMotechId())) {
             response.addError("Patient is already enrolled in Pill Reminder Regimen.");
             return response;
         }
@@ -64,7 +64,7 @@ public class AdherenceCallEnroller {
 
     private void setAttribute(MRSPerson person, String attrValue, String attrName) {
         Iterator<MRSAttribute> attrs = person.getAttributes().iterator();
-        
+
         while (attrs.hasNext()) {
             MRSAttribute attr = attrs.next();
             if (attrName.equalsIgnoreCase(attr.getName())) {
