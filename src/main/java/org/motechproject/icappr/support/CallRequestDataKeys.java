@@ -6,5 +6,6 @@ public interface CallRequestDataKeys {
     final String CALLBACK_URL = "callback_url";
     final String STATUS_CALLBACK_URL = "status_callback_url";
     final String LANGUAGE = "language";
+    final String REQUEST_TYPE = "requestType";
 
 }
