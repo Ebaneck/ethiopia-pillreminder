@@ -49,7 +49,7 @@ public class DecisionTreeBuilder {
         logger.info("Creating pill reminder decision trees");
         for (String language : languages) {
             deleteOldTree("PillReminderTree", language);
-            createIvrUIDecisionTree("PillReminderTree", language);
+            createPillReminderCampaignTree("PillReminderTree", language);
         }
 
     }
@@ -62,6 +62,21 @@ public class DecisionTreeBuilder {
                 break;
             }
         }
+    }
+    
+    private void createPillReminderCampaignTree(String treeName, String language) {
+        Tree tree = new Tree();
+        tree.setName(treeName + language);
+        Transition rootTransition = new Transition();
+
+        rootTransition.setDestinationNode(new Node()
+        .setPrompts(
+                new Prompt[] { new AudioPrompt().setAudioFileUrl(settings
+                        .getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, language)) }).setTransitions(
+                                new Object[][] { { "1", getPillReminderContinueTransition(language) }, { "3", getPillReminderStopTransition(language) } }));
+        tree.setRootTransition(rootTransition);
+
+        decisionTreeService.saveDecisionTree(tree);
     }
 
     private void createIvrUIDecisionTree(String treeName, String language) {
@@ -100,6 +115,28 @@ public class DecisionTreeBuilder {
         Transition transition = new Transition();
         Action action1 = new Action();
         action1.setEventId(Events.PATIENT_SELECTED_CONTINUE);
+        transition.setActions(action1);
+        transition.setDestinationNode(new Node().setNoticePrompts(new Prompt[] { new AudioPrompt()
+        .setAudioFileUrl(settings.getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, language)) }));
+        transition.setName("continue");
+        return transition;
+    }
+    
+    private Transition getPillReminderStopTransition(String language) {
+        Transition transition = new Transition();
+        Action action1 = new Action();
+        action1.setEventId(Events.PATIENT_SELECTED_END_PILL_REMINDER_CALL);
+        transition.setActions(action1);
+        transition.setDestinationNode(new Node().setPrompts(new AudioPrompt().setAudioFileUrl(settings
+                .getCmsliteUrlFor(SoundFiles.GOODBYE, language))));
+        transition.setName("stop");
+        return transition;
+    }
+
+    private Transition getPillReminderContinueTransition(String language) {
+        Transition transition = new Transition();
+        Action action1 = new Action();
+        action1.setEventId(Events.PATIENT_WANTS_CLINIC_CALL);
         transition.setActions(action1);
         transition.setDestinationNode(new Node().setNoticePrompts(new Prompt[] { new AudioPrompt()
         .setAudioFileUrl(settings.getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, language)) }));
