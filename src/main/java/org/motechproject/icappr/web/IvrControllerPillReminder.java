@@ -90,6 +90,13 @@ public class IvrControllerPillReminder {
                 view = generateModelAndView(requestType, sessionId, language);
                 correctPin = true;
             }
+        } 
+        if (requestType.matches(RequestTypes.PILL_REMINDER_CALL)) {
+            if (decisionTreeSessionHandler.digitsMatchPatientPin(sessionId, digits)) {
+                logger.info("The pin is correct. Forwarding request to Pill reminder campaign enrollment...");
+                view = generateModelAndView(requestType, sessionId, language);
+                correctPin = true;
+            }
         }
         if (!correctPin) {
             logger.info("The pin is incorrect.");
@@ -113,11 +120,7 @@ public class IvrControllerPillReminder {
             view = new ModelAndView(vm);
             view.addObject("path", settings.getMotechUrl());
             view.addObject("sessionId", sessionId);
-            if (requestType.matches(RequestTypes.ADHERENCE_CALL)){
-                view.addObject("language", language);
-            }
-            if (requestType.matches(RequestTypes.IVR_UI))
-                view.addObject("language", language);
+            view.addObject("language", language);
             logger.debug("Generating view with sessionId " + sessionId + " and language " + language);
         }
         return view;
@@ -134,6 +137,8 @@ public class IvrControllerPillReminder {
             return "adherence-redirect";
         else if (requestType.matches(RequestTypes.IVR_UI))
             return "ivr-ui-redirect";
+        else if (requestType.matches(RequestTypes.PILL_REMINDER_CALL))
+            return "pillreminder-redirect";
         else
             return null;
     }

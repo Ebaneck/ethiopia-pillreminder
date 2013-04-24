@@ -47,6 +47,7 @@ public class CallInitiationService {
         // payload. The verboice ivr service will copy all payload data to the
         // flow session so that we can retrieve it at a later time
         payload.put(CallRequestDataKeys.MOTECH_ID, motechId);
+        payload.put(CallRequestDataKeys.REQUEST_TYPE, requestType);
 
         // the callback_url is used once verboice starts a call to retrieve the
         // data for the call (e.g. TwiML)

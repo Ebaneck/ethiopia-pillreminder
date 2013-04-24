@@ -77,7 +77,7 @@ public class PillReminderController {
             now = now.plusMinutes(1);
         }
         request.setDosageStartTime(now.getHourOfDay() + ":" + String.format("%02d", now.getMinuteOfHour()));
-        return enroller.enrollPatientWithId(request);
+        return enroller.enrollPatientWithId(request, false);
     }
 
     @RequestMapping(value = "/search-patient/{motechId}", method = RequestMethod.GET)
