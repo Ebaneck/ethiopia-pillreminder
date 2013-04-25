@@ -18,6 +18,7 @@ public class CallInitiationService {
 
     private final IVRService ivrService;
     private final PillReminderSettings settings;
+    private final static int NUM_RETRIES = 3;
 
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
@@ -51,12 +52,12 @@ public class CallInitiationService {
 
         // the callback_url is used once verboice starts a call to retrieve the
         // data for the call (e.g. TwiML)
-        String callbackUrl = settings.getMotechUrl() + "/module/icappr/ivr/start?motech_call_id=%s&request_type=%s&language=%s";
+        String callbackUrl = settings.getMotechUrl() + "/module/icappr/ivr/start?motech_call_id=%s&request_type=%s&language=%s&retries_left=%s";
         String callbackStatusUrl = settings.getMotechUrl() + "/module/verboice/ivr/callstatus";
 
         try {
             payload.put(CallRequestDataKeys.CALLBACK_URL,
-                    URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId(), requestType, language), "UTF-8"));
+                    URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId(), requestType, language, NUM_RETRIES), "UTF-8"));
             payload.put(CallRequestDataKeys.STATUS_CALLBACK_URL, callbackStatusUrl);
         } catch (UnsupportedEncodingException e) {
         }
