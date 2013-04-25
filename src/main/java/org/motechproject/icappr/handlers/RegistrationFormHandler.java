@@ -29,6 +29,7 @@ public class RegistrationFormHandler {
 		String nextAppointment = getValue(topFormElement, "next_appointment");
 		String iptInitiationDate = getValue(topFormElement, "ipt_initiation_date");
 		String preferredCallTime = getValue(topFormElement, "preferred_call_time");
+		String preferredDayOfWeek = getValue(topFormElement, "preferred_call_day");
 		
         PillReminderRegistration registration = new PillReminderRegistration();
         
@@ -41,6 +42,7 @@ public class RegistrationFormHandler {
         registration.setNextAppointment(nextAppointment);
         registration.setIptInitiationDate(iptInitiationDate);
         registration.setPreferredCallTime(preferredCallTime);
+        registration.setPreferredDay(preferredDayOfWeek);
         
         pillReminderRegistrar.register(registration);
 	}
