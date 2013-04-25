@@ -25,4 +25,10 @@ public final class SoundFiles {
     /*Demo sound files for campaign message*/
     public static final String CAMPAIGN_MESSAGE = "campaignMessage";
 
+    /*Demo sound files for status effects*/
+    public static final String YELLOW_SKIN = "yellowSkinQuestion";
+    public static final String ABDOMINAL_PAIN = "abdominalPainQuestion";
+    public static final String SKIN_RASH = "skinRashQuestion";
+    public static final String TINGLING_NUMBNESS = "tinglingNumbnessQuestion";
+
 }
