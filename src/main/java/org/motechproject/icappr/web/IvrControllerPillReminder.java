@@ -42,6 +42,8 @@ public class IvrControllerPillReminder {
         String motechId = request.getParameter("motech_call_id");
         String requestType = request.getParameter("request_type");
         String language = request.getParameter("language");
+        String retriesLeft = request.getParameter("retries_left");
+
         ModelAndView view = new ModelAndView("security-pin");
 
         logger.debug("Generating security pin twiML for request type " + requestType + " and language " + language
@@ -54,6 +56,7 @@ public class IvrControllerPillReminder {
         view.addObject("sessionId", verboiceId);
         view.addObject("requestType", requestType);
         view.addObject("language", language);
+        view.addObject("retriesLeft", retriesLeft);
 
         return view;
     }
@@ -72,6 +75,7 @@ public class IvrControllerPillReminder {
         String digits = request.getParameter("Digits");
         String requestType = request.getParameter("requestType");
         String language = request.getParameter("language");
+        int retriesLeft = Integer.parseInt(request.getParameter("retriesLeft"));
         logger.info("The session id is " + sessionId);
         logger.info("The pin entered is " + digits);
         logger.info("The language is " + language);
@@ -99,13 +103,24 @@ public class IvrControllerPillReminder {
             }
         }
         if (!correctPin) {
-            logger.info("The pin is incorrect.");
-            view = new ModelAndView("failed-authentication");
-            view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.INCORRECT_PIN, language));
+            if (retriesLeft == 1) {
+                logger.info("Three incorrect pin attempts");
+                view = new ModelAndView("failed-authentication");
+                view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.INCORRECT_PIN, language));
+            } else {
+                retriesLeft--;
+                logger.info("Pin incorrect, trying again");
+                view = new ModelAndView("security-pin");
+                view.addObject("retriesLeft", retriesLeft);
+                view.addObject("sessionId", sessionId);
+                view.addObject("requestType", requestType);
+                view.addObject("language", language);
+                view.addObject("path", settings.getMotechUrl());
+                view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST, language));
+            }
         }
         return view;
     }
-
 
     /**
      * Helper method that builds the proper model and view
