@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.motechproject.commons.date.model.Time;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
@@ -53,7 +54,8 @@ public class PillReminderRegistrar {
         createGenericPatient(registration);
         logger.debug("Finishing Patient Registration");
         enrollInDailyMessageCampaign(registration);
-        // enrollInAdherenceCall(registration, true);
+        //enrollInWeeklyMessageCampaign(registration);
+        //enrollInAdherenceCall(registration, true);
     }
 
     public void update() {
@@ -66,6 +68,8 @@ public class PillReminderRegistrar {
         request.setExternalId(registration.getPatientId());
         request.setReferenceDate(DateUtil.now().toLocalDate());
         request.setReferenceTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().getMinuteOfHour()));
+        //request.setStartTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().plusMinutes(1).getMinuteOfHour())); 
+        logger.debug("starting daily message campaign ");
         messageCampaignService.startFor(request);
     }
 
@@ -75,15 +79,18 @@ public class PillReminderRegistrar {
         request.setReferenceDate(DateUtil.now().toLocalDate());
         request.setReferenceTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().getMinuteOfHour()));
 
+        String stringPrefTime = registration.getPreferredCallTime().substring(0,5);
         Time preferredTime = new Time();
-        DateTime dateTimePreferredTime = DateTime.parse(registration.getPreferredCallTime());
+        DateTime dateTimePreferredTime = DateTimeFormat.forPattern("HH:mm").parseDateTime(stringPrefTime);
         int hour = dateTimePreferredTime.getHourOfDay();
         int minute = dateTimePreferredTime.getMinuteOfHour();
         preferredTime.setHour(hour);
         preferredTime.setMinute(minute);
         logger.debug("preferred time is " + preferredTime.getHour() + ":" + preferredTime.getMinute());
-        request.setStartTime(preferredTime);
-               
+        
+        //request.setStartTime(preferredTime);          //REMOVE COMMENT POST-TESTING
+        request.setStartTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().plusMinutes(1).getMinuteOfHour()));      
+        logger.debug("actual start time (for testing) is " + request.deliverTime());
         String dayOfWeek = registration.getPreferredDay();
         
         if (dayOfWeek.toLowerCase().matches("monday"))
@@ -101,6 +108,7 @@ public class PillReminderRegistrar {
         if (dayOfWeek.toLowerCase().matches("sunday"))
             request.setCampaignName("SundayMessageCampaign");
         
+        logger.debug("starting campaign for day " + request.campaignName());
         messageCampaignService.startFor(request);
     }
     

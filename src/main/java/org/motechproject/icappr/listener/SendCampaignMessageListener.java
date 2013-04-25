@@ -12,12 +12,15 @@ import org.motechproject.icappr.service.CallInitiationService;
 import org.motechproject.messagecampaign.EventKeys;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.services.MRSPatientAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SendCampaignMessageListener {
 
+    private Logger logger = LoggerFactory.getLogger("motech-icappr");
 	private MRSPatientAdapter patientAdapter;
 	private CallInitiationService callService;
 	
@@ -32,6 +35,7 @@ public class SendCampaignMessageListener {
 
 	@MotechListener(subjects = { EventKeys.SEND_MESSAGE })
 	public void sendCampaignMessage(MotechEvent event) {
+	    logger.debug("received message campaign event");
 		String patientId = event.getParameters().get(EventKeys.EXTERNAL_ID_KEY).toString();
 		MRSPatient patient = patientAdapter.getPatientByMotechId(patientId);
 
