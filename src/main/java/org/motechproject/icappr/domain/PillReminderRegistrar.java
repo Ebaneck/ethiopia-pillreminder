@@ -130,15 +130,11 @@ public class PillReminderRegistrar {
         facilityAdapter.saveFacility(mrsFacilityDto);
 
         MRSPerson person = new MRSPersonDto();
-        person.setFirstName("MOTECH Generic Patient");
-        person.setLastName("MOTECH Generic Patient");
-        person.setGender("M");
-        person.setDateOfBirth(DateUtil.now());
+
         List<MRSAttribute> attributes = new ArrayList<MRSAttribute>();
         attributes.add(new MRSAttributeDto(MrsConstants.PERSON_LANGUAGE_ATTR, registration.getPreferredLanguage()));
         attributes.add(new MRSAttributeDto(MrsConstants.PERSON_PHONE_NUMBER_ATTR, registration.getPhoneNumber()));
         attributes.add(new MRSAttributeDto(MrsConstants.PERSON_PIN_ATTR, registration.getPin()));
-        attributes.add(new MRSAttributeDto(MrsConstants.PERSON_NEXT_CAMPAIGN_ATTR, registration.nextCampaign()));
 
         person.setAttributes(attributes);
 
