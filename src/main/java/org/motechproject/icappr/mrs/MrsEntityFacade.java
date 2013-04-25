@@ -1,12 +1,14 @@
 package org.motechproject.icappr.mrs;
 
 import org.motechproject.commons.date.util.DateUtil;
+import org.motechproject.mrs.domain.MRSEncounter;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.domain.MRSFacility;
 import org.motechproject.mrs.domain.MRSPerson;
 import org.motechproject.mrs.domain.MRSProvider;
 import org.motechproject.mrs.model.MRSPatientDto;
 import org.motechproject.mrs.model.MRSPersonDto;
+import org.motechproject.mrs.services.MRSEncounterAdapter;
 import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,6 +26,7 @@ public class MrsEntityFacade {
     private MRSPatientAdapter patientAdapter;
     private MrsUserResolver userResolver;
     private MrsFacilityResolver facilityResolver;
+    private MRSEncounterAdapter encounterAdapter;
 
     @Autowired
     public MrsEntityFacade(MRSPatientAdapter patientAdapter, MrsUserResolver userResolver,
@@ -54,5 +57,14 @@ public class MrsEntityFacade {
 
         MRSPatient patient = new MRSPatientDto(null, facilityResolver.resolveMotechFacility(), person, patientMotechId);
         return patientAdapter.savePatient(patient);
+    }
+
+    public MRSEncounter getEncounterByFlowSessionId(String flowSessionId) {
+        return encounterAdapter.getEncounterById(flowSessionId);
+    }
+
+    public void saveEncounterWithFlowSessionId(MRSEncounter encounter, String flowSessionId) {
+        encounter.setEncounterId(flowSessionId);
+        encounterAdapter.createEncounter(encounter);
     }
 }

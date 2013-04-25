@@ -42,5 +42,6 @@ public class AppointmentTester {
     public void buildTree() {
         decisionTreeBuilder.buildTree();
         decisionTreeBuilder.buildPillReminderTree();
+        decisionTreeBuilder.buildSideEffectTree();
     }
 }
