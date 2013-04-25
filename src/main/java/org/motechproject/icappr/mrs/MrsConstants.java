@@ -18,5 +18,6 @@ public interface MrsConstants {
     final String PERSON_LANGUAGE_ATTR = "Language";
     final String PERSON_NUM_PIN_ATTEMPTS = "NumPinAttempts";
 	final String PERSON_NEXT_CAMPAIGN_ATTR = "NextCampaignAttr";
+    final String LOGIN_FAILURE_ATTR = "FailedLogins";
 
 }

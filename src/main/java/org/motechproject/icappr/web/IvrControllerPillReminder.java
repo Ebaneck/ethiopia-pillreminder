@@ -107,6 +107,7 @@ public class IvrControllerPillReminder {
                 logger.info("Three incorrect pin attempts");
                 view = new ModelAndView("failed-authentication");
                 view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.INCORRECT_PIN, language));
+                decisionTreeSessionHandler.updatePatientFailedLogin(sessionId);
             } else {
                 retriesLeft--;
                 logger.info("Pin incorrect, trying again");

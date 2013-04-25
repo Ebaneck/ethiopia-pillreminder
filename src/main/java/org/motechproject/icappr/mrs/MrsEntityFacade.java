@@ -45,6 +45,9 @@ public class MrsEntityFacade {
         return (MRSPatient) patientAdapter.getPatientByMotechId(motechId);
     }
 
+    public MRSPatient savePatient(MRSPatient patient) {
+        return patientAdapter.savePatient(patient);
+    }
 
     public MRSPatient createGenericPatient(String patientMotechId) {
         MRSPerson person = new MRSPersonDto();
