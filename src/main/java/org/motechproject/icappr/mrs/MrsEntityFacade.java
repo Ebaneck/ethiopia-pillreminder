@@ -51,10 +51,6 @@ public class MrsEntityFacade {
 
     public MRSPatient createGenericPatient(String patientMotechId) {
         MRSPerson person = new MRSPersonDto();
-        person.setFirstName(DEFAULT_FIRST_NAME);
-        person.setLastName(DEFAULT_LAST_NAME);
-        person.setGender(DEFAULT_GENDER);
-        person.setDateOfBirth(DateUtil.now());
 
         MRSPatient patient = new MRSPatientDto(null, facilityResolver.resolveMotechFacility(), person, patientMotechId);
         return patientAdapter.savePatient(patient);

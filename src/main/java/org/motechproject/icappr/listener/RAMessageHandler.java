@@ -33,14 +33,12 @@ public class RAMessageHandler {
             if (patient != null) {
                 MRSPerson person = patient.getPerson();
                 String phoneNumber = MRSPersonUtil.getAttrValue(MrsConstants.PERSON_PHONE_NUMBER_ATTR, patient.getPerson().getAttributes());
-                String firstName = person.getFirstName();
-                String lastName = person.getLastName();
-                buildThenSendMessage(phoneNumber, firstName, lastName);
+                buildThenSendMessage(phoneNumber);
             }
         }
     }
 
-    private void buildThenSendMessage(String phoneNumber, String firstName, String lastName) {
+    private void buildThenSendMessage(String phoneNumber) {
         // TODO Auto-generated method stub
         
     }
