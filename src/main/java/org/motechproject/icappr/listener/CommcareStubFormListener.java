@@ -12,6 +12,7 @@ import org.motechproject.event.listener.annotations.MotechListener;
 import org.motechproject.icappr.constants.FormXmlnsConstants;
 import org.motechproject.icappr.handlers.IVRUITestFormHandler;
 import org.motechproject.icappr.handlers.RegistrationFormHandler;
+import org.motechproject.icappr.handlers.UpdateFormHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class CommcareStubFormListener {
 
 	@Autowired
 	private IVRUITestFormHandler ivrUITestFormHandler;
+	
+	@Autowired
+    private UpdateFormHandler updateFormHandler;
 	
 	private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
@@ -85,5 +89,10 @@ public class CommcareStubFormListener {
 			// delegate to ivr test form handler
 			ivrUITestFormHandler.handleForm(form);
 		}
+		
+		else if (FormXmlnsConstants.PILLREMINDER_UPDATE_FORM_XMLNS.equals(xmlns)) {
+            // delegate to update form handler
+            updateFormHandler.handleForm(form);
+        }
 	}
 }

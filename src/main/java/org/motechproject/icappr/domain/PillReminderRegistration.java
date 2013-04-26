@@ -10,15 +10,6 @@ public class PillReminderRegistration {
 	private String nextAppointment;
 	private String iptInitiationDate;
 	private String preferredCallTime;
-	private String preferredDay;
-	
-    public String getPreferredDay() {
-        return preferredDay;
-    }
-
-    public void setPreferredDay(String preferredDay) {
-        this.preferredDay = preferredDay;
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;

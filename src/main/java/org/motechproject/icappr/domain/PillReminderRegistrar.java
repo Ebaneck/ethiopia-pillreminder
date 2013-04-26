@@ -16,6 +16,7 @@ import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
 import org.motechproject.icappr.mrs.MRSPersonUtil;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.service.AdherenceCallEnroller;
+import org.motechproject.icappr.service.MessageCampaignEnroller;
 import org.motechproject.messagecampaign.contract.CampaignRequest;
 import org.motechproject.messagecampaign.service.MessageCampaignService;
 import org.motechproject.mrs.domain.MRSAttribute;
@@ -37,15 +38,15 @@ public class PillReminderRegistrar {
 
     private MRSPatientAdapter patientAdapter;
     private MRSFacilityAdapter facilityAdapter;
-    private MessageCampaignService messageCampaignService;
+    private MessageCampaignEnroller messageCampaignEnroller;
     private AdherenceCallEnroller adherenceCallEnroller;
 
     @Autowired
     public PillReminderRegistrar(MRSPatientAdapter patientAdapter, MRSFacilityAdapter facilityAdapter,
-            MessageCampaignService messageCampaignService, AdherenceCallEnroller adherenceCallEnroller) {
+            MessageCampaignEnroller messageCampaignEnroller, AdherenceCallEnroller adherenceCallEnroller) {
         this.patientAdapter = patientAdapter;
         this.facilityAdapter = facilityAdapter;
-        this.messageCampaignService = messageCampaignService;
+        this.messageCampaignEnroller = messageCampaignEnroller;
         this.adherenceCallEnroller = adherenceCallEnroller;
     }
 
@@ -53,65 +54,10 @@ public class PillReminderRegistrar {
         logger.debug("Starting Patient Registration");
         createGenericPatient(registration);
         logger.debug("Finishing Patient Registration");
-        enrollInDailyMessageCampaign(registration);
-        //enrollInWeeklyMessageCampaign(registration);
+        messageCampaignEnroller.enrollInDailyMessageCampaign(registration);
         //enrollInAdherenceCall(registration, true);
     }
-
-    public void update() {
-
-    }
-
-    private void enrollInDailyMessageCampaign(PillReminderRegistration registration) {
-        CampaignRequest request = new CampaignRequest();
-        request.setCampaignName("DailyMessageCampaign");
-        request.setExternalId(registration.getPatientId());
-        request.setReferenceDate(DateUtil.now().toLocalDate());
-        request.setReferenceTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().getMinuteOfHour()));
-        //request.setStartTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().plusMinutes(1).getMinuteOfHour())); 
-        logger.debug("starting daily message campaign ");
-        messageCampaignService.startFor(request);
-    }
-
-    private void enrollInWeeklyMessageCampaign(PillReminderRegistration registration) {        
-        CampaignRequest request = new CampaignRequest();
-        request.setExternalId(registration.getPatientId());
-        request.setReferenceDate(DateUtil.now().toLocalDate());
-        request.setReferenceTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().getMinuteOfHour()));
-
-        String stringPrefTime = registration.getPreferredCallTime().substring(0,5);
-        Time preferredTime = new Time();
-        DateTime dateTimePreferredTime = DateTimeFormat.forPattern("HH:mm").parseDateTime(stringPrefTime);
-        int hour = dateTimePreferredTime.getHourOfDay();
-        int minute = dateTimePreferredTime.getMinuteOfHour();
-        preferredTime.setHour(hour);
-        preferredTime.setMinute(minute);
-        logger.debug("preferred time is " + preferredTime.getHour() + ":" + preferredTime.getMinute());
-        
-        //request.setStartTime(preferredTime);          //REMOVE COMMENT POST-TESTING
-        request.setStartTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().plusMinutes(1).getMinuteOfHour()));      
-        logger.debug("actual start time (for testing) is " + request.deliverTime());
-        String dayOfWeek = registration.getPreferredDay();
-        
-        if (dayOfWeek.toLowerCase().matches("monday"))
-            request.setCampaignName("MondayMessageCampaign");
-        if (dayOfWeek.toLowerCase().matches("tuesday"))
-            request.setCampaignName("TuesdayMessageCampaign");
-        if (dayOfWeek.toLowerCase().matches("wednesday"))
-            request.setCampaignName("WednesdayMessageCampaign");
-        if (dayOfWeek.toLowerCase().matches("thursday"))
-            request.setCampaignName("ThursdayMessageCampaign");
-        if (dayOfWeek.toLowerCase().matches("friday"))
-            request.setCampaignName("FridayMessageCampaign");
-        if (dayOfWeek.toLowerCase().matches("saturday"))
-            request.setCampaignName("SaturdayMessageCampaign");
-        if (dayOfWeek.toLowerCase().matches("sunday"))
-            request.setCampaignName("SundayMessageCampaign");
-        
-        logger.debug("starting campaign for day " + request.campaignName());
-        messageCampaignService.startFor(request);
-    }
-    
+  
 
     private void enrollInAdherenceCall(PillReminderRegistration registration, boolean updateExisting) {
         AdherenceCallEnrollmentRequest request = new AdherenceCallEnrollmentRequest();
@@ -123,6 +69,7 @@ public class PillReminderRegistrar {
         request.setDosageStartTime(String.format("%02d:%02d", dateTime.getHourOfDay(), dateTime.getMinuteOfHour()));
         adherenceCallEnroller.enrollPatientWithId(request, updateExisting);
     }
+    
 
     private void createGenericPatient(PillReminderRegistration registration) {
         MRSFacilityDto mrsFacilityDto = new MRSFacilityDto();

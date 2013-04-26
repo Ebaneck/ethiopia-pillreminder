@@ -24,12 +24,10 @@ public class RegistrationFormHandler {
 		String patientId = getValue(topFormElement, "patient_number");
 		String phoneNumber = getValue(topFormElement, "phone_number");
 		String pin = getValue(topFormElement, "pin");
-		String callFrequency = getValue(topFormElement, "pref_medication_call_freq");
 		String preferredLanguage = getValue(topFormElement, "preferred_language");
 		String nextAppointment = getValue(topFormElement, "next_appointment");
 		String iptInitiationDate = getValue(topFormElement, "ipt_initiation_date");
 		String preferredCallTime = getValue(topFormElement, "preferred_call_time");
-		String preferredDayOfWeek = getValue(topFormElement, "preferred_call_day");
 		
         PillReminderRegistration registration = new PillReminderRegistration();
         
@@ -37,12 +35,10 @@ public class RegistrationFormHandler {
         registration.setPatientId(patientId);
         registration.setPhoneNumber(phoneNumber);
         registration.setPin(pin);
-        registration.setNextCampaign(callFrequency);
         registration.setPreferredLanguage(preferredLanguage);
         registration.setNextAppointment(nextAppointment);
         registration.setIptInitiationDate(iptInitiationDate);
         registration.setPreferredCallTime(preferredCallTime);
-        registration.setPreferredDay(preferredDayOfWeek);
         
         pillReminderRegistrar.register(registration);
 	}
