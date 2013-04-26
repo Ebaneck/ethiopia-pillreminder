@@ -60,6 +60,7 @@ public class PillReminderUpdater {
         MRSPerson person = new MRSPersonDto();
 
         List<MRSAttribute> attributes = new ArrayList<MRSAttribute>();
+        
         attributes.add(new MRSAttributeDto(MrsConstants.PERSON_LANGUAGE_ATTR, registration.getPreferredLanguage()));
         attributes.add(new MRSAttributeDto(MrsConstants.PERSON_PHONE_NUMBER_ATTR, registration.getPhoneNumber()));
         attributes.add(new MRSAttributeDto(MrsConstants.PERSON_PIN_ATTR, registration.getPin()));

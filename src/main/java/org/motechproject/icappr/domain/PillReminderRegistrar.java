@@ -1,26 +1,19 @@
 package org.motechproject.icappr.domain;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.motechproject.commons.date.model.Time;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
 import org.motechproject.icappr.mrs.MRSPersonUtil;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.service.AdherenceCallEnroller;
 import org.motechproject.icappr.service.MessageCampaignEnroller;
-import org.motechproject.messagecampaign.contract.CampaignRequest;
-import org.motechproject.messagecampaign.service.MessageCampaignService;
 import org.motechproject.mrs.domain.MRSAttribute;
-import org.motechproject.mrs.domain.MRSFacility;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.domain.MRSPerson;
 import org.motechproject.mrs.model.MRSAttributeDto;

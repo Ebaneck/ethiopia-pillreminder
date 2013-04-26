@@ -64,10 +64,11 @@ public class MessageCampaignEnroller {
         Time preferredTime = getPreferredTime((PillReminderRegistration) registration);
         logger.debug("preferred time is " + preferredTime.getHour() + ":" + preferredTime.getMinute());
 
-        // request.setStartTime(preferredTime); //REMOVE COMMENT POST-TESTING
-
+        // request.setStartTime(preferredTime);                 //REMOVE COMMENT POST-TESTING
+        request.setStartTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().plusMinutes(1).getMinuteOfHour()));
+        
         logger.debug("actual start time (for testing) is " + request.deliverTime());
-        String dayOfWeek = registration.getPreferredDay();
+        String dayOfWeek = registration.getPreferredReminderDay();
 
         if (dayOfWeek.toLowerCase().matches("monday"))
             request.setCampaignName("MondayMessageCampaign");
