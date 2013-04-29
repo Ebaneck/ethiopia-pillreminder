@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.domain.Request;
+import org.motechproject.icappr.domain.RequestTypes;
 import org.motechproject.icappr.support.CallRequestDataKeys;
 import org.motechproject.ivr.service.CallRequest;
 import org.motechproject.ivr.service.IVRService;
@@ -61,6 +62,11 @@ public class CallInitiationService {
             payload.put(CallRequestDataKeys.STATUS_CALLBACK_URL, callbackStatusUrl);
         } catch (UnsupportedEncodingException e) {
         }
+
+        if (RequestTypes.SIDE_EFFECT_CALL.equals(requestType)) {
+            payload.put("language", language);
+        }
+
         logger.info("Initiating call with requestType " + requestType + " and language " + language);
         ivrService.initiateCall(callRequest);
     }
