@@ -31,4 +31,7 @@ public final class SoundFiles {
     public static final String SKIN_RASH = "skinRashQuestion";
     public static final String TINGLING_NUMBNESS = "tinglingNumbnessQuestion";
 
+    public static final String SIDE_EFFECTS_SELECTED_YES = "sideEffectsSelectedYes";
+    public static final String SIDE_EFFECTS_SELECTED_NO = "sideEffectsSelectedNo";
+
 }
