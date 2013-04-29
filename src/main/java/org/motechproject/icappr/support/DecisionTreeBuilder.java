@@ -12,6 +12,7 @@ import org.motechproject.decisiontree.core.model.Tree;
 import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.content.SoundFiles;
 import org.motechproject.icappr.domain.SideEffectQuestion;
+import org.motechproject.icappr.domain.SideEffectTransition;
 import org.motechproject.icappr.events.Events;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,13 +86,8 @@ public class DecisionTreeBuilder {
     private void createSideEffectCallTree(String treeName, String language) {
         Tree tree = new Tree();
         tree.setName(treeName + language);
-        Transition rootTransition = new Transition();
+        SideEffectTransition rootTransition = new SideEffectTransition();
 
-        rootTransition.setDestinationNode(new Node()
-        .setPrompts(
-                new Prompt[] { new AudioPrompt().setAudioFileUrl(settings
-                        .getCmsliteUrlFor(SoundFiles.CONTINUE_PROMPTS, language)) }).setTransitions(
-                                new Object[][] { { "1", getSideEffectTransition(true, language, 0, false) }, { "3", getSideEffectTransition(false, language, 0, false) } }));
         tree.setRootTransition(rootTransition);
 
         decisionTreeService.saveDecisionTree(tree);
@@ -107,9 +103,11 @@ public class DecisionTreeBuilder {
             node.setTransitions(new Object[][] { {sideEffectQuestion.getAffirmativeKeyPress(), getSideEffectTransition(true, language, level, hasSelectedYes) }, {sideEffectQuestion.getNegativeKeyPress(), getSideEffectTransition(false, language, level, hasSelectedYes) } });
         } else {
             if (hasSelectedYes) {
-                prompt.setAudioFileUrl("SELECTED YES AT SOME POINT");
+                prompt.setAudioFileUrl(settings
+                        .getCmsliteUrlFor(SoundFiles.SIDE_EFFECTS_SELECTED_YES, language));
             } else {
-                prompt.setAudioFileUrl("NEVER SELECTED YES");
+                prompt.setAudioFileUrl(settings
+                        .getCmsliteUrlFor(SoundFiles.SIDE_EFFECTS_SELECTED_NO, language));
             }
         }
         
@@ -118,12 +116,14 @@ public class DecisionTreeBuilder {
 
     private Transition getSideEffectTransition(boolean response, String language, int level, boolean hasSelectedYes) {
         Transition transition = new Transition();
-        Action action1 = new Action();
+
         SideEffectQuestion sideEffectQuestion = sideEffects.get(level);
         if (response) {
+            Action action1 = new Action();
             action1.setEventId(sideEffectQuestion.getConceptName());
+            transition.setActions(action1);
+
         }
-        transition.setActions(action1);
 
         if (response) {
             hasSelectedYes = true;
