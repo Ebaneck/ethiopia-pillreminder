@@ -102,6 +102,13 @@ public class IvrControllerPillReminder {
                 correctPin = true;
             }
         }
+        if (requestType.matches(RequestTypes.SIDE_EFFECT_CALL)) {
+            if (decisionTreeSessionHandler.digitsMatchPatientPin(sessionId, digits)) {
+                logger.info("The pin is correct. Forwarding request to side effect call...");
+                view = generateModelAndView(requestType, sessionId, language);
+                correctPin = true;
+            }
+        }
         if (!correctPin) {
             if (retriesLeft == 1) {
                 logger.info("Three incorrect pin attempts");
@@ -155,7 +162,8 @@ public class IvrControllerPillReminder {
             return "ivr-ui-redirect";
         else if (requestType.matches(RequestTypes.PILL_REMINDER_CALL))
             return "pillreminder-redirect";
-        else
+        else if (requestType.matches(RequestTypes.SIDE_EFFECT_CALL))
+            return "side-effects-redirect";
             return null;
     }
 
