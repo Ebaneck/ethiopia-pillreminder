@@ -12,6 +12,7 @@ import org.motechproject.event.listener.annotations.MotechListener;
 import org.motechproject.icappr.constants.FormXmlnsConstants;
 import org.motechproject.icappr.handlers.IVRUITestFormHandler;
 import org.motechproject.icappr.handlers.RegistrationFormHandler;
+import org.motechproject.icappr.handlers.StopFormHandler;
 import org.motechproject.icappr.handlers.UpdateFormHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,70 +30,83 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommcareStubFormListener {
 
-	@Autowired
-	private CommcareFormService formService;
+    @Autowired
+    private CommcareFormService formService;
 
-	@Autowired
-	private RegistrationFormHandler registrationFormHandler;
+    @Autowired
+    private RegistrationFormHandler registrationFormHandler;
 
-	@Autowired
-	private IVRUITestFormHandler ivrUITestFormHandler;
-	
-	@Autowired
+    @Autowired
+    private IVRUITestFormHandler ivrUITestFormHandler;
+
+    @Autowired
     private UpdateFormHandler updateFormHandler;
-	
-	private Logger logger = LoggerFactory.getLogger("motech-icappr");
+    
+    @Autowired
+    private StopFormHandler stopFormHandler;
 
-	@MotechListener(subjects = EventSubjects.FORM_STUB_EVENT)
-	public void handleStubForm(MotechEvent event) {
-		logger.debug("Pill Reminder module handling form stub event...");
-		
-		Map<String, Object> parameters = event.getParameters();
+    private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
-		String formId = (String) parameters.get(EventDataKeys.FORM_ID);
+    @MotechListener(subjects = EventSubjects.FORM_STUB_EVENT)
+    public void handleStubForm(MotechEvent event) {
+        logger.debug("Pill Reminder module handling form stub event...");
 
-		CommcareForm form = null;
+        Map<String, Object> parameters = event.getParameters();
 
-		if (formId != null && formId.trim().length() > 0) {
-			form = formService.retrieveForm(formId);
-			logger.debug("Successfully retrieved form with formID..." + formId);
-		}
+        String formId = (String) parameters.get(EventDataKeys.FORM_ID);
+        String caseId = (String) parameters.get(EventDataKeys.CASE_IDS);
+        
+        CommcareForm form = null;
 
-		FormValueElement rootElement = null;
+        if (formId != null && formId.trim().length() > 0) {
+            form = formService.retrieveForm(formId);
+            logger.debug("Successfully retrieved form with formID..." + formId + " and case ID " + caseId);
+            form.getForm().addAttribute("FormXmlnsConstants.FORM_CASE_ID", caseId);
+        }
 
-		if (form != null) {
-			rootElement = form.getForm();
-		}
+        FormValueElement rootElement = null;
 
-		if (rootElement != null) {
-			handleForm(form);
-		}
-		else{
-			logger.debug("Root element was null...not handling form.");
-		}
-	}
+        if (form != null) {
+            rootElement = form.getForm();
+        }
 
-	private void handleForm(CommcareForm form) {
-		String xmlns = form.getForm().getAttributes()
-				.get(FormXmlnsConstants.FORM_XMLNS_ATTRIBUTE);
-		
-		logger.debug("Handling form with xmlns" + xmlns);
-		
-		logger.debug("Checking to see if xmlns matches the registration form (" + FormXmlnsConstants.PILLREMINDER_REGISTRATION_FORM_XMLNS + ")");
-		logger.debug("Checking to see if xmlns matches the IVR UI Test form (" + FormXmlnsConstants.IVR_TEST_FORM_XMLNS + ")");
-		
-		if (FormXmlnsConstants.PILLREMINDER_REGISTRATION_FORM_XMLNS.equals(xmlns)) {
-			// delegate to registration form handler
-			registrationFormHandler.handleForm(form);
-			
-		} else if (FormXmlnsConstants.IVR_TEST_FORM_XMLNS.equals(xmlns)) {
-			// delegate to ivr test form handler
-			ivrUITestFormHandler.handleForm(form);
-		}
-		
-		else if (FormXmlnsConstants.PILLREMINDER_UPDATE_FORM_XMLNS.equals(xmlns)) {
+        if (rootElement != null) {
+            handleForm(form);
+        } else {
+            logger.debug("Root element was null...not handling form.");
+        }
+    }
+
+    private void handleForm(CommcareForm form) {
+        String xmlns = form.getForm().getAttributes().get(FormXmlnsConstants.FORM_XMLNS_ATTRIBUTE);
+
+        logger.debug("Handling form with xmlns" + xmlns);
+
+        logger.debug("Checking to see if xmlns matches the IVR registration form ("
+                + FormXmlnsConstants.IVR_REGISTRATION_FORM_XMLNS + ")");
+        logger.debug("Checking to see if xmlns matches the IVR update form ("
+                + FormXmlnsConstants.UPDATE_FORM_XMLNS + ")");
+        logger.debug("Checking to see if xmlns matches the IVR UI Test form (" + FormXmlnsConstants.ICAPPR_IVR_TEST_FORM_XMLNS
+                + ")");
+
+        if (FormXmlnsConstants.IVR_REGISTRATION_FORM_XMLNS.equals(xmlns)) {
+            // delegate to registration form handler
+            registrationFormHandler.handleForm(form);
+        }
+
+        else if (FormXmlnsConstants.UPDATE_FORM_XMLNS.equals(xmlns)) {
             // delegate to update form handler
             updateFormHandler.handleForm(form);
         }
-	}
+        
+        else if (FormXmlnsConstants.STOP_FORM_XMLNS.equals(xmlns)) {
+            // delegate to stop form handler
+            stopFormHandler.handleForm(form);
+        }
+
+        else if (FormXmlnsConstants.ICAPPR_IVR_TEST_FORM_XMLNS.equals(xmlns)) {
+            // delegate to ivr test form handler
+            ivrUITestFormHandler.handleForm(form);
+        }
+    }
 }

@@ -13,7 +13,7 @@ import org.motechproject.mrs.model.MRSAttributeDto;
 import org.motechproject.mrs.model.MRSFacilityDto;
 import org.motechproject.mrs.model.MRSPatientDto;
 import org.motechproject.mrs.model.MRSPersonDto;
-import org.motechproject.icappr.domain.PillReminderRegistration;
+import org.motechproject.icappr.form.model.PillReminderRegistration;
 import org.motechproject.mrs.domain.MRSAttribute;
 import org.motechproject.mrs.domain.MRSFacility;
 import org.motechproject.mrs.domain.MRSPerson;
