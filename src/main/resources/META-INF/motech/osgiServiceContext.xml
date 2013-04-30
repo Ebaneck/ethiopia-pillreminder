@@ -42,7 +42,7 @@
     <osgi:reference id="cmsliteServiceOsgi" cardinality="0..1"
         interface="org.motechproject.cmslite.api.service.CMSLiteService" />
 
-
+    <osgi:service id="pillReminderSettingOsgi" ref="pillReminderSettings" interface="org.motechproject.icappr.PillReminderSettings"/>
 
 <!--     Following come from the demo  -->
 
