@@ -95,6 +95,8 @@ public class SideEffectTransition implements ITransition {
         } else {
             returnNode.setPrompts(new AudioPrompt().setAudioFileUrl(getUrl(currentQuestion, language)));
             returnNode.addTransition("?", this);
+            returnNode.setMaxTransitionInputDigit(1);
+            returnNode.setMaxTransitionTimeout(15);
         }
 
         record.set("currentQuestion", currentQuestion);
