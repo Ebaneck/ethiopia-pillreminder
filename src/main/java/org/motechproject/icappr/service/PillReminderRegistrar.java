@@ -1,4 +1,4 @@
-package org.motechproject.icappr.domain;
+package org.motechproject.icappr.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
+import org.motechproject.icappr.form.model.PillReminderRegistration;
 import org.motechproject.icappr.mrs.MRSPersonUtil;
 import org.motechproject.icappr.mrs.MrsConstants;
-import org.motechproject.icappr.service.AdherenceCallEnroller;
-import org.motechproject.icappr.service.MessageCampaignEnroller;
 import org.motechproject.mrs.domain.MRSAttribute;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.domain.MRSPerson;

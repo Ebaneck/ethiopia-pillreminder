@@ -1,4 +1,4 @@
-package org.motechproject.icappr.domain;
+package org.motechproject.icappr.form.model;
 
 import java.util.ArrayList;
 import java.util.List;

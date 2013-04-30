@@ -98,7 +98,7 @@ public class CommcareStubFormListener {
         }
         
         else if (FormXmlnsConstants.STOP_FORM_XMLNS.equals(xmlns)) {
-            // delegate to update form handler
+            // delegate to stop form handler
             stopFormHandler.handleForm(form);
         }
 

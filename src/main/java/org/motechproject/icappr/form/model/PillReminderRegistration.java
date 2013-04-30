@@ -1,4 +1,4 @@
-package org.motechproject.icappr.domain;
+package org.motechproject.icappr.form.model;
 
 public class PillReminderRegistration {
     private String phoneNumber;
@@ -10,8 +10,8 @@ public class PillReminderRegistration {
 	private String nextAppointment;
 	private String iptInitiationDate;
 	private String preferredCallTime;
-
-    public String getPhoneNumber() {
+	
+	public String getPhoneNumber() {
         return phoneNumber;
     }
 

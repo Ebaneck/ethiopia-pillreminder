@@ -1,4 +1,4 @@
-package org.motechproject.icappr.domain;
+package org.motechproject.icappr.form.model;
 
 public class PillReminderUpdate extends PillReminderRegistration {
 
