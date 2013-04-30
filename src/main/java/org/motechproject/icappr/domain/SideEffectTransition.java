@@ -2,7 +2,6 @@ package org.motechproject.icappr.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.motechproject.callflow.domain.CallDetailRecord;
 import org.motechproject.callflow.domain.FlowSessionRecord;
 import org.motechproject.callflow.service.FlowSessionService;
@@ -60,9 +59,9 @@ public class SideEffectTransition implements ITransition {
 
         int attempts = 0;
 
-        String numRetryString = (String) callDetail.getCustomProperties().get("attempts");
-        String currentQuestion = (String) callDetail.getCustomProperties().get("currentQuestion");
-        String language = (String) callDetail.getCustomProperties().get("language");
+        String numRetryString = record.get("attempts");
+        String currentQuestion = record.get("currentQuestion");
+        String language = record.get("language");
 
         if (currentQuestion == null) {
             currentQuestion = sideEffects.get(0).getAudioUrl();
@@ -87,11 +86,11 @@ public class SideEffectTransition implements ITransition {
 
         if (attempts == 3) {
             //call over
-            String answeredYes = (String) callDetail.getCustomProperties().get("answeredYes");
+            String answeredYes = record.get("answeredYes");
             if (answeredYes == null) {
-                returnNode.setPrompts(new AudioPrompt().setAudioFileUrl(getUrl(SoundFiles.SIDE_EFFECTS_SELECTED_NO, language)));
+                returnNode.setPrompts(new AudioPrompt().setAudioFileUrl(getUrl("SELECTED_NO", language)));
             } else {
-                returnNode.setPrompts(new AudioPrompt().setAudioFileUrl(getUrl(SoundFiles.SIDE_EFFECTS_SELECTED_YES, language)));
+                returnNode.setPrompts(new AudioPrompt().setAudioFileUrl(getUrl("SELECTED_YES", language)));
             }
         } else {
             returnNode.setPrompts(new AudioPrompt().setAudioFileUrl(getUrl(currentQuestion, language)));
