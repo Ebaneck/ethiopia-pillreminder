@@ -10,7 +10,6 @@ public final class FormXmlnsConstants {
     public static final String UPDATE_FORM_XMLNS = "http://openrosa.org/formdesigner/9e6ce2911d69dddf757de1a0ae5c1b2d4dcb43d3";
     public static final String STOP_FORM_XMLNS = "http://openrosa.org/formdesigner/922B78D6-EDE4-486A-8FD4-DDA51F7CDD61";
     
-    
     /*Forms from the ICAPPR domain*/
 	public static final String ICAPPR_REGISTRATION_FORM_XMLNS = "http://openrosa.org/formdesigner/DDCA167D-7339-43FF-8DB8-6861293BD76B";	
 	public static final String ICAPPR_UPDATE_FORM_XMLNS = "http://openrosa.org/formdesigner/EAFCEC6D-C737-4EA6-8572-59E39B552B29";

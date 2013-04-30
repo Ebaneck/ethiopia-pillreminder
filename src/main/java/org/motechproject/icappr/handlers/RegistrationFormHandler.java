@@ -1,9 +1,14 @@
 package org.motechproject.icappr.handlers;
 
+import java.util.Map;
+
 import org.motechproject.commcare.domain.CommcareForm;
 import org.motechproject.commcare.domain.FormValueElement;
+import org.motechproject.commcare.events.constants.EventDataKeys;
+import org.motechproject.icappr.constants.CaseConstants;
+import org.motechproject.icappr.constants.FormXmlnsConstants;
+import org.motechproject.icappr.form.model.PillReminderRegistrar;
 import org.motechproject.icappr.form.model.PillReminderRegistration;
-import org.motechproject.icappr.service.PillReminderRegistrar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +20,17 @@ public class RegistrationFormHandler {
 
 	public void handleForm(CommcareForm form) {
 		FormValueElement topFormElement = form.getForm();
-
+		
 		if (topFormElement == null) {
 			return;
 		}
-
-		String studyId = getValue(topFormElement, "study_id");                    //Is this the pin?
+		
+	    //From form get case ID
+        Map<String, String> attributes = topFormElement.getAttributes();
+        String caseId = attributes.get(CaseConstants.FORM_CASE_ID);
+        
+		String clinicId = getValue(topFormElement, "study_id");    
+		String pin = getValue(topFormElement, "pin");
 		String preferredLanguage = getValue(topFormElement, "preferred_language");
 	    String phoneNumber = getValue(topFormElement, "phone_number");
 		String iptInitiationDate = getValue(topFormElement, "ipt_initiation");
@@ -28,12 +38,14 @@ public class RegistrationFormHandler {
 	    String nextAppointment = getValue(topFormElement, "next_appointment");
 		
 		/* Old form parameters
-		 * String pin = getValue(topFormElement, "pin");
 		 * String clinicId = getValue(topFormElement, "clinic_id");*/ 
 	    		
         PillReminderRegistration registration = new PillReminderRegistration();
         
-        registration.setPin(studyId);
+        registration.setCaseId(caseId);
+        
+        registration.setClinic(clinicId);
+        registration.setPin(pin);
         registration.setPreferredLanguage(preferredLanguage);
         registration.setPhoneNumber(phoneNumber);
         registration.setIptInitiationDate(iptInitiationDate);
@@ -41,7 +53,6 @@ public class RegistrationFormHandler {
         registration.setNextAppointment(nextAppointment);
         
         /* Old setters for old form
-         * registration.setClinic(clinicId);
          * registration.setPatientId(studyId);*/
         
         pillReminderRegistrar.register(registration);

@@ -54,12 +54,14 @@ public class CommcareStubFormListener {
         Map<String, Object> parameters = event.getParameters();
 
         String formId = (String) parameters.get(EventDataKeys.FORM_ID);
-
+        String caseId = (String) parameters.get(EventDataKeys.CASE_IDS);
+        
         CommcareForm form = null;
 
         if (formId != null && formId.trim().length() > 0) {
             form = formService.retrieveForm(formId);
-            logger.debug("Successfully retrieved form with formID..." + formId);
+            logger.debug("Successfully retrieved form with formID..." + formId + " and case ID " + caseId);
+            form.getForm().addAttribute("FormXmlnsConstants.FORM_CASE_ID", caseId);
         }
 
         FormValueElement rootElement = null;

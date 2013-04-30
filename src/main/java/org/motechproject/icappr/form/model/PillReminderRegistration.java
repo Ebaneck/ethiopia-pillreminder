@@ -1,6 +1,7 @@
 package org.motechproject.icappr.form.model;
 
-public class PillReminderRegistration {
+public class PillReminderRegistration extends PillReminderForm{
+    
     private String phoneNumber;
     private String pin;
     private String clinic;

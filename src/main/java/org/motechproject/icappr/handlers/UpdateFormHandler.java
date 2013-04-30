@@ -1,8 +1,11 @@
 package org.motechproject.icappr.handlers;
 
+import java.util.Map;
+
 import org.motechproject.commcare.domain.CommcareForm;
 
 import org.motechproject.commcare.domain.FormValueElement;
+import org.motechproject.icappr.constants.CaseConstants;
 import org.motechproject.icappr.form.model.PillReminderUpdate;
 import org.motechproject.icappr.form.model.PillReminderUpdater;
 import org.slf4j.Logger;
@@ -27,6 +30,10 @@ public class UpdateFormHandler {
             return;
         }
 
+        //From form get case ID
+        Map<String, String> attributes = topFormElement.getAttributes();
+        String caseId = attributes.get(CaseConstants.FORM_CASE_ID);
+        
         String phoneNumber = getValue(topFormElement, "phone_number");
         String preferredReminderFrequency =  getValue(topFormElement, "pref_medication_call_freq");    //daily or weekly
         String preferredReminderDay = getValue(topFormElement, "day_of_week");
@@ -39,7 +46,8 @@ public class UpdateFormHandler {
          */
 
         PillReminderUpdate update = new PillReminderUpdate();
-              
+            
+        update.setCaseId(caseId);
         update.setPhoneNumber(phoneNumber);
         update.setPreferredReminderFrequency(preferredReminderFrequency);
         update.setPreferredReminderDay(preferredReminderDay);
