@@ -127,6 +127,10 @@
                         <Context-File>META-INF/spring/icapprApplicationContext.xml</Context-File>
                         <Context-Path>icappr</Context-Path>
                         <Resource-Path>icappr/resources</Resource-Path>
+                        <Export-Package>
+                            org.motechproject.icappr;version=${motech.version},
+                            org.motechproject.icappr.domain;version=${motech.version}
+                        </Export-Package>
                         <Import-Package>
                             org.motechproject.server.config;version=${motech.version},
                             org.motechproject.server.config.service;version=${motech.version},
