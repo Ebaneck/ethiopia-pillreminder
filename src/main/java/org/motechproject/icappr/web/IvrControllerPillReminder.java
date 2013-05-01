@@ -1,5 +1,7 @@
 package org.motechproject.icappr.web;
 
+import java.util.Enumeration;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.motechproject.icappr.PillReminderSettings;
@@ -11,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -68,66 +71,73 @@ public class IvrControllerPillReminder {
      * motech-verboice module to handle the rest of the request. If it is not
      * accepted, the call ends.
      */
+    @ResponseBody
     @RequestMapping("/authenticate")
-    public ModelAndView authenticate(HttpServletRequest request) {
+    public String authenticate(HttpServletRequest request) {
         logger.info("Authenticating pin...");
-        String sessionId = request.getParameter("CallSid");
-        String digits = request.getParameter("Digits");
-        String requestType = request.getParameter("requestType");
-        String language = request.getParameter("language");
-        int retriesLeft = Integer.parseInt(request.getParameter("retriesLeft"));
-        logger.info("The session id is " + sessionId);
-        logger.info("The pin entered is " + digits);
-        logger.info("The language is " + language);
-        ModelAndView view = null;
-        boolean correctPin = false;
-        if (requestType.matches(RequestTypes.ADHERENCE_CALL)) {
-            if (decisionTreeSessionHandler.digitsMatchPatientPin(sessionId, digits)) {
-                logger.info("The pin is correct. Forwarding request to Pill reminder decision tree enrollment...");
-                view = generateModelAndView(requestType, sessionId, language);
-                correctPin = true;
-            }
+
+        String pin = request.getParameter("pin");
+        String callSid = request.getParameter("CallSid");
+
+        Enumeration parameterNames = request.getParameterNames();
+        
+        if (decisionTreeSessionHandler.digitsMatchPatientPin(callSid, pin)) {
+            return "{\"result\": \"true\"}";
+        } else {
+            return "{\"result\": \"false\"}";
+
         }
-        if (requestType.matches(RequestTypes.IVR_UI)) {
-            if (decisionTreeSessionHandler.digitsMatchPersonPin(sessionId, digits)) {
-                logger.info("The pin is correct. Forwarding request to IVR UI Decision tree enrollment...");
-                view = generateModelAndView(requestType, sessionId, language);
-                correctPin = true;
-            }
-        } 
-        if (requestType.matches(RequestTypes.PILL_REMINDER_CALL)) {
-            if (decisionTreeSessionHandler.digitsMatchPatientPin(sessionId, digits)) {
-                logger.info("The pin is correct. Forwarding request to Pill reminder campaign enrollment...");
-                view = generateModelAndView(requestType, sessionId, language);
-                correctPin = true;
-            }
-        }
-        if (requestType.matches(RequestTypes.SIDE_EFFECT_CALL)) {
-            if (decisionTreeSessionHandler.digitsMatchPatientPin(sessionId, digits)) {
-                logger.info("The pin is correct. Forwarding request to side effect call...");
-                view = generateModelAndView(requestType, sessionId, language);
-                correctPin = true;
-            }
-        }
-        if (!correctPin) {
-            if (retriesLeft == 1) {
-                logger.info("Three incorrect pin attempts");
-                view = new ModelAndView("failed-authentication");
-                view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.INCORRECT_PIN, language));
-                decisionTreeSessionHandler.updatePatientFailedLogin(sessionId);
-            } else {
-                retriesLeft--;
-                logger.info("Pin incorrect, trying again");
-                view = new ModelAndView("security-pin");
-                view.addObject("retriesLeft", retriesLeft);
-                view.addObject("sessionId", sessionId);
-                view.addObject("requestType", requestType);
-                view.addObject("language", language);
-                view.addObject("path", settings.getMotechUrl());
-                view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST, language));
-            }
-        }
-        return view;
+
+        //
+        //        ModelAndView view = null;
+        //        boolean correctPin = false;
+        //        if (requestType.matches(RequestTypes.ADHERENCE_CALL)) {
+        //            if (decisionTreeSessionHandler.digitsMatchPatientPin(sessionId, digits)) {
+        //                logger.info("The pin is correct. Forwarding request to Pill reminder decision tree enrollment...");
+        //                view = generateModelAndView(requestType, sessionId, language);
+        //                correctPin = true;
+        //            }
+        //        }
+        //        if (requestType.matches(RequestTypes.IVR_UI)) {
+        //            if (decisionTreeSessionHandler.digitsMatchPersonPin(sessionId, digits)) {
+        //                logger.info("The pin is correct. Forwarding request to IVR UI Decision tree enrollment...");
+        //                view = generateModelAndView(requestType, sessionId, language);
+        //                correctPin = true;
+        //            }
+        //        } 
+        //        if (requestType.matches(RequestTypes.PILL_REMINDER_CALL)) {
+        //            if (decisionTreeSessionHandler.digitsMatchPatientPin(sessionId, digits)) {
+        //                logger.info("The pin is correct. Forwarding request to Pill reminder campaign enrollment...");
+        //                view = generateModelAndView(requestType, sessionId, language);
+        //                correctPin = true;
+        //            }
+        //        }
+        //        if (requestType.matches(RequestTypes.SIDE_EFFECT_CALL)) {
+        //            if (decisionTreeSessionHandler.digitsMatchPatientPin(sessionId, digits)) {
+        //                logger.info("The pin is correct. Forwarding request to side effect call...");
+        //                view = generateModelAndView(requestType, sessionId, language);
+        //                correctPin = true;
+        //            }
+        //        }
+        //        if (!correctPin) {
+        //            if (retriesLeft == 1) {
+        //                logger.info("Three incorrect pin attempts");
+        //                view = new ModelAndView("failed-authentication");
+        //                view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.INCORRECT_PIN, language));
+        //                decisionTreeSessionHandler.updatePatientFailedLogin(sessionId);
+        //            } else {
+        //                retriesLeft--;
+        //                logger.info("Pin incorrect, trying again");
+        //                view = new ModelAndView("security-pin");
+        //                view.addObject("retriesLeft", retriesLeft);
+        //                view.addObject("sessionId", sessionId);
+        //                view.addObject("requestType", requestType);
+        //                view.addObject("language", language);
+        //                view.addObject("path", settings.getMotechUrl());
+        //                view.addObject("audioFileUrl", settings.getCmsliteUrlFor(SoundFiles.PIN_REQUEST, language));
+        //            }
+        //        }
+        //        return view;
     }
 
     /**
@@ -164,7 +174,7 @@ public class IvrControllerPillReminder {
             return "pillreminder-redirect";
         else if (requestType.matches(RequestTypes.SIDE_EFFECT_CALL))
             return "side-effects-redirect";
-            return null;
+        return null;
     }
 
 }
