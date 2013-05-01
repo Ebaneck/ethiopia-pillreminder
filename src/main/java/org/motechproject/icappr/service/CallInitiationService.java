@@ -53,15 +53,13 @@ public class CallInitiationService {
 
         // the callback_url is used once verboice starts a call to retrieve the
         // data for the call (e.g. TwiML)
-        String callbackUrl = settings.getMotechUrl() + "/module/icappr/ivr/start?motech_call_id=%s&request_type=%s&language=%s&retries_left=%s";
+//        String callbackUrl = settings.getMotechUrl() + "/module/icappr/ivr/start?motech_call_id=%s&request_type=%s&language=%s&retries_left=%s";
         String callbackStatusUrl = settings.getMotechUrl() + "/module/verboice/ivr/callstatus";
 
-        try {
-            payload.put(CallRequestDataKeys.CALLBACK_URL,
-                    URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId(), requestType, language, NUM_RETRIES), "UTF-8"));
+//            payload.put(CallRequestDataKeys.CALLBACK_URL,
+//                    URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId(), requestType, language, NUM_RETRIES), "UTF-8"));
             payload.put(CallRequestDataKeys.STATUS_CALLBACK_URL, callbackStatusUrl);
-        } catch (UnsupportedEncodingException e) {
-        }
+
 
         if (RequestTypes.SIDE_EFFECT_CALL.equals(requestType)) {
             payload.put("language", language);
