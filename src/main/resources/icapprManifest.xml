@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<verboice-service>
+  <name>ICAPPR</name>
+  <steps>
+    <step name="authenticatePin"
+      display-name="Authenticate Patient Pin"
+      icon="medicalkit"
+      type="callback"
+      callback-url="HOST/ivr/authenticate">
+      <settings>
+        <variable name="pin" display-name="Patient pin" type="string"/>
+      </settings>
+      <response type="variables">
+        <variable name="result" display-name="Result" type="string"/>
+      </response>
+    </step>
+  </steps>
+  <steps>
+    <step name="sendAnswer"
+      display-name="Send Patient Answer"
+      icon="medicalkit"
+      type="callback"
+      callback-url="HOST/answer">
+      <settings>
+        <variable name="answer" display-name="Answer" type="numeric"/>
+        <variable name="questionName" display-name="Question Name" type="string"/>
+      </settings>
+      <response type="none"/>
+    </step>
+  </steps>
+</verboice-service>
