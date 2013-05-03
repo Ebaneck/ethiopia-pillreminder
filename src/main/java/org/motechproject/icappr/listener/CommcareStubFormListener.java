@@ -9,6 +9,7 @@ import org.motechproject.commcare.events.constants.EventSubjects;
 import org.motechproject.commcare.service.CommcareFormService;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
+import org.motechproject.icappr.constants.CaseConstants;
 import org.motechproject.icappr.constants.FormXmlnsConstants;
 import org.motechproject.icappr.handlers.IVRUITestFormHandler;
 import org.motechproject.icappr.handlers.RegistrationFormHandler;
@@ -54,14 +55,12 @@ public class CommcareStubFormListener {
         Map<String, Object> parameters = event.getParameters();
 
         String formId = (String) parameters.get(EventDataKeys.FORM_ID);
-        String caseId = (String) parameters.get(EventDataKeys.CASE_IDS);
         
         CommcareForm form = null;
 
         if (formId != null && formId.trim().length() > 0) {
             form = formService.retrieveForm(formId);
-            logger.debug("Successfully retrieved form with formID..." + formId + " and case ID " + caseId);
-            form.getForm().addAttribute("FormXmlnsConstants.FORM_CASE_ID", caseId);
+            logger.debug("Successfully retrieved form with formID..." + formId);
         }
 
         FormValueElement rootElement = null;
@@ -71,6 +70,11 @@ public class CommcareStubFormListener {
         }
 
         if (rootElement != null) {
+            FormValueElement caseElement = rootElement.getElementByName("case");
+            String caseId = caseElement.getAttributes().get("case_id");
+            //CaseInfo caseInfo = caseService.getCaseByCaseId(caseId);
+            form.getForm().addAttribute(CaseConstants.FORM_CASE_ID, caseId);
+            logger.debug("Successfully retrieved Case ID " + caseId);
             handleForm(form);
         } else {
             logger.debug("Root element was null...not handling form.");

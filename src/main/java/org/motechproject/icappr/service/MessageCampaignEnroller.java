@@ -37,7 +37,7 @@ public class MessageCampaignEnroller {
     public void enrollInDailyMessageCampaign(PillReminderRegistration registration) {
         CampaignRequest request = new CampaignRequest();
         request.setCampaignName("DailyMessageCampaign");
-        request.setExternalId(registration.getPatientId());
+        request.setExternalId(registration.getCaseId());
         request.setReferenceDate(DateUtil.now().toLocalDate());
         request.setReferenceTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().getMinuteOfHour()));
         Time preferredTime = getPreferredTime(registration);

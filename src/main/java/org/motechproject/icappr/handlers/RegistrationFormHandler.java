@@ -4,9 +4,7 @@ import java.util.Map;
 
 import org.motechproject.commcare.domain.CommcareForm;
 import org.motechproject.commcare.domain.FormValueElement;
-import org.motechproject.commcare.events.constants.EventDataKeys;
 import org.motechproject.icappr.constants.CaseConstants;
-import org.motechproject.icappr.constants.FormXmlnsConstants;
 import org.motechproject.icappr.form.model.PillReminderRegistrar;
 import org.motechproject.icappr.form.model.PillReminderRegistration;
 import org.springframework.beans.factory.annotation.Autowired;
