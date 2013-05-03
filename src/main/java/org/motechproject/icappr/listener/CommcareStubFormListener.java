@@ -90,7 +90,7 @@ public class CommcareStubFormListener {
                 + FormXmlnsConstants.IVR_REGISTRATION_FORM_XMLNS + ")");
         logger.debug("Checking to see if xmlns matches the IVR update form ("
                 + FormXmlnsConstants.UPDATE_FORM_XMLNS + ")");
-        logger.debug("Checking to see if xmlns matches the IVR UI Test form (" + FormXmlnsConstants.ICAPPR_IVR_TEST_FORM_XMLNS
+        logger.debug("Checking to see if xmlns matches the IVR UI Test form (" + FormXmlnsConstants.IVR_TEST_FORM_XMLNS
                 + ")");
 
         if (FormXmlnsConstants.IVR_REGISTRATION_FORM_XMLNS.equals(xmlns)) {
@@ -108,7 +108,7 @@ public class CommcareStubFormListener {
             stopFormHandler.handleForm(form);
         }
 
-        else if (FormXmlnsConstants.ICAPPR_IVR_TEST_FORM_XMLNS.equals(xmlns)) {
+        else if (FormXmlnsConstants.IVR_TEST_FORM_XMLNS.equals(xmlns)) {
             // delegate to ivr test form handler
             ivrUITestFormHandler.handleForm(form);
         }
