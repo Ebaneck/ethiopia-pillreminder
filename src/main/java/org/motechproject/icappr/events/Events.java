@@ -28,4 +28,18 @@ public interface Events {
     public static final String ADHERENCE_ASSESSMENT_CALL = BASE_SUBJECT + "AdherenceAssessmentCall";
 
     public static final String SIDE_EFFECTS_SURVEY_CALL = BASE_SUBJECT + "SideEffectsSurveyCall";
+
+    public static final String YES_MEDICATION_YESTERDAY = BASE_SUBJECT + "YesMedicationYesterday";
+
+    public static final String YES_MEDICATION_TWO_DAYS_AGO = BASE_SUBJECT + "YesMedicationTwoDaysAgo";
+
+    public static final String YES_MEDICATION_THREE_DAYS_AGO = BASE_SUBJECT + "YesMedicationThreeDaysAgo";
+
+    public static final String NO_MEDICATION_YESTERDAY = BASE_SUBJECT + "NoMedicationYesterday";
+
+    public static final String NO_MEDICATION_TWO_DAYS_AGO = BASE_SUBJECT + "NoMedicationTwoDaysAgo";
+
+    public static final String NO_MEDICATION_THREE_DAYS_AGO = BASE_SUBJECT + "NoMedicationThreeDaysAgo";
+
+    public static final String INPUT_ERROR_EVENT = BASE_SUBJECT + "InputError";
 }
