@@ -6,13 +6,19 @@ import org.motechproject.commcare.domain.CommcareForm;
 
 import org.motechproject.commcare.domain.FormValueElement;
 import org.motechproject.icappr.constants.CaseConstants;
+import org.motechproject.icappr.form.model.PillReminderRegistrar;
 import org.motechproject.icappr.form.model.PillReminderStop;
+import org.motechproject.icappr.form.model.PillReminderStopper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StopFormHandler {
+    
+    @Autowired
+    private PillReminderStopper stopper;
     
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
@@ -38,6 +44,8 @@ public class StopFormHandler {
         stop.setCaseId(caseId);
         stop.setStopDate(stopDate);
         stop.setStopReason(stopReason);
+        
+        stopper.unenroll(stop);
     }
 
     private String getValue(FormValueElement formElement, String elementName) {

@@ -25,8 +25,7 @@ public class PillReminderStopper {
     
     public void unenroll(PillReminderStop stop) {
         getPatient(stop);
-        messageCampaignEnroller.unenroll(stop);
-        
+        messageCampaignEnroller.unenroll(stop);      
     }
     
     private void getPatient(PillReminderStop stop) {
