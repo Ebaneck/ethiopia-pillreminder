@@ -59,4 +59,5 @@
        
     <osgi:reference id="messageCampaignService" cardinality="0..1" interface="org.motechproject.messagecampaign.service.MessageCampaignService" />
 
+	<osgi:reference id+="schedulerServiceOsgi" cardinality="0..1" interface="org.motechproject.scheduler.MotechSchedulerService"/>
 </beans>
