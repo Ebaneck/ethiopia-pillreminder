@@ -32,10 +32,6 @@ public class StopFormHandler {
         
         String stopDate = getValue(topFormElement, "stop_date");
         String stopReason =  getValue(topFormElement, "stop_reason");    //"opt_out" or "ipt_completion"
-    
-        /* Old form parameters
-         * String clinicId = getValue(topFormElement, "clinic_id");
-         */
 
         PillReminderStop stop = new PillReminderStop();
               

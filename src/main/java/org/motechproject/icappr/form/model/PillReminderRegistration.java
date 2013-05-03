@@ -6,7 +6,6 @@ public class PillReminderRegistration extends PillReminderForm{
     private String pin;
     private String clinic;
     private String nextCampaign;
-    private String patientId;
 	private String preferredLanguage;
 	private String nextAppointment;
 	private String iptInitiationDate;
@@ -28,16 +27,8 @@ public class PillReminderRegistration extends PillReminderForm{
         return nextCampaign;
     }
 
-    public String getPatientId() {
-        return patientId;
-    }
-
     public void setClinic(String string) {
         this.clinic = string;
-    }
-
-    public void setPatientId(String string) {
-        this.patientId = string;
     }
 
     public void setPhoneNumber(String string) {

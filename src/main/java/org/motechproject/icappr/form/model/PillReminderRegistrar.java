@@ -54,7 +54,7 @@ public class PillReminderRegistrar {
 
     private void enrollInAdherenceCall(PillReminderRegistration registration, boolean updateExisting) {
         AdherenceCallEnrollmentRequest request = new AdherenceCallEnrollmentRequest();
-        request.setMotechID(registration.getPatientId());
+        request.setMotechID(registration.getCaseId());
         request.setPhoneNumber(registration.getPhoneNumber());
         request.setPin(registration.getPin());
         DateTime dateTime = DateUtil.now().plusMinutes(2);
@@ -78,7 +78,8 @@ public class PillReminderRegistrar {
 
         person.setAttributes(attributes);
 
-        MRSPatient patient = new MRSPatientDto(null, mrsFacilityDto, person, registration.getPatientId());
+        MRSPatient patient = new MRSPatientDto(null, mrsFacilityDto, person, registration.getCaseId());
+        logger.debug("Creating generic patient with patient ID/case ID " + registration.getCaseId());
         patientAdapter.savePatient(patient);
     }
 
@@ -90,7 +91,7 @@ public class PillReminderRegistrar {
 
         PillReminderRegistration registration = new PillReminderRegistration();
         registration.setClinic(patient.getFacility().getName());
-        registration.setPatientId(patientId);
+        registration.setCaseId(patientId);
 
         List<MRSAttribute> attrs = patient.getPerson().getAttributes();
         registration.setNextCampaign(MRSPersonUtil.getAttrValue(MrsConstants.PERSON_NEXT_CAMPAIGN_ATTR, attrs));

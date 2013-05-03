@@ -81,7 +81,7 @@ public class MRSPersonUtil {
 	        setAttribute(person, "0", MrsConstants.PERSON_NUM_PIN_ATTEMPTS);
 	        MRSPatientDto patient = new MRSPatientDto();
 	        patient.setPatientId(UUID.randomUUID().toString());
-	        patient.setMotechId(registration.getPatientId());
+	        patient.setMotechId(registration.getCaseId());
 	        patient.setPerson(person);
 	        patient.setFacility(facility);	        
 	        mrsPatientAdapter.savePatient(patient);
