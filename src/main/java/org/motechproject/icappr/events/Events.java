@@ -19,7 +19,7 @@ public interface Events {
     
     public static final String TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET = BASE_SUBJECT + "PatientSelectedYesTinglingOrNumbnessOfHandsOrFeet";
 
-    public static final String SEND_RA_MSSAGE_ADHERENCE_CONCERNS = BASE_SUBJECT + "PatientConcernsAdherence";
+    public static final String SEND_RA_MESSAGE_ADHERENCE_CONCERNS = BASE_SUBJECT + "PatientConcernsAdherence";
 
     public static final String SEND_RA_MESSAGE_APPOINTMENT_CONCERNS = BASE_SUBJECT + "PatientConcernsAppointment";
 

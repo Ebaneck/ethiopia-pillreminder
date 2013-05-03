@@ -87,7 +87,7 @@ public class VerboiceInteractionController {
         if (YES_INPUT.equals(choice)) {
             String eventToRaise = null;
             switch (concern) {
-            case "adherenceConcern" : eventToRaise = Events.SEND_RA_MSSAGE_ADHERENCE_CONCERNS; break;
+            case "adherenceConcern" : eventToRaise = Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS; break;
             case "appointmentConcern" : eventToRaise = Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS; break;
 
             }
