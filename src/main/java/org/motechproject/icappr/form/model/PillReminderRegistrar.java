@@ -13,6 +13,7 @@ import org.motechproject.icappr.mrs.MRSPersonUtil;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.service.AdherenceCallEnroller;
 import org.motechproject.icappr.service.MessageCampaignEnroller;
+import org.motechproject.icappr.support.SchedulerUtil;
 import org.motechproject.mrs.domain.MRSAttribute;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.domain.MRSPerson;
@@ -33,36 +34,30 @@ public class PillReminderRegistrar {
     private MRSFacilityAdapter facilityAdapter;
     private MessageCampaignEnroller messageCampaignEnroller;
     private AdherenceCallEnroller adherenceCallEnroller;
+    private SchedulerUtil schedulerUtil;
 
     @Autowired
     public PillReminderRegistrar(MRSPatientAdapter patientAdapter, MRSFacilityAdapter facilityAdapter,
-            MessageCampaignEnroller messageCampaignEnroller, AdherenceCallEnroller adherenceCallEnroller) {
+            MessageCampaignEnroller messageCampaignEnroller, AdherenceCallEnroller adherenceCallEnroller, SchedulerUtil schedulerUtil) {
         this.patientAdapter = patientAdapter;
         this.facilityAdapter = facilityAdapter;
         this.messageCampaignEnroller = messageCampaignEnroller;
         this.adherenceCallEnroller = adherenceCallEnroller;
+        this.schedulerUtil = schedulerUtil;
     }
 
-    public void register(PillReminderRegistration registration) {
+    public void register(PillReminderRegistration registration, boolean isDemo) {
         logger.debug("Starting Patient Registration");
         createGenericPatient(registration);
         logger.debug("Finishing Patient Registration");
         messageCampaignEnroller.enrollInDailyMessageCampaign(registration);
-        //enrollInAdherenceCall(registration, true);
+        
+        DateTime iptInitiationDate = DateTime.parse(registration.getIptInitiationDate());
+        DateTime nextAppointmentDate = DateTime.parse(registration.getNextAppointment());
+        schedulerUtil.scheduleAdherenceSurvey(iptInitiationDate, registration.getCaseId(), isDemo);
+        schedulerUtil.scheduleAppointments(nextAppointmentDate, registration.getCaseId(), isDemo);
+        schedulerUtil.scheduleSideEffectsSurvey(iptInitiationDate, registration.getCaseId(), isDemo);
     }
-  
-
-    private void enrollInAdherenceCall(PillReminderRegistration registration, boolean updateExisting) {
-        AdherenceCallEnrollmentRequest request = new AdherenceCallEnrollmentRequest();
-        request.setMotechID(registration.getCaseId());
-        request.setPhoneNumber(registration.getPhoneNumber());
-        request.setPin(registration.getPin());
-        DateTime dateTime = DateUtil.now().plusMinutes(2);
-        // will change based on information in form
-        request.setDosageStartTime(String.format("%02d:%02d", dateTime.getHourOfDay(), dateTime.getMinuteOfHour()));
-        adherenceCallEnroller.enrollPatientWithId(request, updateExisting);
-    }
-    
 
     private void createGenericPatient(PillReminderRegistration registration) {
         MRSFacilityDto mrsFacilityDto = new MRSFacilityDto();

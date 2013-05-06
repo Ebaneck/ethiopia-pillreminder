@@ -3,30 +3,36 @@ package org.motechproject.icappr.listener;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.joda.time.DateTime;
 import org.motechproject.callflow.service.FlowSessionService;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
+import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.events.Events;
+import org.motechproject.icappr.mrs.MRSPersonUtil;
+import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.mrs.domain.MRSEncounter;
 import org.motechproject.mrs.domain.MRSObservation;
 import org.motechproject.mrs.domain.MRSPatient;
+import org.motechproject.mrs.domain.MRSPerson;
 import org.motechproject.mrs.model.MRSEncounterDto;
 import org.motechproject.mrs.model.MRSObservationDto;
 import org.motechproject.mrs.model.MRSPatientDto;
 import org.motechproject.mrs.services.MRSEncounterAdapter;
 import org.motechproject.mrs.services.MRSPatientAdapter;
+import org.motechproject.mrs.services.MRSPersonAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SideEffectListener {
+public class CallInteractionListener {
 
     public final static String YES_ANSWER = "yes";
     public final static String NO_ANSWER = "no";
     public final static String SIDE_EFFECT_ENCOUNTER_CALL = "Side Effect Call";
+    public static final String ADHERENCE_SURVEY_ENCOUNTER_CALL = "Adherence Survey Call";
     public final static String FLOW_SESSION_ID = "flowSessionId";
-    public final static String MOTECH_ID = "motechId";
 
     @Autowired
     private MRSEncounterAdapter encounterAdapter;
@@ -37,12 +43,15 @@ public class SideEffectListener {
     @Autowired
     private MRSPatientAdapter patientAdapter;
 
+    @Autowired
+    private MRSPersonUtil personUtil;
+
     @MotechListener(subjects = {Events.YES_YELLOW_SKIN_OR_EYES, Events.YES_SKIN_RASH_OR_ITCHY_SKIN, Events.YES_ABDOMINAL_PAIN_OR_VOMITING, Events.TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET } )
     public void handleSideEffectEvents(MotechEvent event) {
         String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
 
         FlowSession flowSession = flowSessionService.getSession(flowSessionId);
-        String motechId = flowSession.get(MOTECH_ID);
+        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
 
         MRSEncounter sideEffectEncounter = encounterAdapter.getEncounterById(flowSessionId);
 
@@ -58,14 +67,14 @@ public class SideEffectListener {
         String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
 
         FlowSession flowSession = flowSessionService.getSession(flowSessionId);
-        String motechId = flowSession.get(MOTECH_ID);
+        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
 
         MRSEncounter sideEffectEncounter = encounterAdapter.getEncounterById(flowSessionId);
 
         if (sideEffectEncounter != null) {
             updateEncounter(sideEffectEncounter, event, motechId, YES_ANSWER);
         } else {
-            createEncounter(motechId, event, flowSessionId, YES_ANSWER, SIDE_EFFECT_ENCOUNTER_CALL);
+            createEncounter(motechId, event, flowSessionId, YES_ANSWER, ADHERENCE_SURVEY_ENCOUNTER_CALL);
         }
     }
 
@@ -74,14 +83,14 @@ public class SideEffectListener {
         String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
 
         FlowSession flowSession = flowSessionService.getSession(flowSessionId);
-        String motechId = flowSession.get(MOTECH_ID);
+        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
 
         MRSEncounter sideEffectEncounter = encounterAdapter.getEncounterById(flowSessionId);
 
         if (sideEffectEncounter != null) {
             updateEncounter(sideEffectEncounter, event, motechId, NO_ANSWER);
         } else {
-            createEncounter(motechId, event, flowSessionId, NO_ANSWER, SIDE_EFFECT_ENCOUNTER_CALL);
+            createEncounter(motechId, event, flowSessionId, NO_ANSWER, ADHERENCE_SURVEY_ENCOUNTER_CALL);
         }
     }
 
@@ -108,10 +117,16 @@ public class SideEffectListener {
         encounter.setEncounterId(flowSessionId);
         encounter.setEncounterType(encounterType);
         MRSPatient patient = addOrRetrievePatient(motechId);
+
+        if (patient == null) {
+            return;
+        }
+
         encounter.setPatient(patient);
         MRSObservationDto observation = new MRSObservationDto();
         observation.setPatientId(motechId);
         observation.setValue(answer);
+        observation.setDate(DateTime.now());
         observation.setConceptName(event.getSubject());
         Set<MRSObservation> observations = new HashSet<MRSObservation>();
         observations.add(observation);
@@ -123,6 +138,12 @@ public class SideEffectListener {
         MRSPatient patient = patientAdapter.getPatientByMotechId(motechId);
 
         if (patient == null) {
+            MRSPerson person = personUtil.getPersonByID(motechId);
+
+            if (person != null && person.getAttributes().contains(MrsConstants.DUMMY_PERSON_ATTR)) {
+                return null;
+            }
+
             patient = new MRSPatientDto();
             patient.setMotechId(motechId);
         } 
@@ -135,6 +156,7 @@ public class SideEffectListener {
         MRSObservationDto observation = new MRSObservationDto();
         observation.setPatientId(motechId);
         observation.setValue(answer);
+        observation.setDate(DateTime.now());
         observation.setConceptName(event.getSubject());
 
         Set<MRSObservation> observations = (Set<MRSObservation>) sideEffectEncounter.getObservations();

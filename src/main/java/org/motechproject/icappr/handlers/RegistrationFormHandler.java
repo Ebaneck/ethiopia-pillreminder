@@ -53,7 +53,7 @@ public class RegistrationFormHandler {
         /* Old setters for old form
          * registration.setPatientId(studyId);*/
         
-        pillReminderRegistrar.register(registration);
+        pillReminderRegistrar.register(registration, false);
 	}
 
 	private String getValue(FormValueElement formElement, String elementName) {

@@ -1,6 +1,7 @@
 package org.motechproject.icappr.form.model;
 
 import org.motechproject.icappr.service.MessageCampaignEnroller;
+import org.motechproject.icappr.support.SchedulerUtil;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.slf4j.Logger;
@@ -17,13 +18,18 @@ public class PillReminderStopper {
     
     private MessageCampaignEnroller messageCampaignEnroller;
     
+    private SchedulerUtil schedulerUtil;
+    
     @Autowired
-    public PillReminderStopper(MessageCampaignEnroller messageCampaignEnroller, MRSPatientAdapter patientAdapter) {
+    public PillReminderStopper(MessageCampaignEnroller messageCampaignEnroller, MRSPatientAdapter patientAdapter, SchedulerUtil schedulerUtil) {
         this.messageCampaignEnroller = messageCampaignEnroller;
         this.patientAdapter = patientAdapter;
+        this.schedulerUtil = schedulerUtil;
     }
     
     public void unenroll(PillReminderStop stop) {
+        String externalId = stop.getCaseId();
+        schedulerUtil.unscheduleAllIcapprJobs(externalId);
         getPatient(stop);
         messageCampaignEnroller.unenroll(stop);      
     }

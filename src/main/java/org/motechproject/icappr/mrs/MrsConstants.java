@@ -20,4 +20,6 @@ public interface MrsConstants {
 	final String PERSON_NEXT_CAMPAIGN_ATTR = "NextCampaignAttr";
     final String LOGIN_FAILURE_ATTR = "FailedLogins";
 
+    final String DUMMY_PERSON_ATTR = "DemoPerson";
+
 }

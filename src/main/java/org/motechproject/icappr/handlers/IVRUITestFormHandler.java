@@ -9,7 +9,7 @@ import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.mrs.MRSPersonUtil;
 import org.motechproject.icappr.domain.IVREnrollmentRequest;
 import org.motechproject.icappr.service.IVRUIEnroller;
-import org.motechproject.icappr.support.DecisionTreeBuilder;
+import org.motechproject.icappr.support.SchedulerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +20,15 @@ public class IVRUITestFormHandler {
 
     private final IVRUIEnroller enroller;
     private final MRSPersonUtil mrsPersonUtil;
-    private final DecisionTreeBuilder ivrUIDecisionTreeBuilder;
-
+    private final SchedulerUtil schedulerUtil;
+    
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     @Autowired
-    public IVRUITestFormHandler(IVRUIEnroller enroller, MRSPersonUtil mrsPersonUtil,
-            DecisionTreeBuilder ivrUIDecisionTreeBuilder) {
+    public IVRUITestFormHandler(IVRUIEnroller enroller, MRSPersonUtil mrsPersonUtil, SchedulerUtil schedulerUtil) {
         this.enroller = enroller;
         this.mrsPersonUtil = mrsPersonUtil;
-        this.ivrUIDecisionTreeBuilder = ivrUIDecisionTreeBuilder;
+        this.schedulerUtil = schedulerUtil;
     }
 
     public void handleForm(CommcareForm form) {
@@ -45,7 +44,7 @@ public class IVRUITestFormHandler {
         String phoneNumber = getValue(topFormElement, "phone_number");
         String pin = getValue(topFormElement, "pin");
         String language = getValue(topFormElement, "preferred_language");
-        MRSPersonDto person = mrsPersonUtil.createAndSavePerson(phoneNumber, pin, language);
+        MRSPersonDto person = mrsPersonUtil.createAndSaveDemoPerson(phoneNumber, pin, language);
 
         if (testType.matches("message_campaign")) {
             logger.debug("Enrolling user in message campaign test");
@@ -53,15 +52,15 @@ public class IVRUITestFormHandler {
         }
         else if (testType.matches("adherence_questions")){
             logger.debug("Enrolling user in adherence_questions test");
-            //adherence delegation logic here
+            schedulerUtil.scheduleAdherenceSurvey(null, phoneNumber, true);
         }
         else if (testType.matches("side_effect_questions")){
             logger.debug("Enrolling user in side_effect_questions test");
-            //side effect delegation logic here
+            schedulerUtil.scheduleSideEffectsSurvey(null, phoneNumber, true);
         }
         else if (testType.matches("clinic_reminder")){
             logger.debug("Enrolling user in clinic_reminder test");
-            //clinic reminder delegation logic here
+            schedulerUtil.scheduleAppointments(null, phoneNumber, true);
         }
     }
 
@@ -74,7 +73,6 @@ public class IVRUITestFormHandler {
         request.setMotechID(person.getPersonId());
         DateTime dateTime = DateUtil.now().plusMinutes(2);
         request.setCallStartTime(String.format("%02d:%02d", dateTime.getHourOfDay(), dateTime.getMinuteOfHour()));
-        ivrUIDecisionTreeBuilder.buildTree();
         enroller.enrollPerson(request);
     }
 
