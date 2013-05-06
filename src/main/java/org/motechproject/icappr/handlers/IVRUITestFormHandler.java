@@ -4,9 +4,12 @@ import org.joda.time.DateTime;
 import org.motechproject.commcare.domain.CommcareForm;
 import org.motechproject.commcare.domain.FormValueElement;
 import org.motechproject.commons.date.util.DateUtil;
+import org.motechproject.messagecampaign.contract.CampaignRequest;
+import org.motechproject.messagecampaign.service.MessageCampaignService;
 import org.motechproject.mrs.model.MRSPersonDto;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.mrs.MRSPersonUtil;
+import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.domain.IVREnrollmentRequest;
 import org.motechproject.icappr.service.IVRUIEnroller;
 import org.motechproject.icappr.support.SchedulerUtil;
@@ -21,14 +24,16 @@ public class IVRUITestFormHandler {
     private final IVRUIEnroller enroller;
     private final MRSPersonUtil mrsPersonUtil;
     private final SchedulerUtil schedulerUtil;
+    private final MessageCampaignService campaignService;
     
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     @Autowired
-    public IVRUITestFormHandler(IVRUIEnroller enroller, MRSPersonUtil mrsPersonUtil, SchedulerUtil schedulerUtil) {
+    public IVRUITestFormHandler(IVRUIEnroller enroller, MRSPersonUtil mrsPersonUtil, SchedulerUtil schedulerUtil, MessageCampaignService campaignService) {
         this.enroller = enroller;
         this.mrsPersonUtil = mrsPersonUtil;
         this.schedulerUtil = schedulerUtil;
+        this.campaignService = campaignService;
     }
 
     public void handleForm(CommcareForm form) {
@@ -48,19 +53,23 @@ public class IVRUITestFormHandler {
 
         if (testType.matches("message_campaign")) {
             logger.debug("Enrolling user in message campaign test");
-            enrollInCalls(person);
+            CampaignRequest enrollRequest = new CampaignRequest();
+            enrollRequest.setCampaignName(MotechConstants.DEMO_CAMPAIGN);
+            enrollRequest.setExternalId(person.getPersonId());
+            campaignService.startFor(enrollRequest);
+//            enrollInCalls(person);
         }
         else if (testType.matches("adherence_questions")){
             logger.debug("Enrolling user in adherence_questions test");
-            schedulerUtil.scheduleAdherenceSurvey(null, phoneNumber, true);
+            schedulerUtil.scheduleAdherenceSurvey(null, person.getPersonId(), true);
         }
         else if (testType.matches("side_effect_questions")){
             logger.debug("Enrolling user in side_effect_questions test");
-            schedulerUtil.scheduleSideEffectsSurvey(null, phoneNumber, true);
+            schedulerUtil.scheduleSideEffectsSurvey(null, person.getPersonId(), true);
         }
         else if (testType.matches("clinic_reminder")){
             logger.debug("Enrolling user in clinic_reminder test");
-            schedulerUtil.scheduleAppointments(null, phoneNumber, true);
+            schedulerUtil.scheduleAppointments(null, person.getPersonId(), true);
         }
     }
 
