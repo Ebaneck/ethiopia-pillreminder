@@ -2,16 +2,13 @@ package org.motechproject.icappr.form.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.joda.time.DateTime;
 import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
 import org.motechproject.icappr.mrs.MRSPersonUtil;
 import org.motechproject.icappr.mrs.MrsConstants;
-import org.motechproject.icappr.service.AdherenceCallEnroller;
 import org.motechproject.icappr.service.MessageCampaignEnroller;
 import org.motechproject.icappr.support.SchedulerUtil;
 import org.motechproject.mrs.domain.MRSAttribute;
@@ -33,16 +30,14 @@ public class PillReminderRegistrar {
     private MRSPatientAdapter patientAdapter;
     private MRSFacilityAdapter facilityAdapter;
     private MessageCampaignEnroller messageCampaignEnroller;
-    private AdherenceCallEnroller adherenceCallEnroller;
     private SchedulerUtil schedulerUtil;
 
     @Autowired
     public PillReminderRegistrar(MRSPatientAdapter patientAdapter, MRSFacilityAdapter facilityAdapter,
-            MessageCampaignEnroller messageCampaignEnroller, AdherenceCallEnroller adherenceCallEnroller, SchedulerUtil schedulerUtil) {
+            MessageCampaignEnroller messageCampaignEnroller, SchedulerUtil schedulerUtil) {
         this.patientAdapter = patientAdapter;
         this.facilityAdapter = facilityAdapter;
         this.messageCampaignEnroller = messageCampaignEnroller;
-        this.adherenceCallEnroller = adherenceCallEnroller;
         this.schedulerUtil = schedulerUtil;
     }
 
