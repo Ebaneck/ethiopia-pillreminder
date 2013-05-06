@@ -7,8 +7,6 @@ public interface Events {
 
     public static final String PATIENT_SELECTED_STOP = BASE_SUBJECT + "PatientSelectedStop";
 
-    public static final String PATIENT_WANTS_CLINIC_CALL = BASE_SUBJECT + "PatientSelectedClinicCall";
-
     public static final String PATIENT_SELECTED_END_PILL_REMINDER_CALL = BASE_SUBJECT + "PatientSelectedStopPillReminderCampaign";
 
     public static final String YES_YELLOW_SKIN_OR_EYES = BASE_SUBJECT + "PatientSelectedYesYellowSkinOrEyes";

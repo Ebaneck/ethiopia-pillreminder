@@ -23,7 +23,7 @@ public class RAMessageHandler {
     @Autowired
     private MRSPatientAdapter patientAdapter;
     
-    @MotechListener( subjects = {Events.PATIENT_WANTS_CLINIC_CALL } )
+    @MotechListener( subjects = {Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS, Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS} )
     public void sendRAMessage(MotechEvent event) {
         String flowSessionId = (String) event.getParameters().get("flowSessionId");
         FlowSessionRecord flowSession = (FlowSessionRecord) flowSessionService.getSession(flowSessionId);
@@ -39,7 +39,7 @@ public class RAMessageHandler {
     }
 
     private void buildThenSendMessage(String phoneNumber) {
-        // TODO Auto-generated method stub
+        // This is where the RA logic should go
         
     }
 }
