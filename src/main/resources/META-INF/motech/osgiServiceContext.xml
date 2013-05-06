@@ -17,22 +17,10 @@
     
     <osgi:reference cardinality="0..1" id="couchPersonAdapter" interface="org.motechproject.mrs.services.MRSPersonAdapter" bean-name="couchPersonAdapter"/>
 
-    <osgi:reference cardinality="0..1" id="decisionTreeServiceOsgi"
-        interface="org.motechproject.decisiontree.core.DecisionTreeService" />
-
-    <osgi:reference cardinality="0..1" id="callFlowServerOsgi"
-        interface="org.motechproject.callflow.service.CallFlowServer" />
-
     <osgi:reference cardinality="0..1" id="eventRelayOsgi" interface="org.motechproject.event.listener.EventRelay" />
 
     <osgi:reference id="eventListenerRegistryServiceOsgi" cardinality="0..1"
         interface="org.motechproject.event.listener.EventListenerRegistryService" />
-
-    <osgi:reference id="pillReminderServiceOsgi" cardinality="0..1"
-        interface="org.motechproject.server.pillreminder.api.service.PillReminderService" />
-
-    <osgi:reference id="appointmentReminderServiceOsgi" cardinality="0..1"
-        interface="org.motechproject.appointments.api.service.AppointmentService" />
 
     <osgi:reference id="ivrServiceOsgi" cardinality="0..1" interface="org.motechproject.ivr.service.IVRService" />
 
