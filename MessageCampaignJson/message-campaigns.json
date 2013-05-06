@@ -1,6 +1,6 @@
 [
     {
-        "name" : "DailyMessageCampaign",
+        "name" : "DemoMessageCampaign",
         "type" : "REPEAT_INTERVAL",
         "maxDuration" : "7 minutes",
         "messages" : [
@@ -15,9 +15,22 @@
         ]
     },
     {
+        "name" : "DailyMessageCampaign",
+        "type" : "REPEAT_INTERVAL",
+        "messages" : [
+            {
+                "name" : "message1",
+                "formats" : ["IVR", "SMS"],
+                "languages" : ["en"],
+                "messageKey": "message_key_1",
+                "repeatEvery" : "1 day",
+                "startTime" : "16:00"
+            }
+        ]
+    }
+    {
         "name" : "MondayMessageCampaign",
         "type" : "DAY_OF_WEEK",
-        "maxDuration" : "7 minutes",
         "messages" : [
             {
                 "name" : "mondaymessage",
@@ -31,7 +44,6 @@
     {
         "name" : "TuesdayMessageCampaign",
         "type" : "DAY_OF_WEEK",
-        "maxDuration" : "7 minutes",
         "messages" : [
             {
                 "name" : "tuesdaymessage",
@@ -45,7 +57,6 @@
     {
         "name" : "WednesdayMessageCampaign",
         "type" : "DAY_OF_WEEK",
-        "maxDuration" : "7 minutes",
         "messages" : [
             {
                 "name" : "wednesdaymessage",
@@ -59,7 +70,6 @@
     {
         "name" : "ThursdayMessageCampaign",
         "type" : "DAY_OF_WEEK",
-        "maxDuration" : "7 minutes",
         "messages" : [
             {
                 "name" : "thursdaymessage",
@@ -73,7 +83,6 @@
     {
         "name" : "FridayMessageCampaign",
         "type" : "DAY_OF_WEEK",
-        "maxDuration" : "7 minutes",
         "messages" : [
             {
                 "name" : "fridaymessage",
@@ -88,7 +97,6 @@
     {
         "name" : "SaturdayMessageCampaign",
         "type" : "DAY_OF_WEEK",
-        "maxDuration" : "7 minutes",
         "messages" : [
             {
                 "name" : "saturdaymessage",
@@ -102,7 +110,6 @@
     {
         "name" : "SundayMessageCampaign",
         "type" : "DAY_OF_WEEK",
-        "maxDuration" : "7 minutes",
         "messages" : [
             {
                 "name" : "sundaymessage",
@@ -112,5 +119,5 @@
                 "repeatOn" : ["Sunday"]
             }
         ]
-    },
-	]
+    }
+]
