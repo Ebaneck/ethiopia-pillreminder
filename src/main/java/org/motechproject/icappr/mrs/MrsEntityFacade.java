@@ -1,6 +1,5 @@
 package org.motechproject.icappr.mrs;
 
-import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.mrs.domain.MRSEncounter;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.domain.MRSFacility;
@@ -10,6 +9,7 @@ import org.motechproject.mrs.model.MRSPatientDto;
 import org.motechproject.mrs.model.MRSPersonDto;
 import org.motechproject.mrs.services.MRSEncounterAdapter;
 import org.motechproject.mrs.services.MRSPatientAdapter;
+import org.motechproject.mrs.services.MRSPersonAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,21 +19,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class MrsEntityFacade {
 
-    private static final String DEFAULT_FIRST_NAME = "MOTECH First Name";
-    private static final String DEFAULT_LAST_NAME = "MOTECH Last Name";
-    private static final String DEFAULT_GENDER = "M";
-
     private MRSPatientAdapter patientAdapter;
     private MrsUserResolver userResolver;
     private MrsFacilityResolver facilityResolver;
     private MRSEncounterAdapter encounterAdapter;
+    private MRSPersonAdapter personAdapter;
 
     @Autowired
     public MrsEntityFacade(MRSPatientAdapter patientAdapter, MrsUserResolver userResolver,
-            MrsFacilityResolver facilityResolver) {
+            MrsFacilityResolver facilityResolver, MRSPersonAdapter personAdapter) {
         this.patientAdapter = patientAdapter;
         this.userResolver = userResolver;
         this.facilityResolver = facilityResolver;
+        this.personAdapter = personAdapter;
     }
 
     public MRSProvider findMotechUser() {
@@ -66,5 +64,9 @@ public class MrsEntityFacade {
     public void saveEncounterWithFlowSessionId(MRSEncounter encounter, String flowSessionId) {
         encounter.setEncounterId(flowSessionId);
         encounterAdapter.createEncounter(encounter);
+    }
+
+    public void clearAllPersons() {
+        personAdapter.removeAll();
     }
 }

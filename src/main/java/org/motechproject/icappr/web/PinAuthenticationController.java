@@ -1,7 +1,7 @@
 package org.motechproject.icappr.web;
 
 import javax.servlet.http.HttpServletRequest;
-import org.motechproject.icappr.support.DecisionTreeSessionHandler;
+import org.motechproject.icappr.support.FlowSessionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,10 @@ public class PinAuthenticationController {
 
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
-    private DecisionTreeSessionHandler decisionTreeSessionHandler;
+    private FlowSessionHandler decisionTreeSessionHandler;
 
     @Autowired
-    public PinAuthenticationController(DecisionTreeSessionHandler decisionTreeSessionHandler) {
+    public PinAuthenticationController(FlowSessionHandler decisionTreeSessionHandler) {
         this.decisionTreeSessionHandler = decisionTreeSessionHandler;
     }
 

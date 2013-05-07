@@ -1,4 +1,4 @@
-package org.motechproject.icappr.support;
+package org.motechproject.icappr.constants;
 
 public interface CallRequestDataKeys {
 

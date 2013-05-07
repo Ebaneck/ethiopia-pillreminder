@@ -5,8 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
-import org.motechproject.commons.date.util.DateUtil;
-import org.motechproject.icappr.domain.AdherenceCallEnrollmentRequest;
 import org.motechproject.icappr.mrs.MRSPersonUtil;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.service.MessageCampaignEnroller;
@@ -49,9 +47,9 @@ public class PillReminderRegistrar {
         
         DateTime iptInitiationDate = DateTime.parse(registration.getIptInitiationDate());
         DateTime nextAppointmentDate = DateTime.parse(registration.getNextAppointment());
-        schedulerUtil.scheduleAdherenceSurvey(iptInitiationDate, registration.getCaseId(), isDemo);
-        schedulerUtil.scheduleAppointments(nextAppointmentDate, registration.getCaseId(), isDemo);
-        schedulerUtil.scheduleSideEffectsSurvey(iptInitiationDate, registration.getCaseId(), isDemo);
+        schedulerUtil.scheduleAdherenceSurvey(iptInitiationDate, registration.getCaseId(), isDemo, registration.getPhoneNumber(), registration.getPreferredLanguage());
+        schedulerUtil.scheduleAppointments(nextAppointmentDate, registration.getCaseId(), isDemo, registration.getPhoneNumber(), registration.getPreferredLanguage());
+        schedulerUtil.scheduleSideEffectsSurvey(iptInitiationDate, registration.getCaseId(), isDemo, registration.getPhoneNumber(), registration.getPreferredLanguage());
     }
 
     private void createGenericPatient(PillReminderRegistration registration) {

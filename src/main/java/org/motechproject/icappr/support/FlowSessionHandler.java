@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.callflow.service.FlowSessionService;
+import org.motechproject.icappr.constants.CallRequestDataKeys;
 import org.motechproject.icappr.mrs.MRSPersonUtil;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.mrs.MrsEntityFacade;
@@ -16,14 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DecisionTreeSessionHandler {
+public class FlowSessionHandler {
 
     private final MrsEntityFacade mrsEntityFacade;
     private final FlowSessionService flowSessionService;
     private final MRSPersonUtil mrsPersonUtil;
 
     @Autowired
-    public DecisionTreeSessionHandler(MrsEntityFacade mrsEntityFacade, FlowSessionService flowSessionService, MRSPersonUtil mrsPersonUtil) {
+    public FlowSessionHandler(MrsEntityFacade mrsEntityFacade, FlowSessionService flowSessionService, MRSPersonUtil mrsPersonUtil) {
         this.mrsEntityFacade = mrsEntityFacade;
         this.flowSessionService = flowSessionService;
         this.mrsPersonUtil = mrsPersonUtil;

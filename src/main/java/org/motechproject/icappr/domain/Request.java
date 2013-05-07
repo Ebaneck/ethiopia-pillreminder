@@ -1,9 +1,8 @@
 package org.motechproject.icappr.domain;
 
-public abstract class Request {
+public class Request {
 
 	private String motechId;
-	private String pin;
 	private String phonenumber;
 	private String type;
 	private String language;
@@ -24,14 +23,6 @@ public abstract class Request {
 		this.phonenumber = phonenumber;
 	}
 
-	public String getPin() {
-		return pin;
-	}
-
-	public void setPin(String pin) {
-		this.pin = pin;
-	}
-
 	public String getMotechId() {
 		return motechId;
 	}
@@ -47,5 +38,4 @@ public abstract class Request {
     public void setLanguage(String language) {
         this.language = language;
     }
-
 }

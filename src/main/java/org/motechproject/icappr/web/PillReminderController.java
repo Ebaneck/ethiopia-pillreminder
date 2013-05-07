@@ -55,4 +55,11 @@ public class PillReminderController {
     public MrsPatientSearchResult searchForPatient(@PathVariable String motechId) {
         return MrsPatientSearchResult.fromMrsPatient(mrsEntityFacade.findPatientByMotechId(motechId));
     }
+
+    @RequestMapping(value = "/clearAll", method = RequestMethod.GET)
+    @ResponseBody
+    public String deleteAllDemoPersons() {
+        mrsEntityFacade.clearAllPersons();
+        return "Deleted all MRS Persons";
+    }
 }

@@ -1,12 +1,11 @@
 package org.motechproject.icappr.service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Map;
 import org.motechproject.icappr.PillReminderSettings;
+import org.motechproject.icappr.constants.CallRequestDataKeys;
+import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.domain.Request;
 import org.motechproject.icappr.domain.RequestTypes;
-import org.motechproject.icappr.support.CallRequestDataKeys;
 import org.motechproject.ivr.service.CallRequest;
 import org.motechproject.ivr.service.IVRService;
 import org.slf4j.Logger;
@@ -19,7 +18,6 @@ public class CallInitiationService {
 
     private final IVRService ivrService;
     private final PillReminderSettings settings;
-    private final static int NUM_RETRIES = 3;
 
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
@@ -41,7 +39,17 @@ public class CallInitiationService {
         String motechId = request.getMotechId();
         String requestType = request.getType();
 
-        CallRequest callRequest = new CallRequest(phoneNum, 120, settings.getVerboiceChannelName());
+        String channelName;
+
+        switch (requestType) {
+        case RequestTypes.ADHERENCE_CALL : channelName = MotechConstants.ADHERENCE_CHANNEL; break;
+        case RequestTypes.APPOINTMENT_CALL : channelName = MotechConstants.APPOINTMENTS_CHANNEL; break;
+        case RequestTypes.PILL_REMINDER_CALL : channelName = MotechConstants.PILL_REMINDER_CHANNEL; break;
+        case RequestTypes.SIDE_EFFECT_CALL : channelName = MotechConstants.SIDE_EFFECTS_CHANNEL; break;
+        default : channelName = "didlogic";
+        }
+
+        CallRequest callRequest = new CallRequest(phoneNum, 120, channelName);
 
         Map<String, String> payload = callRequest.getPayload();
 
@@ -51,19 +59,11 @@ public class CallInitiationService {
         payload.put(CallRequestDataKeys.MOTECH_ID, motechId);
         payload.put(CallRequestDataKeys.REQUEST_TYPE, requestType);
 
-        // the callback_url is used once verboice starts a call to retrieve the
-        // data for the call (e.g. TwiML)
-//        String callbackUrl = settings.getMotechUrl() + "/module/icappr/ivr/start?motech_call_id=%s&request_type=%s&language=%s&retries_left=%s";
+
         String callbackStatusUrl = settings.getMotechUrl() + "/module/verboice/ivr/callstatus";
 
-//            payload.put(CallRequestDataKeys.CALLBACK_URL,
-//                    URLEncoder.encode(String.format(callbackUrl, callRequest.getCallId(), requestType, language, NUM_RETRIES), "UTF-8"));
-            payload.put(CallRequestDataKeys.STATUS_CALLBACK_URL, callbackStatusUrl);
-
-
-        if (RequestTypes.SIDE_EFFECT_CALL.equals(requestType)) {
-            payload.put("language", language);
-        }
+        payload.put(CallRequestDataKeys.STATUS_CALLBACK_URL, callbackStatusUrl);
+        payload.put("language", language);
 
         logger.info("Initiating call with requestType " + requestType + " and language " + language);
         ivrService.initiateCall(callRequest);
