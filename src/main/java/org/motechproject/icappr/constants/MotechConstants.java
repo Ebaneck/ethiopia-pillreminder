@@ -15,5 +15,7 @@ public final class MotechConstants {
     public static final String MOTECH_ID = "motechId";
     public static final String PHONE_NUM = "PhoneNum";
     public static final String LANGUAGE = "Language";
+    public static final String CONCERN_TIME = "timeOfConcern";
+    public static final String REMINDER_DAYS = "daysLeftUntilAppointment";
 
 }

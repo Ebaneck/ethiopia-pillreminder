@@ -23,9 +23,14 @@ public class InitiateCallListener {
         initiateCallByType(event, RequestTypes.SIDE_EFFECT_CALL);
     }
 
-    @MotechListener(subjects = {Events.APPOINTMENT_SCHEDULE_CALL, Events.SECOND_APPOINTMENT_SCHEDULE_CALL} )
-    public void handleAppointmentCall(MotechEvent event) {
+    @MotechListener(subjects = Events.APPOINTMENT_SCHEDULE_CALL )
+    public void handleFirstAppointmentCall(MotechEvent event) {
         initiateCallByType(event, RequestTypes.APPOINTMENT_CALL);
+    }
+
+    @MotechListener(subjects = Events.SECOND_APPOINTMENT_SCHEDULE_CALL )
+    public void handleSecondAppointmentCall(MotechEvent event) {
+        initiateCallByType(event, RequestTypes.SECOND_APPOINTMENT_CALL);
     }
 
     @MotechListener(subjects = Events.ADHERENCE_ASSESSMENT_CALL)
@@ -36,9 +41,15 @@ public class InitiateCallListener {
     private void initiateCallByType(MotechEvent event, String callType) {
         Request request = new Request();
         request.setType(callType);
-        request.setMotechID((String) event.getParameters().get(MotechConstants.MOTECH_ID));
+        request.setMotechId((String) event.getParameters().get(MotechConstants.MOTECH_ID));
         request.setPhoneNumber((String) event.getParameters().get(MotechConstants.PHONE_NUM));
         request.setLanguage((String) event.getParameters().get(MotechConstants.LANGUAGE));
+
+        if (RequestTypes.APPOINTMENT_CALL.equals(callType)) {
+            request.addParameter(MotechConstants.REMINDER_DAYS, "2");
+        } else if (RequestTypes.SECOND_APPOINTMENT_CALL.equals(callType)) {
+            request.addParameter(MotechConstants.REMINDER_DAYS, "1");
+        }
 
         callService.initiateCall(request);
     }

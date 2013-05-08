@@ -94,22 +94,26 @@ public class CallInteractionListener {
         }
     }
 
-    //move to messaging listener?
-    @MotechListener(subjects = {Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS } )
+    @MotechListener(subjects = {Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS, Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS} )
     public void handleAppointmentConcern(MotechEvent event) {
         String flowSessionId = (String) event.getParameters().get("flowSessionId");
 
         FlowSession flowSession = flowSessionService.getSession(flowSessionId);
-        String motechId = flowSession.get("motechId");
-    }
+        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
 
-    //move to messaging listener?
-    @MotechListener(subjects = {Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS } )
-    public void handleAdherenceConcern(MotechEvent event) {
-        String flowSessionId = (String) event.getParameters().get("flowSessionId");
+        MRSPatient patient = patientAdapter.getPatientByMotechId(motechId);
 
-        FlowSession flowSession = flowSessionService.getSession(flowSessionId);
-        String motechId = flowSession.get("motechId");
+        if (patient == null) {
+            return;
+        }
+
+        String phoneNumber = flowSession.getPhoneNumber();
+        DateTime timeOfConcern = DateTime.now();
+
+        MotechEvent concernEvent = new MotechEvent(event.getSubject() + "+DATA");
+        concernEvent.getParameters().put(MotechConstants.PHONE_NUM, phoneNumber);
+        concernEvent.getParameters().put(MotechConstants.CONCERN_TIME, timeOfConcern);
+        concernEvent.getParameters().put(MotechConstants.MOTECH_ID, motechId);
     }
 
     private void createEncounter(String motechId, MotechEvent event, String flowSessionId, String answer, String encounterType) {

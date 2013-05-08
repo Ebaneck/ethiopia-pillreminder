@@ -34,7 +34,7 @@ public class CallInitiationService {
      * @param request
      */
     public void initiateCall(Request request) {
-        String phoneNum = request.getPhonenumber();
+        String phoneNum = request.getPhoneNumber();
         String language = request.getLanguage();
         String motechId = request.getMotechId();
         String requestType = request.getType();
@@ -42,11 +42,12 @@ public class CallInitiationService {
         String channelName;
 
         switch (requestType) {
-        case RequestTypes.ADHERENCE_CALL : channelName = MotechConstants.ADHERENCE_CHANNEL; break;
-        case RequestTypes.APPOINTMENT_CALL : channelName = MotechConstants.APPOINTMENTS_CHANNEL; break;
-        case RequestTypes.PILL_REMINDER_CALL : channelName = MotechConstants.PILL_REMINDER_CHANNEL; break;
-        case RequestTypes.SIDE_EFFECT_CALL : channelName = MotechConstants.SIDE_EFFECTS_CHANNEL; break;
-        default : channelName = "didlogic";
+            case RequestTypes.ADHERENCE_CALL : channelName = MotechConstants.ADHERENCE_CHANNEL; break;
+            case RequestTypes.APPOINTMENT_CALL :
+            case RequestTypes.SECOND_APPOINTMENT_CALL: channelName = MotechConstants.APPOINTMENTS_CHANNEL; break;
+            case RequestTypes.PILL_REMINDER_CALL : channelName = MotechConstants.PILL_REMINDER_CHANNEL; break;
+            case RequestTypes.SIDE_EFFECT_CALL : channelName = MotechConstants.SIDE_EFFECTS_CHANNEL; break;
+            default : channelName = "didlogic";
         }
 
         CallRequest callRequest = new CallRequest(phoneNum, 120, channelName);
@@ -59,6 +60,7 @@ public class CallInitiationService {
         payload.put(CallRequestDataKeys.MOTECH_ID, motechId);
         payload.put(CallRequestDataKeys.REQUEST_TYPE, requestType);
 
+        payload.putAll(request.getPayload());
 
         String callbackStatusUrl = settings.getMotechUrl() + "/module/verboice/ivr/callstatus";
 

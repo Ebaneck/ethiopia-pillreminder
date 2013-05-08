@@ -21,7 +21,7 @@ public class CallTester {
 
         Request pinRequest = new Request();
         pinRequest.setLanguage("english");
-        pinRequest.setMotechID("1984");
+        pinRequest.setMotechId("1984");
         pinRequest.setPhoneNumber(phoneNumber);
 
         callService.initiateCall(pinRequest);

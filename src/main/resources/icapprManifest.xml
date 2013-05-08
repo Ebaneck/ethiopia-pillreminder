@@ -3,7 +3,7 @@
   <name>ICAPPR</name>
   <steps>
     <step name="authenticatePin"
-      display-name="Authenticate Patient Pin"
+      display-name="Authenticate Patient's Pin"
       icon="medicalkit"
       type="callback"
       callback-url="HOST/ivr/authenticate">
@@ -17,7 +17,7 @@
   </steps>
   <steps>
     <step name="sendAnswer"
-      display-name="Send Patient Answer"
+      display-name="Send Patient's Answer"
       icon="medicalkit"
       type="callback"
       callback-url="HOST/answer">
@@ -30,7 +30,7 @@
   </steps>
   <steps>
     <step name="sendConcern"
-      display-name="Send Patient Concern (HOST)"
+      display-name="Send Patient's Concern"
       icon="medicalkit"
       type="callback"
       callback-url="HOST/patientConcern">
@@ -39,5 +39,20 @@
         <variable name="concernType" display-name="Concern Type" type="string"/>
       </settings>
       <response type="none"/>
+      </step>
+  </steps>
+  <steps>
+    <step name="getData"
+      display-name="Retrieve Data"
+      icon="medicalkit"
+      type="callback"
+      callback-url="HOST/data">
+      <settings>
+        <variable name="requestType" display-name="Data Request" type="string"/>
+      </settings>
+      <response type="variables">
+        <variable name="dataResult" display-name="Data Result" type="string"/>
+      </response>
+    </step>
   </steps>
 </verboice-service>

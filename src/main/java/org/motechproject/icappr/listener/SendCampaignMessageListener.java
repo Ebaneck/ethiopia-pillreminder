@@ -70,7 +70,7 @@ public class SendCampaignMessageListener {
 
         Request request = new Request();
         request.setLanguage(language);
-        request.setMotechID(patientId);
+        request.setMotechId(patientId);
         request.setPhoneNumber(phoneNumber);
         request.setType(RequestTypes.PILL_REMINDER_CALL);
 
