@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <verboice-service>
-  <name>ICAPPR (HOST)</name>
+  <name>ICAPPR</name>
   <steps>
     <step name="authenticatePin"
-      display-name="Authenticate Patient Pin (HOST)"
+      display-name="Authenticate Patient Pin"
       icon="medicalkit"
       type="callback"
       callback-url="HOST/ivr/authenticate">
       <settings>
-        <variable name="pin" display-name="Patient pin (HOST)" type="string"/>
+        <variable name="pin" display-name="Patient pin" type="string"/>
       </settings>
       <response type="variables">
-        <variable name="result" display-name="Result (HOST)" type="string"/>
+        <variable name="result" display-name="Result" type="string"/>
       </response>
     </step>
   </steps>
   <steps>
     <step name="sendAnswer"
-      display-name="Send Patient Answer (HOST)"
+      display-name="Send Patient Answer"
       icon="medicalkit"
       type="callback"
       callback-url="HOST/answer">
       <settings>
-        <variable name="answer" display-name="Answer (HOST)" type="numeric"/>
-        <variable name="questionName" display-name="Question Name (HOST)" type="string"/>
+        <variable name="answer" display-name="Answer" type="numeric"/>
+        <variable name="questionName" display-name="Question Name" type="string"/>
       </settings>
       <response type="none"/>
     </step>
@@ -35,8 +35,8 @@
       type="callback"
       callback-url="HOST/patientConcern">
       <settings>
-        <variable name="answer" display-name="Concern Answer (HOST)" type="numeric"/>
-        <variable name="concernType" display-name="Concern Type (HOST)" type="string"/>
+        <variable name="answer" display-name="Concern Answer" type="numeric"/>
+        <variable name="concernType" display-name="Concern Type" type="string"/>
       </settings>
       <response type="none"/>
   </steps>
