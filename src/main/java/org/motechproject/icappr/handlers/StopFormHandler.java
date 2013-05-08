@@ -37,7 +37,13 @@ public class StopFormHandler {
         String stopDate = getValue(topFormElement, "stop_date");
         String stopReason =  getValue(topFormElement, "stop_reason");    //"opt_out" or "ipt_completion"
 
-        schedulerUtil.scheduleEndEvent(caseId, DateTime.parse(stopDate), stopReason);
+        DateTime stopDateTime = DateTime.parse(stopDate);
+
+        if (stopDateTime.isBeforeNow()) {
+            schedulerUtil.scheduleEndEvent(caseId, DateTime.now().plusMinutes(2), stopReason);
+        } else {
+            schedulerUtil.scheduleEndEvent(caseId, DateTime.parse(stopDate), stopReason);
+        }
     }
 
     private String getValue(FormValueElement formElement, String elementName) {
