@@ -39,7 +39,8 @@
                 "formats" : ["IVR"],
                 "languages" : ["en"],
                 "messageKey": "message_key_1",
-                "repeatOn" : ["Monday"]
+                "repeatOn" : ["Monday"],
+		"startTime" : "16:00"
             }
         ]
     },
@@ -53,7 +54,8 @@
                 "formats" : ["IVR"],
                 "languages" : ["en"],
                 "messageKey": "message_key_1",
-                "repeatOn" : ["Tuesday"]
+                "repeatOn" : ["Tuesday"],
+		"startTime" : "16:00"
             }
         ]
     },
@@ -67,7 +69,8 @@
                 "formats" : ["IVR"],
                 "languages" : ["en"],
                 "messageKey": "message_key_1",
-                "repeatOn" : ["Wednesday"]
+                "repeatOn" : ["Wednesday"],
+		"startTime" : "16:00"
             }
         ]
     },
@@ -81,7 +84,8 @@
                 "formats" : ["IVR"],
                 "languages" : ["en"],
                 "messageKey": "message_key_1",
-                "repeatOn" : ["Thursday"]
+                "repeatOn" : ["Thursday"],
+		"startTime" : "16:00"
             }
         ]
     },
@@ -95,7 +99,8 @@
                 "formats" : ["IVR"],
                 "languages" : ["en"],
                 "messageKey": "message_key_1",
-                "repeatOn" : ["Friday"]
+                "repeatOn" : ["Friday"],
+		"startTime" : "16:00"
                 
             }
         ]
@@ -110,7 +115,8 @@
                 "formats" : ["IVR"],
                 "languages" : ["en"],
                 "messageKey": "message_key_1",
-                "repeatOn" : ["Saturday"]
+                "repeatOn" : ["Saturday"],
+		"startTime" : "16:00"
             }
         ]
     },
@@ -124,7 +130,8 @@
                 "formats" : ["IVR"],
                 "languages" : ["en"],
                 "messageKey": "message_key_1",
-                "repeatOn" : ["Sunday"]
+                "repeatOn" : ["Sunday"],
+		"startTime" : "16:00"
             }
         ]
     }
