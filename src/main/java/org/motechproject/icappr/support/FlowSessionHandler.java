@@ -55,7 +55,13 @@ public class FlowSessionHandler {
     public boolean digitsMatchPatientPin(String sessionId, String digits) {
         String motechId = getMotechIdForSessionWithId(sessionId);
         MRSPatient patient = mrsEntityFacade.findPatientByMotechId(motechId);
-        String pin = readAttributeValue(MrsConstants.PERSON_PIN_ATTR, patient);
+        String pin;
+        if (patient == null) {
+            MRSPerson person = mrsPersonUtil.getPersonByID(motechId);
+            pin = readPinAttributeForPerson(person);
+        } else {
+            pin = readAttributeValue(MrsConstants.PERSON_PIN_ATTR, patient);
+        }
 
         if (StringUtils.isNotBlank(digits) && digits.equals(pin)) {
             return true;

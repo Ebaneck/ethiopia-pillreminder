@@ -114,6 +114,7 @@ public class CallInteractionListener {
 
     private void createEncounter(String motechId, MotechEvent event, String flowSessionId, String answer, String encounterType) {
         MRSEncounterDto encounter = new MRSEncounterDto();
+        encounter.setDate(DateTime.now());
         encounter.setEncounterId(flowSessionId);
         encounter.setEncounterType(encounterType);
         MRSPatient patient = addOrRetrievePatient(motechId);
@@ -140,7 +141,7 @@ public class CallInteractionListener {
         if (patient == null) {
             MRSPerson person = personUtil.getPersonByID(motechId);
 
-            if (person != null && person.getAttributes().contains(MrsConstants.DUMMY_PERSON_ATTR)) {
+            if (person != null && MRSPersonUtil.hasDummyAttr(person)) {
                 return null;
             }
 

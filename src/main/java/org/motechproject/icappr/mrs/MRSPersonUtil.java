@@ -140,5 +140,10 @@ public class MRSPersonUtil {
         return null;
     }
 
-
+    public static boolean hasDummyAttr(MRSPerson person) {
+        if (getAttrValue(MrsConstants.DUMMY_PERSON_ATTR, person.getAttributes()) != null) {
+            return true;
+        }
+        return false;
+    }
 }
