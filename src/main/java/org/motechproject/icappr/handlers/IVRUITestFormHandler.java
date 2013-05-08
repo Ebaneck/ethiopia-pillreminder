@@ -57,15 +57,15 @@ public class IVRUITestFormHandler {
         }
         else if (testType.matches("adherence_questions")){
             logger.debug("Enrolling user in adherence_questions test");
-            schedulerUtil.scheduleAdherenceSurvey(null, person.getPersonId(), true, phoneNumber, language);
+            schedulerUtil.scheduleAdherenceSurvey(null, person.getPersonId(), true, phoneNumber);
         }
         else if (testType.matches("side_effect_questions")){
             logger.debug("Enrolling user in side_effect_questions test");
-            schedulerUtil.scheduleSideEffectsSurvey(null, person.getPersonId(), true, phoneNumber, language);
+            schedulerUtil.scheduleSideEffectsSurvey(null, person.getPersonId(), true, phoneNumber);
         }
         else if (testType.matches("clinic_reminder")){
             logger.debug("Enrolling user in clinic_reminder test");
-            schedulerUtil.scheduleAppointments(null, person.getPersonId(), true, phoneNumber, language);
+            schedulerUtil.scheduleAppointments(null, person.getPersonId(), true, phoneNumber);
         }
     }
 

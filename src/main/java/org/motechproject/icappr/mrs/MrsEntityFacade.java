@@ -43,7 +43,7 @@ public class MrsEntityFacade {
     }
 
     public MRSPatient findPatientByMotechId(String motechId) {
-        return (MRSPatient) patientAdapter.getPatientByMotechId(motechId);
+        return patientAdapter.getPatientByMotechId(motechId);
     }
 
     public MRSPatient savePatient(MRSPatient patient) {

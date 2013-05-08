@@ -42,4 +42,8 @@ public interface Events {
     public static final String NO_MEDICATION_THREE_DAYS_AGO = BASE_SUBJECT + "NoMedicationThreeDaysAgo";
 
     public static final String INPUT_ERROR_EVENT = BASE_SUBJECT + "InputError";
+
+    public static final String END_CALLS = BASE_SUBJECT + "EndOfProgramRequest";
+
+    public static final String CONCERN_EVENT = BASE_SUBJECT + "RAMessageConcern";
 }

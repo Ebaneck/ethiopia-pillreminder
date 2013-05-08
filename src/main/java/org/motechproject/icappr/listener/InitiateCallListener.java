@@ -6,7 +6,11 @@ import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.domain.Request;
 import org.motechproject.icappr.domain.RequestTypes;
 import org.motechproject.icappr.events.Events;
+import org.motechproject.icappr.mrs.MRSPersonUtil;
+import org.motechproject.icappr.mrs.MrsEntityFacade;
 import org.motechproject.icappr.service.CallInitiationService;
+import org.motechproject.mrs.domain.MRSPatient;
+import org.motechproject.mrs.domain.MRSPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +21,11 @@ public class InitiateCallListener {
     @Autowired
     private CallInitiationService callService;
 
+    @Autowired
+    private MrsEntityFacade mrsEntityFacade;
+
+    @Autowired
+    private MRSPersonUtil mrsPersonUtil;
 
     @MotechListener(subjects = Events.SIDE_EFFECTS_SURVEY_CALL)
     public void handleSideEffectCall(MotechEvent event) {
@@ -39,11 +48,15 @@ public class InitiateCallListener {
     }
 
     private void initiateCallByType(MotechEvent event, String callType) {
+
+        String motechId = (String) event.getParameters().get(MotechConstants.MOTECH_ID);
+        String phoneNumber = (String) event.getParameters().get(MotechConstants.PHONE_NUM);
+
         Request request = new Request();
         request.setType(callType);
-        request.setMotechId((String) event.getParameters().get(MotechConstants.MOTECH_ID));
-        request.setPhoneNumber((String) event.getParameters().get(MotechConstants.PHONE_NUM));
-        request.setLanguage((String) event.getParameters().get(MotechConstants.LANGUAGE));
+        request.setMotechId(motechId);
+        request.setPhoneNumber(phoneNumber);
+        request.setLanguage(getUserPreferredLanguage(motechId));
 
         if (RequestTypes.APPOINTMENT_CALL.equals(callType)) {
             request.addParameter(MotechConstants.REMINDER_DAYS, "2");
@@ -52,6 +65,21 @@ public class InitiateCallListener {
         }
 
         callService.initiateCall(request);
+    }
+
+    private String getUserPreferredLanguage(String motechId) {
+        MRSPatient patient = mrsEntityFacade.findPatientByMotechId(motechId);
+        if (patient == null) {
+            MRSPerson person = mrsPersonUtil.getPersonByID(motechId);
+            if (person != null) {
+                String preferredLanguage = MRSPersonUtil.getAttrValue(MotechConstants.LANGUAGE, person.getAttributes());
+                return (preferredLanguage == null) ? "english" : preferredLanguage;
+            }
+            return "english";
+        } else {
+            String preferredLanguage = MRSPersonUtil.getAttrValue(MotechConstants.LANGUAGE, patient.getPerson().getAttributes());
+            return (preferredLanguage == null) ? "english" : preferredLanguage;
+        }
     }
 
 }

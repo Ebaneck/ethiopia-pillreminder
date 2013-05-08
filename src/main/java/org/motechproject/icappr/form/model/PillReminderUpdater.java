@@ -1,6 +1,8 @@
 package org.motechproject.icappr.form.model;
 
+import org.joda.time.DateTime;
 import org.motechproject.icappr.service.MessageCampaignEnroller;
+import org.motechproject.icappr.support.SchedulerUtil;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.slf4j.Logger;
@@ -15,17 +17,23 @@ public class PillReminderUpdater {
 
     private MRSPatientAdapter patientAdapter;
     private MessageCampaignEnroller messageCampaignEnroller;
+    private SchedulerUtil schedulerUtil;
 
     @Autowired
     public PillReminderUpdater(MRSPatientAdapter patientAdapter,
-            MessageCampaignEnroller messageCampaignEnroller) {
+            MessageCampaignEnroller messageCampaignEnroller, SchedulerUtil schedulerUtil) {
         this.patientAdapter = patientAdapter;
         this.messageCampaignEnroller = messageCampaignEnroller;
+        this.schedulerUtil = schedulerUtil;
     }
 
-    
     public void reenroll(PillReminderUpdate update) {
-        getPatient(update);
+
+        String phoneNumber = update.getPhoneNumber();
+        String motechId = update.getCaseId();
+
+        messageCampaignEnroller.unenroll(motechId);
+        schedulerUtil.unscheduleAllIcapprJobs(motechId);
 
         if (update.getPreferredReminderFrequency().matches("daily")) {
             logger.debug("Enrolling patient in daily message campaign");
@@ -36,13 +44,9 @@ public class PillReminderUpdater {
             logger.debug("Enrolling patient in weekly message campaign");
             messageCampaignEnroller.enrollInWeeklyMessageCampaign(update);
         }
-    }
 
-    private void getPatient(PillReminderUpdate update) {
-        logger.debug("Retrieving patient for update form...");        
-        MRSPatient patient = patientAdapter.getPatient(update.getCaseId());       
-        if (patient != null)
-            logger.debug("Successfully retrieved patient for update form");
+        schedulerUtil.scheduleAdherenceSurvey(DateTime.parse(update.getTodaysDate()), motechId, false, phoneNumber);
+        schedulerUtil.scheduleSideEffectsSurvey(DateTime.parse(update.getTodaysDate()), motechId, false, phoneNumber);
+        schedulerUtil.scheduleAppointments(DateTime.parse(update.getNextAppointment()), motechId, false, phoneNumber);
     }
-
 }

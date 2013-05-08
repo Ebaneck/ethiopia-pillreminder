@@ -47,9 +47,9 @@ public class PillReminderRegistrar {
         
         DateTime iptInitiationDate = DateTime.parse(registration.getIptInitiationDate());
         DateTime nextAppointmentDate = DateTime.parse(registration.getNextAppointment());
-        schedulerUtil.scheduleAdherenceSurvey(iptInitiationDate, registration.getCaseId(), isDemo, registration.getPhoneNumber(), registration.getPreferredLanguage());
-        schedulerUtil.scheduleAppointments(nextAppointmentDate, registration.getCaseId(), isDemo, registration.getPhoneNumber(), registration.getPreferredLanguage());
-        schedulerUtil.scheduleSideEffectsSurvey(iptInitiationDate, registration.getCaseId(), isDemo, registration.getPhoneNumber(), registration.getPreferredLanguage());
+        schedulerUtil.scheduleAdherenceSurvey(iptInitiationDate, registration.getCaseId(), isDemo, registration.getPhoneNumber());
+        schedulerUtil.scheduleAppointments(nextAppointmentDate, registration.getCaseId(), isDemo, registration.getPhoneNumber());
+        schedulerUtil.scheduleSideEffectsSurvey(iptInitiationDate, registration.getCaseId(), isDemo, registration.getPhoneNumber());
     }
 
     private void createGenericPatient(PillReminderRegistration registration) {

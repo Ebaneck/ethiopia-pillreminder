@@ -17,5 +17,7 @@ public final class MotechConstants {
     public static final String LANGUAGE = "Language";
     public static final String CONCERN_TIME = "timeOfConcern";
     public static final String REMINDER_DAYS = "daysLeftUntilAppointment";
+    public static final String STOP_REASON = "stopReason";
+    public static final String CONCERN_TYPE = "concernType";
 
 }
