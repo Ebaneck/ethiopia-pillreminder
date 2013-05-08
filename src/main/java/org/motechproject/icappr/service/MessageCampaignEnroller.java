@@ -43,7 +43,7 @@ public class MessageCampaignEnroller {
         Time preferredTime = getPreferredTime(registration);
         logger.debug("preferred time is " + preferredTime.getHour() + ":" + preferredTime.getMinute());
 
-        // request.setStartTime(preferredTime); //REMOVE COMMENT POST-TESTING
+        request.setStartTime(preferredTime); 
 
         logger.debug("starting daily message campaign ");
         messageCampaignService.startFor(request);
@@ -58,7 +58,7 @@ public class MessageCampaignEnroller {
         Time preferredTime = getPreferredTime(update);
         logger.debug("preferred time is " + preferredTime.getHour() + ":" + preferredTime.getMinute());
 
-        // request.setStartTime(preferredTime); //REMOVE COMMENT POST-TESTING
+        request.setStartTime(preferredTime); 
 
         logger.debug("starting daily message campaign ");
         messageCampaignService.startFor(request);
@@ -73,10 +73,10 @@ public class MessageCampaignEnroller {
         Time preferredTime = getPreferredTime(update);
         logger.debug("preferred time is " + preferredTime.getHour() + ":" + preferredTime.getMinute());
 
-        // request.setStartTime(preferredTime);                 //REMOVE COMMENT POST-TESTING
-        request.setStartTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().plusMinutes(1).getMinuteOfHour()));
+        request.setStartTime(preferredTime);
+        //request.setStartTime(new Time(DateTime.now().getHourOfDay(), DateTime.now().plusMinutes(1).getMinuteOfHour()));
         
-        logger.debug("actual start time (for testing) is " + request.deliverTime());
+        logger.debug("actual start time is " + request.deliverTime());
         String dayOfWeek = update.getPreferredReminderDay();
 
         if (dayOfWeek.toLowerCase().matches("monday"))
