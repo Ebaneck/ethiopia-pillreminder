@@ -37,8 +37,8 @@ public class SchedulerUtil {
             firstReminderDate = DateTime.now().plusMinutes(settings.getDemoMinutes()).toDate();
             secondReminderDate = DateTime.now().plusMinutes(settings.getDemoMinutes() * 3).toDate();
         } else {
-            firstReminderDate = clinicVisitDate.minusDays(2).withHourOfDay(settings.getAppointmentHourOfDay()).toDate();
-            secondReminderDate = clinicVisitDate.minusDays(1).withHourOfDay(settings.getAppointmentHourOfDay()).toDate();
+            firstReminderDate = clinicVisitDate.minusDays(2).withHourOfDay(settings.getAppointmentHourOfDay()).withMinuteOfHour(settings.getAppointmentMinuteOfHour()).toDate();
+            secondReminderDate = clinicVisitDate.minusDays(1).withHourOfDay(settings.getAppointmentHourOfDay()).withMinuteOfHour(settings.getAppointmentMinuteOfHour()).toDate();
         }
 
         RunOnceSchedulableJob firstAppointmentReminder = new RunOnceSchedulableJob(callJob, firstReminderDate);
@@ -58,7 +58,7 @@ public class SchedulerUtil {
         if (isDemo) {
             callDate = DateTime.now().plusMinutes(settings.getDemoMinutes()).toDate();
         } else {
-            callDate = enrollmentDate.plusDays(settings.getAdherenceDaysLater()).withHourOfDay(settings.getAdherenceHourOfDay()).toDate();
+            callDate = enrollmentDate.plusDays(settings.getAdherenceDaysLater()).withHourOfDay(settings.getAdherenceHourOfDay()).withMinuteOfHour(settings.getAdherenceMinuteOfHour()).toDate();
         }
 
         injectParameterData(externalId, phoneNumber, callJob.getParameters());
@@ -79,7 +79,7 @@ public class SchedulerUtil {
         if (isDemo) {
             callDate = DateTime.now().plusMinutes(settings.getDemoMinutes()).toDate();
         } else {
-            callDate = enrollmentDate.plusDays(settings.getSideEffectDaysLater()).withHourOfDay(settings.getSideEffectHourOfDay()).toDate();
+            callDate = enrollmentDate.plusDays(settings.getSideEffectDaysLater()).withHourOfDay(settings.getSideEffectHourOfDay()).withMinuteOfHour(settings.getSideEffectsMinuteOfHours()).toDate();
         }
 
         RunOnceSchedulableJob sideEffectCallJob = new RunOnceSchedulableJob(callJob, callDate);

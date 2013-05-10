@@ -18,13 +18,16 @@ public class PillReminderSettings {
     private static final String MOTECH_URL_PROPERTY = "motech.url";
     private static final String VERBOICE_CHANNEL_NAME_PROPERTY = "verboice.channel.name";
     private static final String CMSLITE_STREAM_PATH = "/module/cmsliteapi/stream/";
-
     private static final String SIDE_EFFECTS_DAYS_LATER_PROPERTY = "side.effect.days.later";
     private static final String SIDE_EFFECTS_HOUR_OF_DAY_PROPERTY = "side.effect.hour.of.day";
+    private static final String SIDE_EFFECTS_MINUTE_OF_HOUR_PROPERTY = "side.effect.minute.of.hour";
     private static final String DEMO_MINUTES_PROPERTY = "demo.minutes";
     private static final String APPOINTMENT_HOUR_OF_DAY_PROPERTY = "appointment.hour.of.day";
+    private static final String APPOINTMENT_MINUTE_OF_HOUR_PROPERTY = "appointment.minute.of.hour";
     private static final String ADHERENCE_DAYS_LATER_PROPERTY = "adherence.days.later";
     private static final String ADHERENCE_HOUR_OF_DAY_PROPERTY = "adherence.hour.of.day";
+    private static final String ADHERENCE_MINUTE_OF_HOUR_PROPERTY = "adherence.minute.of.hour";
+    private static final String EAT_TO_UTC_HOUR_DIFFERENCE_PROPERTY = "eat.to.utc.hour.difference";
 
     @Autowired
     private SettingsFacade settingsFacade;
@@ -34,6 +37,26 @@ public class PillReminderSettings {
     @Autowired
     public PillReminderSettings(SettingsFacade settingsFacade) {
         this.settingsFacade = settingsFacade;
+    }
+
+    public int getAppointmentMinuteOfHour() {
+        return Integer.parseInt(settingsFacade.getProperty(APPOINTMENT_MINUTE_OF_HOUR_PROPERTY));
+
+    }
+
+    public int getAdherenceMinuteOfHour() {
+        return Integer.parseInt(settingsFacade.getProperty(ADHERENCE_MINUTE_OF_HOUR_PROPERTY));
+
+    }
+
+    public int getSideEffectsMinuteOfHours() {
+        return Integer.parseInt(settingsFacade.getProperty(SIDE_EFFECTS_MINUTE_OF_HOUR_PROPERTY));
+
+    }
+
+    public int getEATtoUTCHourDifference() {
+        return Integer.parseInt(settingsFacade.getProperty(EAT_TO_UTC_HOUR_DIFFERENCE_PROPERTY));
+
     }
 
     public int getAppointmentHourOfDay() {

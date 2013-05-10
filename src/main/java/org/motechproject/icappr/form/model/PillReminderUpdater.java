@@ -37,7 +37,7 @@ public class PillReminderUpdater {
 
         if (update.getPreferredReminderFrequency().matches("daily")) {
             logger.debug("Enrolling patient in daily message campaign");
-            messageCampaignEnroller.enrollInDailyMessageCampaign(update);
+            messageCampaignEnroller.enrollInDailyMessageCampaign(update.getCaseId(), update.getPreferredCallTime());
         }
 
         if (update.getPreferredReminderFrequency().matches("weekly")) {
