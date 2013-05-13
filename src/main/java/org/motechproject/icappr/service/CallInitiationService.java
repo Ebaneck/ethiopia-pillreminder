@@ -33,7 +33,7 @@ public class CallInitiationService {
      * have been specified within the request payload.
      * @param request
      */
-    public void initiateCall(Request request) {
+    public synchronized void initiateCall(Request request) {
         String phoneNum = request.getPhoneNumber();
         String language = request.getLanguage();
         String motechId = request.getMotechId();
@@ -42,12 +42,12 @@ public class CallInitiationService {
         String channelName;
 
         switch (requestType) {
-            case RequestTypes.ADHERENCE_CALL : channelName = MotechConstants.ADHERENCE_CHANNEL; break;
-            case RequestTypes.APPOINTMENT_CALL :
-            case RequestTypes.SECOND_APPOINTMENT_CALL: channelName = MotechConstants.APPOINTMENTS_CHANNEL; break;
-            case RequestTypes.PILL_REMINDER_CALL : channelName = MotechConstants.PILL_REMINDER_CHANNEL; break;
-            case RequestTypes.SIDE_EFFECT_CALL : channelName = MotechConstants.SIDE_EFFECTS_CHANNEL; break;
-            default : channelName = "didlogic";
+        case RequestTypes.ADHERENCE_CALL : channelName = MotechConstants.ADHERENCE_CHANNEL; break;
+        case RequestTypes.APPOINTMENT_CALL :
+        case RequestTypes.SECOND_APPOINTMENT_CALL: channelName = MotechConstants.APPOINTMENTS_CHANNEL; break;
+        case RequestTypes.PILL_REMINDER_CALL : channelName = MotechConstants.PILL_REMINDER_CHANNEL; break;
+        case RequestTypes.SIDE_EFFECT_CALL : channelName = MotechConstants.SIDE_EFFECTS_CHANNEL; break;
+        default : channelName = "didlogic";
         }
 
         CallRequest callRequest = new CallRequest(phoneNum, 120, channelName);
@@ -69,6 +69,12 @@ public class CallInitiationService {
 
         logger.info("Initiating call with requestType " + requestType + " and language " + language);
         ivrService.initiateCall(callRequest);
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            logger.debug("Thread was interrupted: " + e.getMessage());
+        }
     }
 
 }
