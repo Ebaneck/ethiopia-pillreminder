@@ -21,25 +21,18 @@ public class MrsEntityFacade {
 
     private MRSPatientAdapter patientAdapter;
     private MrsUserResolver userResolver;
-    private MrsFacilityResolver facilityResolver;
     private MRSEncounterAdapter encounterAdapter;
     private MRSPersonAdapter personAdapter;
 
     @Autowired
-    public MrsEntityFacade(MRSPatientAdapter patientAdapter, MrsUserResolver userResolver,
-            MrsFacilityResolver facilityResolver, MRSPersonAdapter personAdapter) {
+    public MrsEntityFacade(MRSPatientAdapter patientAdapter, MrsUserResolver userResolver, MRSPersonAdapter personAdapter) {
         this.patientAdapter = patientAdapter;
         this.userResolver = userResolver;
-        this.facilityResolver = facilityResolver;
         this.personAdapter = personAdapter;
     }
 
     public MRSProvider findMotechUser() {
         return userResolver.resolveMotechUser();
-    }
-
-    public MRSFacility findMotechFacility() {
-        return facilityResolver.resolveMotechFacility();
     }
 
     public MRSPatient findPatientByMotechId(String motechId) {
@@ -53,7 +46,7 @@ public class MrsEntityFacade {
     public MRSPatient createGenericPatient(String patientMotechId) {
         MRSPerson person = new MRSPersonDto();
 
-        MRSPatient patient = new MRSPatientDto(null, facilityResolver.resolveMotechFacility(), person, patientMotechId);
+        MRSPatient patient = new MRSPatientDto(null, null, person, patientMotechId);
         return patientAdapter.savePatient(patient);
     }
 
