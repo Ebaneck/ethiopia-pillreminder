@@ -2,9 +2,7 @@ package org.motechproject.icappr.mrs;
 
 import org.motechproject.mrs.domain.MRSEncounter;
 import org.motechproject.mrs.domain.MRSPatient;
-import org.motechproject.mrs.domain.MRSFacility;
 import org.motechproject.mrs.domain.MRSPerson;
-import org.motechproject.mrs.domain.MRSProvider;
 import org.motechproject.mrs.model.MRSPatientDto;
 import org.motechproject.mrs.model.MRSPersonDto;
 import org.motechproject.mrs.services.MRSEncounterAdapter;
@@ -20,19 +18,13 @@ import org.springframework.stereotype.Component;
 public class MrsEntityFacade {
 
     private MRSPatientAdapter patientAdapter;
-    private MrsUserResolver userResolver;
     private MRSEncounterAdapter encounterAdapter;
     private MRSPersonAdapter personAdapter;
 
     @Autowired
-    public MrsEntityFacade(MRSPatientAdapter patientAdapter, MrsUserResolver userResolver, MRSPersonAdapter personAdapter) {
+    public MrsEntityFacade(MRSPatientAdapter patientAdapter, MRSPersonAdapter personAdapter) {
         this.patientAdapter = patientAdapter;
-        this.userResolver = userResolver;
         this.personAdapter = personAdapter;
-    }
-
-    public MRSProvider findMotechUser() {
-        return userResolver.resolveMotechUser();
     }
 
     public MRSPatient findPatientByMotechId(String motechId) {
