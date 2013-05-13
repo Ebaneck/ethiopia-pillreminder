@@ -61,6 +61,8 @@ public class FlowSessionHandler {
             if (person != null) {
                 pin = readPinAttributeForPerson(person);
             } else {
+                //This shouldn't happen, it means there is no patient OR person for the flow session
+                //Can happen when we receive a bad response from Verboice and never link up the session with our data
                 return false;
             }
         } else {
@@ -70,6 +72,7 @@ public class FlowSessionHandler {
         if (StringUtils.isNotBlank(digits) && digits.equals(pin)) {
             return true;
         } else {
+            updatePatientFailedLogin(sessionId);
             return false;
         }
     }
@@ -124,8 +127,19 @@ public class FlowSessionHandler {
 
     public void updatePatientFailedLogin(String sessionId) {
         String motechId = getMotechIdForSessionWithId(sessionId);
+
+        if (motechId == null) {
+            return;
+        }
+
         MRSPatient patient = mrsEntityFacade.findPatientByMotechId(motechId);
+
+        if (patient == null) {
+            return;
+        }
+
         MRSAttribute loginFailures = readAttribute(MrsConstants.LOGIN_FAILURE_ATTR, patient);
+
         if (loginFailures == null) {
             MRSAttribute numFailures = new MRSAttributeDto(MrsConstants.LOGIN_FAILURE_ATTR, "1");
             patient.getPerson().getAttributes().add(numFailures);

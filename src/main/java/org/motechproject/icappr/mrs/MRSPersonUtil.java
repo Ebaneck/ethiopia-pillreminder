@@ -119,7 +119,7 @@ public class MRSPersonUtil {
         person.getAttributes().add(new MRSAttributeDto(attrName, attrValue));
     }
 
-    public MRSAttribute getAttribute(MRSPerson person, String attrName) {
+    public static MRSAttribute getAttribute(MRSPerson person, String attrName) {
         Iterator<MRSAttribute> attrs = person.getAttributes().iterator();
         while (attrs.hasNext()) {
             MRSAttribute attr = attrs.next();
