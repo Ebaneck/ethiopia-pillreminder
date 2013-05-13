@@ -58,7 +58,11 @@ public class FlowSessionHandler {
         String pin;
         if (patient == null) {
             MRSPerson person = mrsPersonUtil.getPersonByID(motechId);
-            pin = readPinAttributeForPerson(person);
+            if (person != null) {
+                pin = readPinAttributeForPerson(person);
+            } else {
+                return false;
+            }
         } else {
             pin = readAttributeValue(MrsConstants.PERSON_PIN_ATTR, patient);
         }
