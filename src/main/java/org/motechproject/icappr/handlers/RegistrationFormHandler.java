@@ -1,7 +1,6 @@
 package org.motechproject.icappr.handlers;
 
 import java.util.Map;
-
 import org.motechproject.commcare.domain.CommcareForm;
 import org.motechproject.commcare.domain.FormValueElement;
 import org.motechproject.icappr.constants.CaseConstants;
@@ -12,36 +11,36 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RegistrationFormHandler {
-	
-	@Autowired
+
+    @Autowired
     private PillReminderRegistrar pillReminderRegistrar;
 
-	public void handleForm(CommcareForm form) {
-		FormValueElement topFormElement = form.getForm();
-		
-		if (topFormElement == null) {
-			return;
-		}
-		
-	    //From form get case ID
+    public void handleForm(CommcareForm form, String externalId) {
+        FormValueElement topFormElement = form.getForm();
+
+        if (topFormElement == null) {
+            return;
+        }
+
+        //From form get case ID
         Map<String, String> attributes = topFormElement.getAttributes();
         String caseId = attributes.get(CaseConstants.FORM_CASE_ID);
-        
-		String clinicId = getValue(topFormElement, "study_id");    
-		String pin = getValue(topFormElement, "pin");
-		String preferredLanguage = getValue(topFormElement, "preferred_language");
-	    String phoneNumber = getValue(topFormElement, "phone_number");
-		String iptInitiationDate = getValue(topFormElement, "ipt_initiation");
-		String preferredCallTime = getValue(topFormElement, "pref_call_time");
-	    String nextAppointment = getValue(topFormElement, "next_appointment");
-		
-		/* Old form parameters
-		 * String clinicId = getValue(topFormElement, "clinic_id");*/ 
-	    		
+
+        String clinicId = getValue(topFormElement, "study_id");    
+        String pin = getValue(topFormElement, "pin");
+        String preferredLanguage = getValue(topFormElement, "preferred_language");
+        String phoneNumber = getValue(topFormElement, "phone_number");
+        String iptInitiationDate = getValue(topFormElement, "ipt_initiation");
+        String preferredCallTime = getValue(topFormElement, "pref_call_time");
+        String nextAppointment = getValue(topFormElement, "next_appointment");
+
+        /* Old form parameters
+         * String clinicId = getValue(topFormElement, "clinic_id");*/ 
+
         PillReminderRegistration registration = new PillReminderRegistration();
-        
+
         registration.setCaseId(caseId);
-        
+
         registration.setClinic(clinicId);
         registration.setPin(pin);
         registration.setPreferredLanguage(preferredLanguage);
@@ -49,21 +48,21 @@ public class RegistrationFormHandler {
         registration.setIptInitiationDate(iptInitiationDate);
         registration.setPreferredCallTime(preferredCallTime);
         registration.setNextAppointment(nextAppointment);
-        
+
         /* Old setters for old form
          * registration.setPatientId(studyId);*/
-        
+
         pillReminderRegistrar.register(registration, false);
-	}
+    }
 
-	private String getValue(FormValueElement formElement, String elementName) {
+    private String getValue(FormValueElement formElement, String elementName) {
 
-		FormValueElement clinicElement = formElement.getElementByName(elementName);
+        FormValueElement clinicElement = formElement.getElementByName(elementName);
 
-		if (clinicElement == null) {
-			return null;
-		}
+        if (clinicElement == null) {
+            return null;
+        }
 
-		return clinicElement.getValue();
-	}
+        return clinicElement.getValue();
+    }
 }

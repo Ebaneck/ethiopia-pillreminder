@@ -1,9 +1,7 @@
 package org.motechproject.icappr.handlers;
 
 import java.util.Map;
-
 import org.motechproject.commcare.domain.CommcareForm;
-
 import org.motechproject.commcare.domain.FormValueElement;
 import org.motechproject.icappr.constants.CaseConstants;
 import org.motechproject.icappr.form.model.PillReminderUpdate;
@@ -21,7 +19,7 @@ public class UpdateFormHandler {
     
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
-    public void handleForm(CommcareForm form) {
+    public void handleForm(CommcareForm form, String externalId) {
         logger.debug("Handling Update form...");
         
         FormValueElement topFormElement = form.getForm();

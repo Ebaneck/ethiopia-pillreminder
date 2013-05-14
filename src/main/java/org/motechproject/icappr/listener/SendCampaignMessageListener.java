@@ -1,11 +1,8 @@
 package org.motechproject.icappr.listener;
 
-import java.util.List;
-
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.EventRelay;
 import org.motechproject.event.listener.annotations.MotechListener;
-import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.domain.Request;
 import org.motechproject.icappr.domain.RequestTypes;
 import org.motechproject.icappr.mrs.MrsConstants;
@@ -16,7 +13,6 @@ import org.motechproject.messagecampaign.EventKeys;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.domain.MRSPerson;
 import org.motechproject.mrs.services.MRSPatientAdapter;
-import org.motechproject.mrs.services.MRSPersonAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +25,6 @@ public class SendCampaignMessageListener {
     private MRSPatientAdapter patientAdapter;
     private MRSPersonUtil personUtil;
     private CallInitiationService callService;
-    private MrsEntityFacade mrsFacade;
 
     @Autowired
     private EventRelay eventRelay;
@@ -43,8 +38,8 @@ public class SendCampaignMessageListener {
 
     @MotechListener(subjects = { EventKeys.SEND_MESSAGE })
     public void sendCampaignMessage(MotechEvent event) {
-        logger.debug("received message campaign event");
         String patientId = event.getParameters().get(EventKeys.EXTERNAL_ID_KEY).toString();
+        logger.debug("received message campaign event for ID: " + patientId);
         MRSPatient patient = patientAdapter.getPatientByMotechId(patientId);
 
         String phoneNumber;
@@ -60,7 +55,7 @@ public class SendCampaignMessageListener {
                 language = MRSPersonUtil.getAttrValue(MrsConstants.PERSON_LANGUAGE_ATTR, person.getAttributes());
             }
         } else {
-            //production
+            //"real" program
             phoneNumber = MRSPersonUtil.getAttrValue(MrsConstants.PERSON_PHONE_NUMBER_ATTR, patient.getPerson()
                     .getAttributes());
 

@@ -11,12 +11,15 @@ import org.motechproject.icappr.mrs.MrsEntityFacade;
 import org.motechproject.icappr.service.CallInitiationService;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.domain.MRSPerson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class InitiateCallListener {
 
+    private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     @Autowired
     private CallInitiationService callService;
@@ -48,6 +51,8 @@ public class InitiateCallListener {
     }
 
     private void initiateCallByType(MotechEvent event, String callType) {
+
+        logger.info("Call for: " + callType);
 
         String motechId = (String) event.getParameters().get(MotechConstants.MOTECH_ID);
         String phoneNumber = (String) event.getParameters().get(MotechConstants.PHONE_NUM);

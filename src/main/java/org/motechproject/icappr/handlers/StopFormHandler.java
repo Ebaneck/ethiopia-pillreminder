@@ -1,7 +1,6 @@
 package org.motechproject.icappr.handlers;
 
 import java.util.Map;
-
 import org.joda.time.DateTime;
 import org.motechproject.commcare.domain.CommcareForm;
 import org.motechproject.commcare.domain.FormValueElement;
@@ -20,7 +19,7 @@ public class StopFormHandler {
 
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
-    public void handleForm(CommcareForm form) {
+    public void handleForm(CommcareForm form, String externalId) {
         logger.debug("Handling Stop form...");
 
         FormValueElement topFormElement = form.getForm();

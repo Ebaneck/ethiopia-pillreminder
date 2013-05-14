@@ -28,6 +28,10 @@ public class PillReminderSettings {
     private static final String ADHERENCE_HOUR_OF_DAY_PROPERTY = "adherence.hour.of.day";
     private static final String ADHERENCE_MINUTE_OF_HOUR_PROPERTY = "adherence.minute.of.hour";
     private static final String EAT_TO_UTC_HOUR_DIFFERENCE_PROPERTY = "eat.to.utc.hour.difference";
+    private static final String ADHERENCE_FLOW_ID_PROPERTY = "adherence.flow.id";
+    private static final String PILL_REMINDER_FLOW_ID_PROPERTY = "pill.reminder.flow.id";
+    private static final String SIDE_EFFECT_FLOW_ID_PROPERTY = "side.effect.flow.id";
+    private static final String APPIONTMENT_REMINDER_FLOW_ID_PROPERTY = "appointment.reminder.flow.id";
 
     @Autowired
     private SettingsFacade settingsFacade;
@@ -37,6 +41,22 @@ public class PillReminderSettings {
     @Autowired
     public PillReminderSettings(SettingsFacade settingsFacade) {
         this.settingsFacade = settingsFacade;
+    }
+
+    public String getAdherenceFlowId() {
+        return settingsFacade.getProperty(ADHERENCE_FLOW_ID_PROPERTY);
+    }
+
+    public String getPillReminderFlowId() {
+        return settingsFacade.getProperty(PILL_REMINDER_FLOW_ID_PROPERTY);
+    }
+
+    public String getSideEffectFlowId() {
+        return settingsFacade.getProperty(SIDE_EFFECT_FLOW_ID_PROPERTY);
+    }
+
+    public String getAppointmentReminderFlowId() {
+        return settingsFacade.getProperty(APPIONTMENT_REMINDER_FLOW_ID_PROPERTY);
     }
 
     public int getAppointmentMinuteOfHour() {
@@ -102,8 +122,8 @@ public class PillReminderSettings {
         return settingsFacade.getProperty(VERBOICE_CHANNEL_NAME_PROPERTY);
     }
 
+    @Deprecated
     public String getCmsliteUrlFor(String soundFilename, String language) {
         return getMotechUrl() + CMSLITE_STREAM_PATH + language + "/" + soundFilename;
     }
-
 }

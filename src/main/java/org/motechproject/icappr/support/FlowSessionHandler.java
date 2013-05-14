@@ -12,7 +12,6 @@ import org.motechproject.mrs.domain.MRSAttribute;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.domain.MRSPerson;
 import org.motechproject.mrs.model.MRSAttributeDto;
-import org.motechproject.mrs.model.MRSPersonDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +53,11 @@ public class FlowSessionHandler {
 
     public boolean digitsMatchPatientPin(String sessionId, String digits) {
         String motechId = getMotechIdForSessionWithId(sessionId);
+
+        if (motechId == null) {
+            return false;
+        }
+
         MRSPatient patient = mrsEntityFacade.findPatientByMotechId(motechId);
         String pin;
         if (patient == null) {
@@ -112,6 +116,9 @@ public class FlowSessionHandler {
 
     public String getMotechIdForSessionWithId(String sessionId) {
         FlowSession session = flowSessionService.getSession(sessionId);
+        if (session == null) {
+            return null;
+        }
         return session.get(CallRequestDataKeys.MOTECH_ID);
     }
 
@@ -151,9 +158,4 @@ public class FlowSessionHandler {
             mrsEntityFacade.savePatient(patient);
         }
     }
-
-    public void updatePatientAttribute(MRSAttribute attribute, MRSPatient patient) {
-        List<MRSAttribute> attrs = patient.getPerson().getAttributes();
-    }
-
 }

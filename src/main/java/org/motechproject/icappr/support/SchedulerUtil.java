@@ -2,7 +2,6 @@ package org.motechproject.icappr.support;
 
 import java.util.Date;
 import java.util.Map;
-
 import org.joda.time.DateTime;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.icappr.PillReminderSettings;
@@ -109,5 +108,4 @@ public class SchedulerUtil {
 
         schedulerService.safeScheduleRunOnceJob(endJob);
     }
-
 }

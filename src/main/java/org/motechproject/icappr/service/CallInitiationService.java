@@ -33,22 +33,29 @@ public class CallInitiationService {
      * have been specified within the request payload.
      * @param request
      */
-    public synchronized void initiateCall(Request request) {
+    public void initiateCall(Request request) {
+        logger.info("Starting call request...");
+
         String phoneNum = request.getPhoneNumber();
         String language = request.getLanguage();
         String motechId = request.getMotechId();
         String requestType = request.getType();
 
-        String channelName;
+        String channelName = settings.getVerboiceChannelName();
+
+        String callFlowId = null;
+
+        logger.info("about to check request types...");
 
         switch (requestType) {
-        case RequestTypes.ADHERENCE_CALL : channelName = MotechConstants.ADHERENCE_CHANNEL; break;
-        case RequestTypes.APPOINTMENT_CALL :
-        case RequestTypes.SECOND_APPOINTMENT_CALL: channelName = MotechConstants.APPOINTMENTS_CHANNEL; break;
-        case RequestTypes.PILL_REMINDER_CALL : channelName = MotechConstants.PILL_REMINDER_CHANNEL; break;
-        case RequestTypes.SIDE_EFFECT_CALL : channelName = MotechConstants.SIDE_EFFECTS_CHANNEL; break;
-        default : channelName = "didlogic";
+            case RequestTypes.ADHERENCE_CALL : callFlowId = settings.getAdherenceFlowId(); break;
+            case RequestTypes.APPOINTMENT_CALL :
+            case RequestTypes.SECOND_APPOINTMENT_CALL: callFlowId = settings.getAppointmentReminderFlowId(); break;
+            case RequestTypes.PILL_REMINDER_CALL : callFlowId = settings.getPillReminderFlowId(); break;
+            case RequestTypes.SIDE_EFFECT_CALL : callFlowId = settings.getSideEffectFlowId(); break;
         }
+
+        logger.info("after request type check");
 
         CallRequest callRequest = new CallRequest(phoneNum, 120, channelName);
 
@@ -64,17 +71,13 @@ public class CallInitiationService {
 
         String callbackStatusUrl = settings.getMotechUrl() + "/module/verboice/ivr/callstatus";
 
+
         payload.put(CallRequestDataKeys.STATUS_CALLBACK_URL, callbackStatusUrl);
-        payload.put("language", language);
+        payload.put(CallRequestDataKeys.LANGUAGE, language);
+        payload.put(CallRequestDataKeys.FLOW_ID, callFlowId);
 
-        logger.info("Initiating call with requestType " + requestType + " and language " + language);
+        logger.info("Initiating call with requestType " + requestType + " and language " + language + " with flow: " + callFlowId + " on channel: " + channelName);
+
         ivrService.initiateCall(callRequest);
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            logger.debug("Thread was interrupted: " + e.getMessage());
-        }
     }
-
 }

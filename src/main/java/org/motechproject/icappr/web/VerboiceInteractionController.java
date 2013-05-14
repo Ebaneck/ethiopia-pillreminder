@@ -28,6 +28,9 @@ public class VerboiceInteractionController {
     public final static String ICAPPR_PATH = "/module/icappr";
     public final static String FLOW_SESSION_ID = "flowSessionId";
     public final static String REQUEST_TYPE = "requestType";
+    public final static String ANSWER = "answer";
+    public final static String QUESTION_NAME = "questionName";
+    public final static String CONCERN_TYPE = "concernType";
 
     @Autowired
     private SettingsFacade facade;
@@ -57,8 +60,8 @@ public class VerboiceInteractionController {
     @ResponseBody
     public String sideEffect(HttpServletRequest request) {
         String callSid = request.getParameter(CALL_SID);
-        String question = request.getParameter("questionName");
-        String choice = request.getParameter("answer");
+        String question = request.getParameter(QUESTION_NAME);
+        String choice = request.getParameter(ANSWER);
         String eventToRaise = Events.INPUT_ERROR_EVENT;
 
         if (YES_INPUT.equals(choice)) {
@@ -92,8 +95,8 @@ public class VerboiceInteractionController {
     @ResponseBody
     public String adherenceAnswer(HttpServletRequest request) {
         String callSid = request.getParameter(CALL_SID);
-        String concern = request.getParameter("concernType");
-        String choice = request.getParameter("answer");
+        String concern = request.getParameter(CONCERN_TYPE);
+        String choice = request.getParameter(ANSWER);
 
         if (YES_INPUT.equals(choice)) {
             String eventToRaise = Events.INPUT_ERROR_EVENT;

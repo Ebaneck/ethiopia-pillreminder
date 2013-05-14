@@ -2,9 +2,7 @@ package org.motechproject.icappr.listener;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import org.joda.time.DateTime;
-import org.joda.time.chrono.EthiopicChronology;
 import org.motechproject.callflow.service.FlowSessionService;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.event.MotechEvent;
@@ -12,7 +10,6 @@ import org.motechproject.event.listener.annotations.MotechListener;
 import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.events.Events;
 import org.motechproject.icappr.mrs.MRSPersonUtil;
-import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.mrs.domain.MRSEncounter;
 import org.motechproject.mrs.domain.MRSObservation;
 import org.motechproject.mrs.domain.MRSPatient;
@@ -22,7 +19,6 @@ import org.motechproject.mrs.model.MRSObservationDto;
 import org.motechproject.mrs.model.MRSPatientDto;
 import org.motechproject.mrs.services.MRSEncounterAdapter;
 import org.motechproject.mrs.services.MRSPatientAdapter;
-import org.motechproject.mrs.services.MRSPersonAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

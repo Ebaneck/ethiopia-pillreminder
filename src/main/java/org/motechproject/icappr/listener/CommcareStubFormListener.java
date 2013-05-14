@@ -1,7 +1,6 @@
 package org.motechproject.icappr.listener;
 
 import java.util.Map;
-
 import org.motechproject.commcare.domain.CommcareForm;
 import org.motechproject.commcare.domain.FormValueElement;
 import org.motechproject.commcare.events.constants.EventDataKeys;
@@ -42,7 +41,7 @@ public class CommcareStubFormListener {
 
     @Autowired
     private UpdateFormHandler updateFormHandler;
-    
+
     @Autowired
     private StopFormHandler stopFormHandler;
 
@@ -55,7 +54,7 @@ public class CommcareStubFormListener {
         Map<String, Object> parameters = event.getParameters();
 
         String formId = (String) parameters.get(EventDataKeys.FORM_ID);
-        
+
         CommcareForm form = null;
 
         if (formId != null && formId.trim().length() > 0) {
@@ -70,11 +69,6 @@ public class CommcareStubFormListener {
         }
 
         if (rootElement != null) {
-            FormValueElement caseElement = rootElement.getElementByName("case");
-            String caseId = caseElement.getAttributes().get("case_id");
-            //CaseInfo caseInfo = caseService.getCaseByCaseId(caseId);
-            form.getForm().addAttribute(CaseConstants.FORM_CASE_ID, caseId);
-            logger.debug("Successfully retrieved Case ID " + caseId);
             handleForm(form);
         } else {
             logger.debug("Root element was null...not handling form.");
@@ -86,26 +80,31 @@ public class CommcareStubFormListener {
 
         logger.debug("Handling form with xmlns" + xmlns);
 
-        logger.debug("Checking to see if xmlns matches the IVR registration form ("
-                + FormXmlnsConstants.IVR_REGISTRATION_FORM_XMLNS + ")");
-        logger.debug("Checking to see if xmlns matches the IVR update form ("
-                + FormXmlnsConstants.UPDATE_FORM_XMLNS + ")");
-        logger.debug("Checking to see if xmlns matches the IVR UI Test form (" + FormXmlnsConstants.IVR_TEST_FORM_XMLNS
-                + ")");
+        FormValueElement caseElement = form.getForm().getElementByName("case");
+
+        if (caseElement == null) {
+            logger.info("No case element found");
+            return;
+        }
+
+        String caseId = caseElement.getAttributes().get("case_id");
+        //CaseInfo caseInfo = caseService.getCaseByCaseId(caseId);
+        form.getForm().addAttribute(CaseConstants.FORM_CASE_ID, caseId);
+        logger.debug("Successfully retrieved Case ID " + caseId);
 
         if (FormXmlnsConstants.IVR_REGISTRATION_FORM_XMLNS.equals(xmlns)) {
             // delegate to registration form handler
-            registrationFormHandler.handleForm(form);
+            registrationFormHandler.handleForm(form, caseId);
         }
 
         else if (FormXmlnsConstants.UPDATE_FORM_XMLNS.equals(xmlns)) {
             // delegate to update form handler
-            updateFormHandler.handleForm(form);
+            updateFormHandler.handleForm(form, caseId);
         }
-        
+
         else if (FormXmlnsConstants.STOP_FORM_XMLNS.equals(xmlns)) {
             // delegate to stop form handler
-            stopFormHandler.handleForm(form);
+            stopFormHandler.handleForm(form, caseId);
         }
 
         else if (FormXmlnsConstants.IVR_TEST_FORM_XMLNS.equals(xmlns)) {

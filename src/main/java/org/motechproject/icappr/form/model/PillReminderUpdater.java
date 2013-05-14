@@ -3,7 +3,6 @@ package org.motechproject.icappr.form.model;
 import org.joda.time.DateTime;
 import org.motechproject.icappr.service.MessageCampaignEnroller;
 import org.motechproject.icappr.support.SchedulerUtil;
-import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,14 +14,11 @@ public class PillReminderUpdater {
 
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
-    private MRSPatientAdapter patientAdapter;
     private MessageCampaignEnroller messageCampaignEnroller;
     private SchedulerUtil schedulerUtil;
 
     @Autowired
-    public PillReminderUpdater(MRSPatientAdapter patientAdapter,
-            MessageCampaignEnroller messageCampaignEnroller, SchedulerUtil schedulerUtil) {
-        this.patientAdapter = patientAdapter;
+    public PillReminderUpdater(MessageCampaignEnroller messageCampaignEnroller, SchedulerUtil schedulerUtil) {
         this.messageCampaignEnroller = messageCampaignEnroller;
         this.schedulerUtil = schedulerUtil;
     }

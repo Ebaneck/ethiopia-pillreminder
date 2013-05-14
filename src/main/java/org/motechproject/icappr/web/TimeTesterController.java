@@ -4,16 +4,43 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.EthiopicChronology;
+import org.motechproject.icappr.domain.Request;
+import org.motechproject.icappr.domain.RequestTypes;
+import org.motechproject.icappr.service.CallInitiationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * This class is for testing purposes only.
+ *
+ */
 @Controller
 public class TimeTesterController {
 
+    @Autowired
+    private CallInitiationService callService;
+
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
+
+    @RequestMapping("/testcall")
+    @ResponseBody
+    public String testCall(HttpServletRequest request) {
+
+        Request callRequest = new Request();
+        callRequest.setLanguage("english");
+        callRequest.setPhoneNumber("12074509521");
+        callRequest.setType(RequestTypes.SIDE_EFFECT_CALL);
+        callRequest.setMotechId("motechId");
+
+        callService.initiateCall(callRequest);
+        callService.initiateCall(callRequest);
+
+        return "Testing call";
+    }
 
     @RequestMapping("/timetest")
     @ResponseBody
