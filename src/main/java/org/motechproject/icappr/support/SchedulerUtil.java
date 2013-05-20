@@ -2,6 +2,8 @@ package org.motechproject.icappr.support;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
+
 import org.joda.time.DateTime;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.icappr.PillReminderSettings;
@@ -107,5 +109,16 @@ public class SchedulerUtil {
         RunOnceSchedulableJob endJob = new RunOnceSchedulableJob(endEvent, stopDate.toDate());
 
         schedulerService.safeScheduleRunOnceJob(endJob);
+    }
+
+    public void testSchedule(int minutes) {
+        MotechEvent testEvent = new MotechEvent("TEST_EVENT");
+        testEvent.getParameters().put("TIME_SCHEDULED", DateTime.now().toString());
+        testEvent.getParameters().put("MINUTES_LATER", minutes);
+        testEvent.getParameters().put(MotechSchedulerService.JOB_ID_KEY, UUID.randomUUID().toString());
+
+        RunOnceSchedulableJob testJob = new RunOnceSchedulableJob(testEvent, DateTime.now().plusMinutes(minutes).toDate());
+
+        schedulerService.safeScheduleRunOnceJob(testJob);
     }
 }

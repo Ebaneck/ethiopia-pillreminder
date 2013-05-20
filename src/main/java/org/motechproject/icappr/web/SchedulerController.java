@@ -54,4 +54,19 @@ public class SchedulerController {
 
         return "Unscheduled";
     }
+
+    @RequestMapping("/testSchedules")
+    @ResponseBody
+    public String testSchedul(HttpServletRequest request) {
+
+        int minutes = Integer.parseInt(request.getParameter("minutes"));
+        int numJobs = Integer.parseInt(request.getParameter("jobCount"));
+
+        for (int i = 0; i < numJobs; i++) {
+            schedulerUtil.testSchedule(minutes);
+            minutes++;
+        }
+
+        return "Test Scheduled";
+    }
 }
