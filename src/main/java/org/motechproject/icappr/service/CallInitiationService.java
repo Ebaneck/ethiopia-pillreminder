@@ -48,11 +48,11 @@ public class CallInitiationService {
         logger.info("about to check request types...");
 
         switch (requestType) {
-            case RequestTypes.ADHERENCE_CALL : callFlowId = settings.getAdherenceFlowId(); break;
+            case RequestTypes.ADHERENCE_CALL : callFlowId = settings.getAdherenceFlowId(language); break;
             case RequestTypes.APPOINTMENT_CALL :
-            case RequestTypes.SECOND_APPOINTMENT_CALL: callFlowId = settings.getAppointmentReminderFlowId(); break;
-            case RequestTypes.PILL_REMINDER_CALL : callFlowId = settings.getPillReminderFlowId(); break;
-            case RequestTypes.SIDE_EFFECT_CALL : callFlowId = settings.getSideEffectFlowId(); break;
+            case RequestTypes.SECOND_APPOINTMENT_CALL: callFlowId = settings.getAppointmentReminderFlowId(language); break;
+            case RequestTypes.PILL_REMINDER_CALL : callFlowId = settings.getPillReminderFlowId(language); break;
+            case RequestTypes.SIDE_EFFECT_CALL : callFlowId = settings.getSideEffectFlowId(language); break;
         }
 
         logger.info("after request type check");

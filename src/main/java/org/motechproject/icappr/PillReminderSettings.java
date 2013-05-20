@@ -33,6 +33,12 @@ public class PillReminderSettings {
     private static final String SIDE_EFFECT_FLOW_ID_PROPERTY = "side.effect.flow.id";
     private static final String APPIONTMENT_REMINDER_FLOW_ID_PROPERTY = "appointment.reminder.flow.id";
 
+    //languages (english is default)
+    private static final String AMHARIC = "amharic";
+    private static final String SOMALI = "somali";
+    private static final String HARARI = "harari";
+    private static final String OROMIFFA = "oromiffa";
+
     @Autowired
     private SettingsFacade settingsFacade;
 
@@ -43,20 +49,20 @@ public class PillReminderSettings {
         this.settingsFacade = settingsFacade;
     }
 
-    public String getAdherenceFlowId() {
-        return settingsFacade.getProperty(ADHERENCE_FLOW_ID_PROPERTY);
+    public String getAdherenceFlowId(String language) {
+        return settingsFacade.getProperty(ADHERENCE_FLOW_ID_PROPERTY + "." + getLanguage(language));
     }
 
-    public String getPillReminderFlowId() {
-        return settingsFacade.getProperty(PILL_REMINDER_FLOW_ID_PROPERTY);
+    public String getPillReminderFlowId(String language) {
+        return settingsFacade.getProperty(PILL_REMINDER_FLOW_ID_PROPERTY + "." + getLanguage(language));
     }
 
-    public String getSideEffectFlowId() {
-        return settingsFacade.getProperty(SIDE_EFFECT_FLOW_ID_PROPERTY);
+    public String getSideEffectFlowId(String language) {
+        return settingsFacade.getProperty(SIDE_EFFECT_FLOW_ID_PROPERTY + "." + getLanguage(language));
     }
 
-    public String getAppointmentReminderFlowId() {
-        return settingsFacade.getProperty(APPIONTMENT_REMINDER_FLOW_ID_PROPERTY);
+    public String getAppointmentReminderFlowId(String language) {
+        return settingsFacade.getProperty(APPIONTMENT_REMINDER_FLOW_ID_PROPERTY + "." + getLanguage(language));
     }
 
     public int getAppointmentMinuteOfHour() {
@@ -120,6 +126,17 @@ public class PillReminderSettings {
 
     public String getVerboiceChannelName() {
         return settingsFacade.getProperty(VERBOICE_CHANNEL_NAME_PROPERTY);
+    }
+
+
+    private String getLanguage(String language) {
+        switch (language) {
+            case AMHARIC:
+            case SOMALI:
+            case HARARI: 
+            case OROMIFFA: return language;
+            default: return "english";
+        }
     }
 
     @Deprecated
