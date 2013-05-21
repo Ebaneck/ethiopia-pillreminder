@@ -28,16 +28,16 @@ public class PillReminderUpdater {
         String phoneNumber = update.getPhoneNumber();
         String motechId = update.getCaseId();
 
+        logger.debug("Re-enrolling: " + motechId);
+
         messageCampaignEnroller.unenroll(motechId);
         schedulerUtil.unscheduleAllIcapprJobs(motechId);
 
         if (update.getPreferredReminderFrequency().matches("daily")) {
-            logger.debug("Enrolling patient in daily message campaign");
             messageCampaignEnroller.enrollInDailyMessageCampaign(update.getCaseId(), update.getPreferredCallTime());
         }
 
         if (update.getPreferredReminderFrequency().matches("weekly")) {
-            logger.debug("Enrolling patient in weekly message campaign");
             messageCampaignEnroller.enrollInWeeklyMessageCampaign(update);
         }
 

@@ -40,9 +40,9 @@ public class PillReminderRegistrar {
     }
 
     public void register(PillReminderRegistration registration, boolean isDemo) {
-        logger.debug("Starting Patient Registration");
+
         createGenericPatient(registration);
-        logger.debug("Finishing Patient Registration");
+
         messageCampaignEnroller.enrollInDailyMessageCampaign(registration.getCaseId(), registration.getPreferredCallTime());
         
         DateTime iptInitiationDate = DateTime.parse(registration.getIptInitiationDate());

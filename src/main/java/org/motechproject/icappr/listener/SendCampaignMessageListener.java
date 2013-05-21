@@ -39,7 +39,7 @@ public class SendCampaignMessageListener {
     @MotechListener(subjects = { EventKeys.SEND_MESSAGE })
     public void sendCampaignMessage(MotechEvent event) {
         String patientId = event.getParameters().get(EventKeys.EXTERNAL_ID_KEY).toString();
-        logger.debug("received message campaign event for ID: " + patientId);
+
         MRSPatient patient = patientAdapter.getPatientByMotechId(patientId);
 
         String phoneNumber;

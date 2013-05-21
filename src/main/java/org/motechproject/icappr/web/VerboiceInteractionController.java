@@ -13,6 +13,8 @@ import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.events.Events;
 import org.motechproject.icappr.support.FlowSessionHandler;
 import org.motechproject.server.config.SettingsFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class VerboiceInteractionController {
+
+    private Logger logger = LoggerFactory.getLogger("interaction-log");
 
     public final static String YES_INPUT = "1";
     public final static String NO_INPUT = "3";
@@ -64,22 +68,24 @@ public class VerboiceInteractionController {
         String choice = request.getParameter(ANSWER);
         String eventToRaise = Events.INPUT_ERROR_EVENT;
 
+        logger.debug("Side Effect Interaction - " + "CallSid: " + callSid + " Question: " + question + " Choice: " + choice);
+
         if (YES_INPUT.equals(choice)) {
             switch (question) {
-            case "question1" : eventToRaise = Events.YES_YELLOW_SKIN_OR_EYES; break;
-            case "question2" : eventToRaise = Events.YES_ABDOMINAL_PAIN_OR_VOMITING; break;
-            case"question3" : eventToRaise = Events.YES_SKIN_RASH_OR_ITCHY_SKIN; break;
-            case "question4" : eventToRaise = Events.TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET; break;
-            case "adherence1" : eventToRaise = Events.YES_MEDICATION_YESTERDAY; break;
-            case "adherence2" : eventToRaise = Events.YES_MEDICATION_TWO_DAYS_AGO; break;
-            case "adherence3" : eventToRaise = Events.YES_MEDICATION_THREE_DAYS_AGO; break;
+                case "question1" : eventToRaise = Events.YES_YELLOW_SKIN_OR_EYES; break;
+                case "question2" : eventToRaise = Events.YES_ABDOMINAL_PAIN_OR_VOMITING; break;
+                case"question3" : eventToRaise = Events.YES_SKIN_RASH_OR_ITCHY_SKIN; break;
+                case "question4" : eventToRaise = Events.TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET; break;
+                case "adherence1" : eventToRaise = Events.YES_MEDICATION_YESTERDAY; break;
+                case "adherence2" : eventToRaise = Events.YES_MEDICATION_TWO_DAYS_AGO; break;
+                case "adherence3" : eventToRaise = Events.YES_MEDICATION_THREE_DAYS_AGO; break;
             } 
 
         } else if (NO_INPUT.equals(choice)){
             switch (question) {
-            case "adherence1" : eventToRaise = Events.NO_MEDICATION_YESTERDAY; break;
-            case "adherence2" : eventToRaise = Events.NO_MEDICATION_TWO_DAYS_AGO; break;
-            case "adherence3" : eventToRaise = Events.NO_MEDICATION_THREE_DAYS_AGO; break;
+                case "adherence1" : eventToRaise = Events.NO_MEDICATION_YESTERDAY; break;
+                case "adherence2" : eventToRaise = Events.NO_MEDICATION_TWO_DAYS_AGO; break;
+                case "adherence3" : eventToRaise = Events.NO_MEDICATION_THREE_DAYS_AGO; break;
             }
         }
 
@@ -98,11 +104,13 @@ public class VerboiceInteractionController {
         String concern = request.getParameter(CONCERN_TYPE);
         String choice = request.getParameter(ANSWER);
 
+        logger.debug("Concern Interaction - " + "CallSid: " + callSid + " Concern: " + concern + " Choice: " + choice);
+
         if (YES_INPUT.equals(choice)) {
             String eventToRaise = Events.INPUT_ERROR_EVENT;
             switch (concern) {
-            case "adherenceConcern" : eventToRaise = Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS; break;
-            case "appointmentConcern" : eventToRaise = Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS; break;
+                case "adherenceConcern" : eventToRaise = Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS; break;
+                case "appointmentConcern" : eventToRaise = Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS; break;
 
             }
 
@@ -121,9 +129,12 @@ public class VerboiceInteractionController {
         String requestType = request.getParameter(REQUEST_TYPE);
         String callSid = request.getParameter(CALL_SID);
 
+        logger.debug("Data Interaction - " + "CallSid: " + callSid + " Data request type: " + requestType);
+
         FlowSession flowSession = flowSessionService.getSession(callSid);
 
         if (flowSession == null) {
+            logger.debug("No flow session for data for CallSid: " + callSid + " and request type: " + requestType);
             return null;
         }
 

@@ -11,11 +11,15 @@ import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.events.Events;
 import org.motechproject.scheduler.MotechSchedulerService;
 import org.motechproject.scheduler.domain.RunOnceSchedulableJob;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SchedulerUtil {
+
+    private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     @Autowired
     private MotechSchedulerService schedulerService;
@@ -46,6 +50,8 @@ public class SchedulerUtil {
 
         RunOnceSchedulableJob secondAppointmentReminder = new RunOnceSchedulableJob(callJob2, secondReminderDate);
 
+        logger.info("Scheduling appointment calls for MotechID: " + externalId + " and phone: " + phoneNumber + " with the first coming at: " + firstReminderDate.toString() + " and the second coming at: " + secondReminderDate.toString());
+
         schedulerService.safeScheduleRunOnceJob(firstAppointmentReminder);
         schedulerService.safeScheduleRunOnceJob(secondAppointmentReminder);
     }
@@ -66,6 +72,8 @@ public class SchedulerUtil {
 
         RunOnceSchedulableJob adherenceCallJob = new RunOnceSchedulableJob(callJob, callDate);
 
+        logger.info("Scheduling adherence survey for MotechID: " + externalId + " and phone: " + phoneNumber + " at time: " + callDate.toString());
+
         schedulerService.safeScheduleRunOnceJob(adherenceCallJob);
     }
 
@@ -85,10 +93,14 @@ public class SchedulerUtil {
 
         RunOnceSchedulableJob sideEffectCallJob = new RunOnceSchedulableJob(callJob, callDate);
 
+        logger.info("Scheduling side effects survey for MotechID: " + externalId + " and phone: " + phoneNumber + " at time: " + callDate.toString());
+
         schedulerService.safeScheduleRunOnceJob(sideEffectCallJob);
     }
 
     public void unscheduleAllIcapprJobs(String externalId) {
+        logger.info("Unscheduling all jobs for: " + externalId);
+
         schedulerService.safeUnscheduleRunOnceJob(Events.SIDE_EFFECTS_SURVEY_CALL, externalId);
         schedulerService.safeUnscheduleRunOnceJob(Events.ADHERENCE_ASSESSMENT_CALL, externalId);
         schedulerService.safeUnscheduleRunOnceJob(Events.APPOINTMENT_SCHEDULE_CALL, externalId);
@@ -107,6 +119,8 @@ public class SchedulerUtil {
         endEvent.getParameters().put(MotechConstants.STOP_REASON, stopReason);
 
         RunOnceSchedulableJob endJob = new RunOnceSchedulableJob(endEvent, stopDate.toDate());
+
+        logger.info("Scheduling an end of program event for : " + motechId + " at: " + stopDate.toString());
 
         schedulerService.safeScheduleRunOnceJob(endJob);
     }

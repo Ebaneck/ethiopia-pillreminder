@@ -19,11 +19,15 @@ import org.motechproject.mrs.model.MRSObservationDto;
 import org.motechproject.mrs.model.MRSPatientDto;
 import org.motechproject.mrs.services.MRSEncounterAdapter;
 import org.motechproject.mrs.services.MRSPatientAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CallInteractionListener {
+
+    private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     public final static String YES_ANSWER = "yes";
     public final static String NO_ANSWER = "no";
@@ -133,6 +137,7 @@ public class CallInteractionListener {
         Set<MRSObservation> observations = new HashSet<MRSObservation>();
         observations.add(observation);
         encounter.setObservations(observations);
+        logger.info("Saving encounter: " + encounterType + " for Motech ID: " + motechId + " corresponding to flow session: " + flowSessionId);
         encounterAdapter.createEncounter(encounter);
     }
 

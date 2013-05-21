@@ -12,12 +12,15 @@ import org.motechproject.mrs.domain.MRSAttribute;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.domain.MRSPerson;
 import org.motechproject.mrs.model.MRSAttributeDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FlowSessionHandler {
 
+    private Logger logger = LoggerFactory.getLogger("motech-icappr");
     private final MrsEntityFacade mrsEntityFacade;
     private final FlowSessionService flowSessionService;
     private final MRSPersonUtil mrsPersonUtil;
@@ -55,6 +58,7 @@ public class FlowSessionHandler {
         String motechId = getMotechIdForSessionWithId(sessionId);
 
         if (motechId == null) {
+            logger.error("No motechId found for session: " + sessionId);
             return false;
         }
 
@@ -76,6 +80,7 @@ public class FlowSessionHandler {
         if (StringUtils.isNotBlank(digits) && digits.equals(pin)) {
             return true;
         } else {
+            logger.info("Pin for session: " + sessionId + " did not match correct pin for Motech ID: " + motechId + " (Attempted: " + digits + ")");
             updatePatientFailedLogin(sessionId);
             return false;
         }

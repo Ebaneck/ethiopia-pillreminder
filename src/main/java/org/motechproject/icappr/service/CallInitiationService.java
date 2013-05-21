@@ -34,7 +34,6 @@ public class CallInitiationService {
      * @param request
      */
     public void initiateCall(Request request) {
-        logger.info("Starting call request...");
 
         String phoneNum = request.getPhoneNumber();
         String language = request.getLanguage();
@@ -45,8 +44,6 @@ public class CallInitiationService {
 
         String callFlowId = null;
 
-        logger.info("about to check request types...");
-
         switch (requestType) {
             case RequestTypes.ADHERENCE_CALL : callFlowId = settings.getAdherenceFlowId(language); break;
             case RequestTypes.APPOINTMENT_CALL :
@@ -54,8 +51,6 @@ public class CallInitiationService {
             case RequestTypes.PILL_REMINDER_CALL : callFlowId = settings.getPillReminderFlowId(language); break;
             case RequestTypes.SIDE_EFFECT_CALL : callFlowId = settings.getSideEffectFlowId(language); break;
         }
-
-        logger.info("after request type check");
 
         CallRequest callRequest = new CallRequest(phoneNum, 120, channelName);
 

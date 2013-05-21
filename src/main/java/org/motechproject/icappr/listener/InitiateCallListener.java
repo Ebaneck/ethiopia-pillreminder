@@ -52,8 +52,6 @@ public class InitiateCallListener {
 
     private void initiateCallByType(MotechEvent event, String callType) {
 
-        logger.info("Call for: " + callType);
-
         String motechId = (String) event.getParameters().get(MotechConstants.MOTECH_ID);
         String phoneNumber = (String) event.getParameters().get(MotechConstants.PHONE_NUM);
 

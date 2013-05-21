@@ -47,7 +47,7 @@ public class IVRUITestFormHandler {
         MRSPersonDto person = mrsPersonUtil.createAndSaveDemoPerson(phoneNumber, pin, language);
 
         if (testType.matches("message_campaign")) {
-            logger.debug("Enrolling user in message campaign test");
+            logger.debug("Enrolling user in demo message campaign test");
             CampaignRequest enrollRequest = new CampaignRequest();
             enrollRequest.setCampaignName(MotechConstants.DEMO_CAMPAIGN);
             enrollRequest.setExternalId(person.getPersonId());
@@ -56,15 +56,15 @@ public class IVRUITestFormHandler {
             campaignService.startFor(enrollRequest);
         }
         else if (testType.matches("adherence_questions")){
-            logger.debug("Enrolling user in adherence_questions test");
+            logger.debug("Enrolling user in demo adherence test");
             schedulerUtil.scheduleAdherenceSurvey(null, person.getPersonId(), true, phoneNumber);
         }
         else if (testType.matches("side_effect_questions")){
-            logger.debug("Enrolling user in side_effect_questions test");
+            logger.debug("Enrolling user in demo side effect test");
             schedulerUtil.scheduleSideEffectsSurvey(null, person.getPersonId(), true, phoneNumber);
         }
         else if (testType.matches("clinic_reminder")){
-            logger.debug("Enrolling user in clinic_reminder test");
+            logger.debug("Enrolling user in demo clinic reminder test");
             schedulerUtil.scheduleAppointments(null, person.getPersonId(), true, phoneNumber);
         }
     }
