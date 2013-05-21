@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IVRUITestFormHandler {
+public class DemoFormHandler {
 
     private final MRSPersonUtil mrsPersonUtil;
     private final SchedulerUtil schedulerUtil;
@@ -25,7 +25,7 @@ public class IVRUITestFormHandler {
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     @Autowired
-    public IVRUITestFormHandler(MRSPersonUtil mrsPersonUtil, SchedulerUtil schedulerUtil, MessageCampaignService campaignService) {
+    public DemoFormHandler(MRSPersonUtil mrsPersonUtil, SchedulerUtil schedulerUtil, MessageCampaignService campaignService) {
         this.mrsPersonUtil = mrsPersonUtil;
         this.schedulerUtil = schedulerUtil;
         this.campaignService = campaignService;

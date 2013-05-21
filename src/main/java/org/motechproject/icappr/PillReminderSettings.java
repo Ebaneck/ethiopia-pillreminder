@@ -1,8 +1,6 @@
 package org.motechproject.icappr;
 
 import org.motechproject.server.config.SettingsFacade;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +27,11 @@ public class PillReminderSettings {
     private static final String ADHERENCE_FLOW_ID_PROPERTY = "adherence.flow.id";
     private static final String PILL_REMINDER_FLOW_ID_PROPERTY = "pill.reminder.flow.id";
     private static final String SIDE_EFFECT_FLOW_ID_PROPERTY = "side.effect.flow.id";
-    private static final String APPIONTMENT_REMINDER_FLOW_ID_PROPERTY = "appointment.reminder.flow.id";
+    private static final String APPOINTMENT_REMINDER_FLOW_ID_PROPERTY = "appointment.reminder.flow.id";
+    private static final String REGISTRATION_FORM_XMLNS_PROPERTY = "registration.form.xmlns";
+    private static final String UPDATE_FORM_XMLNS_PROPERTY = "update.form.xmlns";
+    private static final String STOP_FORM_XMLNS_PROPERTY = "stop.form.xmlns";
+    private static final String DEMO_FORM_XMLNS_PROPERTY = "demo.form.xmlns";
 
     //languages (english is default)
     private static final String AMHARIC = "amharic";
@@ -47,6 +49,22 @@ public class PillReminderSettings {
         this.settingsFacade = settingsFacade;
     }
 
+    public String getRegistrationFormXmlns() {
+        return settingsFacade.getProperty(REGISTRATION_FORM_XMLNS_PROPERTY);
+    }
+
+    public String getUpdateFormXmlns() {
+        return settingsFacade.getProperty(UPDATE_FORM_XMLNS_PROPERTY);
+    }
+
+    public String getStopFormXmlns() {
+        return settingsFacade.getProperty(STOP_FORM_XMLNS_PROPERTY);
+    }
+
+    public String getDemoFormXmlns() {
+        return settingsFacade.getProperty(DEMO_FORM_XMLNS_PROPERTY);
+    }
+
     public String getAdherenceFlowId(String language) {
         return settingsFacade.getProperty(ADHERENCE_FLOW_ID_PROPERTY + "." + getLanguage(language));
     }
@@ -60,7 +78,7 @@ public class PillReminderSettings {
     }
 
     public String getAppointmentReminderFlowId(String language) {
-        return settingsFacade.getProperty(APPIONTMENT_REMINDER_FLOW_ID_PROPERTY + "." + getLanguage(language));
+        return settingsFacade.getProperty(APPOINTMENT_REMINDER_FLOW_ID_PROPERTY + "." + getLanguage(language));
     }
 
     public int getAppointmentMinuteOfHour() {

@@ -15,11 +15,11 @@ public class PinAuthenticationController {
 
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
-    private FlowSessionHandler decisionTreeSessionHandler;
+    private FlowSessionHandler flowSessionHandler;
 
     @Autowired
-    public PinAuthenticationController(FlowSessionHandler decisionTreeSessionHandler) {
-        this.decisionTreeSessionHandler = decisionTreeSessionHandler;
+    public PinAuthenticationController(FlowSessionHandler flowSessionHandler) {
+        this.flowSessionHandler = flowSessionHandler;
     }
 
     /**
@@ -36,7 +36,7 @@ public class PinAuthenticationController {
         String pin = request.getParameter("pin");
         String callSid = request.getParameter("CallSid");
 
-        if (decisionTreeSessionHandler.digitsMatchPatientPin(callSid, pin)) {
+        if (flowSessionHandler.digitsMatchPatientPin(callSid, pin)) {
             return "{\"result\": \"true\"}";
         } else {
             return "{\"result\": \"false\"}";

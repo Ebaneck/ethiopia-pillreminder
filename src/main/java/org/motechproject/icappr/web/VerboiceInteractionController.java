@@ -49,7 +49,7 @@ public class VerboiceInteractionController {
     private EventRelay eventRelay;
 
     @Autowired
-    private FlowSessionHandler decisionTreeSessionHandler;
+    private FlowSessionHandler flowSessionHandler;
 
     @RequestMapping("/manifest")
     @ResponseBody
@@ -141,7 +141,7 @@ public class VerboiceInteractionController {
         if (MotechConstants.REMINDER_DAYS.equals(requestType)) {
             return "{\"dataResult\": \"" + flowSession.get(MotechConstants.REMINDER_DAYS) + "\"}";
         } else if (MotechConstants.THREE_FAILED_LOGINS.equals(requestType)) {
-            decisionTreeSessionHandler.updatePatientFailedLogin(callSid);
+            flowSessionHandler.updatePatientFailedLogin(callSid);
             return "{\"dataResult\": \"" + "Success" + "\"}";
         } else {
             return null;
