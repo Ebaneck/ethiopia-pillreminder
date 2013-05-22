@@ -33,6 +33,7 @@ public class CallInteractionListener {
     public final static String NO_ANSWER = "no";
     public final static String SIDE_EFFECT_ENCOUNTER_CALL = "Side Effect Call";
     public static final String ADHERENCE_SURVEY_ENCOUNTER_CALL = "Adherence Survey Call";
+    public static final String PATIENT_CONCERN_ENCOUNTER = "Patient Expressed Concern";
     public final static String FLOW_SESSION_ID = "flowSessionId";
 
     @Autowired
@@ -115,6 +116,8 @@ public class CallInteractionListener {
         concernEvent.getParameters().put(MotechConstants.PHONE_NUM, phoneNumber);
         concernEvent.getParameters().put(MotechConstants.CONCERN_TIME, timeOfConcern);
         concernEvent.getParameters().put(MotechConstants.MOTECH_ID, motechId);
+        
+        createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER);
     }
 
     private void createEncounter(String motechId, MotechEvent event, String flowSessionId, String answer, String encounterType) {
