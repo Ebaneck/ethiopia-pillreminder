@@ -106,6 +106,8 @@ public class CommcareStubFormListener {
             stopFormHandler.handleForm(form, caseId);
         } else if (settings.getDemoFormXmlns().equals(xmlns)) {
             demoFormHandler.handleForm(form);
+        } else {
+            logger.info("Unknown form, not being handled");
         }
     }
 }

@@ -32,7 +32,7 @@ public class DemoFormHandler {
     }
 
     public void handleForm(CommcareForm form) {
-        logger.debug("Handling IVR UI Test form...");
+        logger.debug("Handling Test form...");
 
         FormValueElement topFormElement = form.getForm();
 
