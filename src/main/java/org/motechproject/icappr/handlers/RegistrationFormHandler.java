@@ -24,9 +24,8 @@ public class RegistrationFormHandler {
 
         //From form get case ID
         Map<String, String> attributes = topFormElement.getAttributes();
-        String caseId = attributes.get(CaseConstants.FORM_CASE_ID);
 
-        String clinicId = getValue(topFormElement, "study_id");    
+        String clinicId = getValue(topFormElement, "mrn");    
         String pin = getValue(topFormElement, "pin");
         String preferredLanguage = getValue(topFormElement, "preferred_language");
         String phoneNumber = getValue(topFormElement, "phone_number");
@@ -39,7 +38,7 @@ public class RegistrationFormHandler {
 
         PillReminderRegistration registration = new PillReminderRegistration();
 
-        registration.setCaseId(caseId);
+        registration.setCaseId(externalId);
 
         registration.setClinic(clinicId);
         registration.setPin(pin);
