@@ -82,7 +82,12 @@ public class CommcareStubFormListener {
     private void handleForm(CommcareForm form) {
         String xmlns = form.getForm().getAttributes().get(MotechConstants.FORM_XMLNS_ATTRIBUTE);
 
-        logger.debug("Handling form with xmlns" + xmlns);
+        logger.debug("Handling form with xmlns: " + xmlns);
+
+        if (settings.getDemoFormXmlns().equals(xmlns)) {
+            demoFormHandler.handleForm(form);
+            return;
+        }
 
         FormValueElement caseElement = form.getForm().getElementByName("case");
 
@@ -92,27 +97,14 @@ public class CommcareStubFormListener {
         }
 
         String caseId = caseElement.getAttributes().get("case_id");
-        //CaseInfo caseInfo = caseService.getCaseByCaseId(caseId);
-        form.getForm().addAttribute(CaseConstants.FORM_CASE_ID, caseId);
-        logger.debug("Successfully retrieved Case ID " + caseId);
 
         if (settings.getRegistrationFormXmlns().equals(xmlns)) {
-            // delegate to registration form handler
             registrationFormHandler.handleForm(form, caseId);
-        }
-
-        else if (settings.getUpdateFormXmlns().equals(xmlns)) {
-            // delegate to update form handler
+        } else if (settings.getUpdateFormXmlns().equals(xmlns)) {
             updateFormHandler.handleForm(form, caseId);
-        }
-
-        else if (settings.getStopFormXmlns().equals(xmlns)) {
-            // delegate to stop form handler
+        } else if (settings.getStopFormXmlns().equals(xmlns)) {
             stopFormHandler.handleForm(form, caseId);
-        }
-
-        else if (settings.getDemoFormXmlns().equals(xmlns)) {
-            // delegate to ivr test form handler
+        } else if (settings.getDemoFormXmlns().equals(xmlns)) {
             demoFormHandler.handleForm(form);
         }
     }

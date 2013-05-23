@@ -22,34 +22,16 @@ public class RegistrationFormHandler {
             return;
         }
 
-        //From form get case ID
-        Map<String, String> attributes = topFormElement.getAttributes();
-
-        String clinicId = getValue(topFormElement, "mrn");    
-        String pin = getValue(topFormElement, "pin");
-        String preferredLanguage = getValue(topFormElement, "preferred_language");
-        String phoneNumber = getValue(topFormElement, "phone_number");
-        String iptInitiationDate = getValue(topFormElement, "ipt_initiation");
-        String preferredCallTime = getValue(topFormElement, "pref_call_time");
-        String nextAppointment = getValue(topFormElement, "next_appointment");
-
-        /* Old form parameters
-         * String clinicId = getValue(topFormElement, "clinic_id");*/ 
-
         PillReminderRegistration registration = new PillReminderRegistration();
 
         registration.setCaseId(externalId);
-
-        registration.setClinic(clinicId);
-        registration.setPin(pin);
-        registration.setPreferredLanguage(preferredLanguage);
-        registration.setPhoneNumber(phoneNumber);
-        registration.setIptInitiationDate(iptInitiationDate);
-        registration.setPreferredCallTime(preferredCallTime);
-        registration.setNextAppointment(nextAppointment);
-
-        /* Old setters for old form
-         * registration.setPatientId(studyId);*/
+        registration.setClinic(getValue(topFormElement, "mrn"));
+        registration.setPin(getValue(topFormElement, "pin"));
+        registration.setPreferredLanguage(getValue(topFormElement, "preferred_language"));
+        registration.setPhoneNumber(getValue(topFormElement, "phone_number"));
+        registration.setIptInitiationDate(getValue(topFormElement, "ipt_initiation"));
+        registration.setPreferredCallTime(getValue(topFormElement, "pref_call_time"));
+        registration.setNextAppointment(getValue(topFormElement, "next_appointment"));
 
         pillReminderRegistrar.register(registration, false);
     }

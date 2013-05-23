@@ -28,20 +28,15 @@ public class StopFormHandler {
             return;
         }
 
-        //From form get case ID
-        Map<String, String> attributes = topFormElement.getAttributes();
-        String caseId = attributes.get(CaseConstants.FORM_CASE_ID);
-
-
         String stopDate = getValue(topFormElement, "stop_date");
         String stopReason =  getValue(topFormElement, "stop_reason");    //"opt_out" or "ipt_completion"
 
         DateTime stopDateTime = DateTime.parse(stopDate);
 
         if (stopDateTime.isBeforeNow()) {
-            schedulerUtil.scheduleEndEvent(caseId, DateTime.now().plusMinutes(2), stopReason);
+            schedulerUtil.scheduleEndEvent(externalId, DateTime.now().plusMinutes(2), stopReason);
         } else {
-            schedulerUtil.scheduleEndEvent(caseId, DateTime.parse(stopDate), stopReason);
+            schedulerUtil.scheduleEndEvent(externalId, DateTime.parse(stopDate), stopReason);
         }
     }
 
