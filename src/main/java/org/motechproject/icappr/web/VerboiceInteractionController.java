@@ -74,15 +74,18 @@ public class VerboiceInteractionController {
             switch (question) {
                 case "question1" : eventToRaise = Events.YES_YELLOW_SKIN_OR_EYES; break;
                 case "question2" : eventToRaise = Events.YES_ABDOMINAL_PAIN_OR_VOMITING; break;
-                case"question3" : eventToRaise = Events.YES_SKIN_RASH_OR_ITCHY_SKIN; break;
+                case "question3" : eventToRaise = Events.YES_SKIN_RASH_OR_ITCHY_SKIN; break;
                 case "question4" : eventToRaise = Events.TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET; break;
                 case "adherence1" : eventToRaise = Events.YES_MEDICATION_YESTERDAY; break;
                 case "adherence2" : eventToRaise = Events.YES_MEDICATION_TWO_DAYS_AGO; break;
                 case "adherence3" : eventToRaise = Events.YES_MEDICATION_THREE_DAYS_AGO; break;
             } 
-
         } else if (NO_INPUT.equals(choice)){
             switch (question) {
+                case "question1" : eventToRaise = Events.NO_YELLOW_SKIN_OR_EYES; break;
+                case "question2" : eventToRaise = Events.NO_ABDOMINAL_PAIN_OR_VOMITING; break;
+                case "question3" : eventToRaise = Events.NO_SKIN_RASH_OR_ITCHY_SKIN; break;
+                case "question4" : eventToRaise = Events.NO_TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET; break;
                 case "adherence1" : eventToRaise = Events.NO_MEDICATION_YESTERDAY; break;
                 case "adherence2" : eventToRaise = Events.NO_MEDICATION_TWO_DAYS_AGO; break;
                 case "adherence3" : eventToRaise = Events.NO_MEDICATION_THREE_DAYS_AGO; break;
@@ -112,6 +115,17 @@ public class VerboiceInteractionController {
                 case "adherenceConcern" : eventToRaise = Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS; break;
                 case "appointmentConcern" : eventToRaise = Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS; break;
 
+            }
+
+            MotechEvent event = new MotechEvent(eventToRaise);
+            event.getParameters().put(FLOW_SESSION_ID, callSid);
+
+            eventRelay.sendEventMessage(event);
+        } else if (NO_INPUT.equals(choice)) {
+            String eventToRaise = Events.INPUT_ERROR_EVENT;
+            switch (concern) {
+                case "adherenceConcern" : eventToRaise = Events.NO_ADHERENCE_CONCERNS; break;
+                case "appointmentConcern" : eventToRaise = Events.NO_APPOINTMENT_CONCERNS; break;
             }
 
             MotechEvent event = new MotechEvent(eventToRaise);

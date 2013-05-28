@@ -52,8 +52,8 @@ public class SchedulerUtil {
 
         logger.info("Scheduling appointment calls for MotechID: " + externalId + " and phone: " + phoneNumber + " with the first coming at: " + firstReminderDate.toString() + " and the second coming at: " + secondReminderDate.toString());
 
-        schedulerService.safeScheduleRunOnceJob(firstAppointmentReminder);
-        schedulerService.safeScheduleRunOnceJob(secondAppointmentReminder);
+        scheduleJob(firstAppointmentReminder);
+        scheduleJob(secondAppointmentReminder);
     }
 
     public void scheduleAdherenceSurvey(DateTime enrollmentDate, String externalId, boolean isDemo, String phoneNumber) {
@@ -74,7 +74,7 @@ public class SchedulerUtil {
 
         logger.info("Scheduling adherence survey for MotechID: " + externalId + " and phone: " + phoneNumber + " at time: " + callDate.toString());
 
-        schedulerService.safeScheduleRunOnceJob(adherenceCallJob);
+        scheduleJob(adherenceCallJob);
     }
 
     public void scheduleSideEffectsSurvey(DateTime enrollmentDate, String externalId, boolean isDemo, String phoneNumber) {
@@ -95,7 +95,7 @@ public class SchedulerUtil {
 
         logger.info("Scheduling side effects survey for MotechID: " + externalId + " and phone: " + phoneNumber + " at time: " + callDate.toString());
 
-        schedulerService.safeScheduleRunOnceJob(sideEffectCallJob);
+        scheduleJob(sideEffectCallJob);
     }
 
     public void unscheduleAllIcapprJobs(String externalId) {
@@ -122,7 +122,7 @@ public class SchedulerUtil {
 
         logger.info("Scheduling an end of program event for : " + motechId + " at: " + stopDate.toString());
 
-        schedulerService.safeScheduleRunOnceJob(endJob);
+        scheduleJob(endJob);
     }
 
     public void testSchedule(int minutes) {
@@ -133,6 +133,14 @@ public class SchedulerUtil {
 
         RunOnceSchedulableJob testJob = new RunOnceSchedulableJob(testEvent, DateTime.now().plusMinutes(minutes).toDate());
 
-        schedulerService.safeScheduleRunOnceJob(testJob);
+        scheduleJob(testJob);
+    }
+
+    private void scheduleJob (RunOnceSchedulableJob job) {
+        try {
+            schedulerService.safeScheduleRunOnceJob(job);
+        } catch (IllegalArgumentException e) {
+            logger.error("Did not schedule job that was in the past");
+        }
     }
 }

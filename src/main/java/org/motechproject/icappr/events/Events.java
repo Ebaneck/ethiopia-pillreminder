@@ -17,6 +17,14 @@ public interface Events {
 
     public static final String TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET = BASE_SUBJECT + "PatientSelectedYesTinglingOrNumbnessOfHandsOrFeet";
 
+    public static final String NO_YELLOW_SKIN_OR_EYES = BASE_SUBJECT + "PatientSelectedNoYellowSkinOrEyes";
+
+    public static final String NO_ABDOMINAL_PAIN_OR_VOMITING = BASE_SUBJECT + "PatientSelectedNoAbdominalPainOrVomiting";
+
+    public static final String NO_SKIN_RASH_OR_ITCHY_SKIN = BASE_SUBJECT + "PatientSelectedNoSkinRashOrItchySkin";
+
+    public static final String NO_TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET = BASE_SUBJECT + "PatientSelectedNoTinglingOrNumbnessOfHandsOrFeet";
+
     public static final String SEND_RA_MESSAGE_ADHERENCE_CONCERNS = BASE_SUBJECT + "PatientConcernsAdherence";
 
     public static final String SEND_RA_MESSAGE_APPOINTMENT_CONCERNS = BASE_SUBJECT + "PatientConcernsAppointment";
@@ -46,4 +54,8 @@ public interface Events {
     public static final String END_CALLS = BASE_SUBJECT + "EndOfProgramRequest";
 
     public static final String CONCERN_EVENT = BASE_SUBJECT + "RAMessageConcern";
+
+    public static final String NO_ADHERENCE_CONCERNS = BASE_SUBJECT + "NoAdherenceConcern";
+
+    public static final String NO_APPOINTMENT_CONCERNS = BASE_SUBJECT + "NoAppointmentConcern";
 }

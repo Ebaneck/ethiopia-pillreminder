@@ -169,7 +169,7 @@ public class CallInteractionListener {
         observation.setDate(DateTime.now());
         observation.setConceptName(event.getSubject());
 
-        Set<MRSObservation> observations = (Set<MRSObservation>) sideEffectEncounter.getObservations();
+        Set<MRSObservationDto> observations = (Set<MRSObservationDto>) sideEffectEncounter.getObservations();
         observations.add(observation);
 
         encounterAdapter.createEncounter(sideEffectEncounter);
