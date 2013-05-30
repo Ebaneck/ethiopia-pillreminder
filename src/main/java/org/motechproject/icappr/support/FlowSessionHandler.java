@@ -3,8 +3,12 @@ package org.motechproject.icappr.support;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.motechproject.decisiontree.core.FlowSession;
+import org.motechproject.event.MotechEvent;
 import org.motechproject.callflow.service.FlowSessionService;
 import org.motechproject.icappr.constants.CallRequestDataKeys;
+import org.motechproject.icappr.constants.MotechConstants;
+import org.motechproject.icappr.events.Events;
+import org.motechproject.icappr.listener.CallInteractionListener;
 import org.motechproject.icappr.mrs.MRSPersonUtil;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.icappr.mrs.MrsEntityFacade;
@@ -81,7 +85,8 @@ public class FlowSessionHandler {
             return true;
         } else {
             logger.info("Pin for session: " + sessionId + " did not match correct pin for Motech ID: " + motechId + " (Attempted: " + digits + ")");
-            updatePatientFailedLogin(sessionId);
+            //This would increment failed logins by attempt, rather than call
+            //updatePatientFailedLogin(sessionId);
             return false;
         }
     }
@@ -149,6 +154,10 @@ public class FlowSessionHandler {
         if (patient == null) {
             return;
         }
+
+        MotechEvent failedPinAttempt = new MotechEvent(Events.FAILED_PIN);
+        failedPinAttempt.getParameters().put(MotechConstants.MOTECH_ID, motechId);
+        failedPinAttempt.getParameters().put(CallInteractionListener.FLOW_SESSION_ID, sessionId);
 
         MRSAttribute loginFailures = readAttribute(MrsConstants.LOGIN_FAILURE_ATTR, patient);
 

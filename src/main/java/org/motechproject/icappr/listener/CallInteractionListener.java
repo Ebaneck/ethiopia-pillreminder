@@ -64,6 +64,22 @@ public class CallInteractionListener {
         }
     }
 
+    @MotechListener(subjects = {Events.NO_YELLOW_SKIN_OR_EYES, Events.NO_SKIN_RASH_OR_ITCHY_SKIN, Events.NO_ABDOMINAL_PAIN_OR_VOMITING, Events.NO_TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET } )
+    public void handleNoSideEffectEvents(MotechEvent event) {
+        String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
+
+        FlowSession flowSession = flowSessionService.getSession(flowSessionId);
+        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
+
+        MRSEncounter sideEffectEncounter = encounterAdapter.getEncounterById(flowSessionId);
+
+        if (sideEffectEncounter != null) {
+            updateEncounter(sideEffectEncounter, event, motechId, NO_ANSWER);
+        } else {
+            createEncounter(motechId, event, flowSessionId, NO_ANSWER, SIDE_EFFECT_ENCOUNTER_CALL);
+        }
+    }
+
     @MotechListener(subjects = {Events.YES_MEDICATION_YESTERDAY, Events.YES_MEDICATION_TWO_DAYS_AGO, Events.YES_MEDICATION_THREE_DAYS_AGO } )
     public void handleAdherenceSurveyYesAnswers(MotechEvent event) {
         String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
@@ -96,9 +112,9 @@ public class CallInteractionListener {
         }
     }
 
-    @MotechListener(subjects = {Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS, Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS} )
+    @MotechListener(subjects = {Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS, Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS, Events.NO_ADHERENCE_CONCERNS, Events.NO_APPOINTMENT_CONCERNS} )
     public void handleAppointmentConcern(MotechEvent event) {
-        String flowSessionId = (String) event.getParameters().get("flowSessionId");
+        String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
 
         FlowSession flowSession = flowSessionService.getSession(flowSessionId);
         String motechId = flowSession.get(MotechConstants.MOTECH_ID);
@@ -116,8 +132,13 @@ public class CallInteractionListener {
         concernEvent.getParameters().put(MotechConstants.PHONE_NUM, phoneNumber);
         concernEvent.getParameters().put(MotechConstants.CONCERN_TIME, timeOfConcern);
         concernEvent.getParameters().put(MotechConstants.MOTECH_ID, motechId);
-        
-        createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER);
+
+        switch (event.getSubject()) {
+            case Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS:
+            case Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER); break;
+            case Events.NO_ADHERENCE_CONCERNS:
+            case Events.NO_APPOINTMENT_CONCERNS: createEncounter(motechId, event, flowSessionId, NO_ANSWER, PATIENT_CONCERN_ENCOUNTER); break;
+        }
     }
 
     private void createEncounter(String motechId, MotechEvent event, String flowSessionId, String answer, String encounterType) {
