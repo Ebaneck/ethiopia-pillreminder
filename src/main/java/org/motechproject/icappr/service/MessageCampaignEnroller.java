@@ -58,7 +58,10 @@ public class MessageCampaignEnroller {
 
         Time preferredTime = getPreferredTime(update.getPreferredCallTime());
 
-        request.setStartTime(preferredTime);
+        if (preferredTime != null) {
+            request.setStartTime(preferredTime);
+
+        }
 
         String dayOfWeek = update.getPreferredReminderDay();
 
@@ -79,6 +82,11 @@ public class MessageCampaignEnroller {
 
     private Time getPreferredTime(String timeString) {
         String[] timeArray = timeString.split(TIME_DELIMITER);
+
+        if (timeArray.length < 1) {
+            return null;
+        }
+
         int hour = Integer.parseInt(timeArray[0]);
         int minute = Integer.parseInt(timeArray[1]);
 

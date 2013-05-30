@@ -37,6 +37,7 @@ public class DemoFormHandler {
         FormValueElement topFormElement = form.getForm();
 
         if (topFormElement == null) {
+            logger.debug("Form element was null");
             return;
         }
 
@@ -46,7 +47,7 @@ public class DemoFormHandler {
         String language = getValue(topFormElement, "preferred_language");
         MRSPersonDto person = mrsPersonUtil.createAndSaveDemoPerson(phoneNumber, pin, language);
 
-        if (testType.matches("message_campaign")) {
+        if (testType.matches("medication_reminder_test")) {
             logger.debug("Enrolling user in demo message campaign test");
             CampaignRequest enrollRequest = new CampaignRequest();
             enrollRequest.setCampaignName(MotechConstants.DEMO_CAMPAIGN);
@@ -66,6 +67,8 @@ public class DemoFormHandler {
         else if (testType.matches("clinic_reminder")){
             logger.debug("Enrolling user in demo clinic reminder test");
             schedulerUtil.scheduleAppointments(null, person.getPersonId(), true, phoneNumber);
+        } else {
+            logger.debug("No test type for: " + testType);
         }
     }
 

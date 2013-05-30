@@ -44,11 +44,24 @@ public class PillReminderRegistrar {
         createGenericPatient(registration);
 
         messageCampaignEnroller.enrollInDailyMessageCampaign(registration.getCaseId(), registration.getPreferredCallTime());
-        
-        DateTime iptInitiationDate = DateTime.parse(registration.getIptInitiationDate());
-        DateTime nextAppointmentDate = DateTime.parse(registration.getNextAppointment());
+
+        DateTime iptInitiationDate;
+        try {
+            iptInitiationDate = DateTime.parse(registration.getIptInitiationDate());
+        } catch (IllegalArgumentException e) {
+            iptInitiationDate = DateTime.now();
+        }
+
+        DateTime nextAppointmentDate = null;
+
+        try {
+            nextAppointmentDate = DateTime.parse(registration.getNextAppointment());
+            schedulerUtil.scheduleAppointments(nextAppointmentDate, registration.getCaseId(), isDemo, registration.getPhoneNumber());
+        } catch (IllegalArgumentException e) {
+            logger.info("Incorrect appointment date set for: " + registration.getCaseId());
+        }
+
         schedulerUtil.scheduleAdherenceSurvey(iptInitiationDate, registration.getCaseId(), isDemo, registration.getPhoneNumber());
-        schedulerUtil.scheduleAppointments(nextAppointmentDate, registration.getCaseId(), isDemo, registration.getPhoneNumber());
         schedulerUtil.scheduleSideEffectsSurvey(iptInitiationDate, registration.getCaseId(), isDemo, registration.getPhoneNumber());
     }
 
