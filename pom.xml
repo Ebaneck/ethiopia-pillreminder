@@ -132,6 +132,7 @@
                             org.motechproject.icappr.domain;version=${motech.version}
                         </Export-Package>
                         <Import-Package>
+                            sun.reflect,
                             org.motechproject.server.config;version=${motech.version},
                             org.motechproject.server.config.service;version=${motech.version},
                             org.motechproject.event.listener;version=${motech.version},
