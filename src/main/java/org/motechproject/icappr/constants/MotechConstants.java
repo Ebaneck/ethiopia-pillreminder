@@ -23,4 +23,6 @@ public final class MotechConstants {
 
     //Form constant
     public static final String FORM_XMLNS_ATTRIBUTE = "xmlns";
+
+    public static final String REQUEST_TYPE = "requestType";
 }

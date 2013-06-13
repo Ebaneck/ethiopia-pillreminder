@@ -35,6 +35,8 @@ public interface Events {
 
     public static final String ADHERENCE_ASSESSMENT_CALL = BASE_SUBJECT + "AdherenceAssessmentCall";
 
+    public static final String PILL_REMINDER_CALL = BASE_SUBJECT + "PillReminderCall";
+
     public static final String SIDE_EFFECTS_SURVEY_CALL = BASE_SUBJECT + "SideEffectsSurveyCall";
 
     public static final String YES_MEDICATION_YESTERDAY = BASE_SUBJECT + "YesMedicationYesterday";

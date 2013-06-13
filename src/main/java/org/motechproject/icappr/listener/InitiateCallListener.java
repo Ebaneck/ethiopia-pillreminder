@@ -50,6 +50,11 @@ public class InitiateCallListener {
         initiateCallByType(event, RequestTypes.ADHERENCE_CALL);
     }
 
+    @MotechListener(subjects = Events.PILL_REMINDER_CALL)
+    public void handlePillreminderCall(MotechEvent event) {
+        initiateCallByType(event, RequestTypes.PILL_REMINDER_CALL);
+    }
+
     private void initiateCallByType(MotechEvent event, String callType) {
 
         String motechId = (String) event.getParameters().get(MotechConstants.MOTECH_ID);

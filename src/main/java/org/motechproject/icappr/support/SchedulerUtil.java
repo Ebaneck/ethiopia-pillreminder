@@ -107,7 +107,7 @@ public class SchedulerUtil {
         schedulerService.safeUnscheduleRunOnceJob(Events.SECOND_APPOINTMENT_SCHEDULE_CALL, externalId);
     }
 
-    private void injectParameterData(String externalId, String phoneNumber, Map<String, Object> parameters) {
+    public static void injectParameterData(String externalId, String phoneNumber, Map<String, Object> parameters) {
         parameters.put(MotechSchedulerService.JOB_ID_KEY, externalId);
         parameters.put(MotechConstants.PHONE_NUM, phoneNumber);
         parameters.put(MotechConstants.MOTECH_ID, externalId);
