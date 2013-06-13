@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.motechproject.icappr</groupId>
@@ -16,6 +15,21 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>pentaho.kettle</groupId>
+            <artifactId>kettle-core</artifactId>
+            <version>4.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>pentaho.kettle</groupId>
+            <artifactId>kettle-db</artifactId>
+            <version>4.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>pentaho.kettle</groupId>
+            <artifactId>kettle-engine</artifactId>
+            <version>4.1.1</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>com.springsource.org.apache.commons.collections</artifactId>
@@ -95,13 +109,9 @@
 
         <!-- dependencies to get spring mvc working -->
 
-        <!-- These dependencies are strictly used for bundle integration 
-            tests <dependency> <groupId>org.springframework</groupId> <artifactId>org.springframework.context.support</artifactId> 
-            <version>3.1.0.RELEASE</version> </dependency> <dependency> <groupId>org.apache.felix</groupId> 
-            <artifactId>org.apache.felix.http.jetty</artifactId> <version>2.0.4</version> 
-            <scope>test</scope> </dependency> <dependency> <groupId>org.motechproject</groupId> 
-            <artifactId>org.motechproject.osgi.it</artifactId> <version>1.0.2.RELEASE-r009</version> 
-            <scope>test</scope> </dependency> -->
+        <!-- These dependencies are strictly used for bundle integration tests <dependency> <groupId>org.springframework</groupId> <artifactId>org.springframework.context.support</artifactId> 
+            <version>3.1.0.RELEASE</version> </dependency> <dependency> <groupId>org.apache.felix</groupId> <artifactId>org.apache.felix.http.jetty</artifactId> <version>2.0.4</version> <scope>test</scope> 
+            </dependency> <dependency> <groupId>org.motechproject</groupId> <artifactId>org.motechproject.osgi.it</artifactId> <version>1.0.2.RELEASE-r009</version> <scope>test</scope> </dependency> -->
     </dependencies>
 
     <build>
@@ -347,8 +357,7 @@
                                 <contextPath>/openmrs</contextPath>
                             </webAppConfig>
                             <connectors>
-                                <connector
-                                    implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                                <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
                                     <port>8081</port>
                                 </connector>
                             </connectors>
@@ -398,6 +407,11 @@
             <id>motech-repo</id>
             <name>MOTECH Maven Repository</name>
             <url>http://nexus.motechproject.org/content/repositories/public</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <name>repo</name>
+            <url>http://repository.pentaho.org/artifactory/repo</url>
         </repository>
     </repositories>
 
