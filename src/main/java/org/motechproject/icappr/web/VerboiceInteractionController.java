@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.IOUtils;
+import org.motechproject.callflow.domain.CallDetailRecord;
+import org.motechproject.callflow.domain.CallEvent;
+import org.motechproject.callflow.domain.FlowSessionRecord;
 import org.motechproject.callflow.service.FlowSessionService;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.event.MotechEvent;
@@ -156,6 +159,11 @@ public class VerboiceInteractionController {
             return "{\"dataResult\": \"" + flowSession.get(MotechConstants.REMINDER_DAYS) + "\"}";
         } else if (MotechConstants.THREE_FAILED_LOGINS.equals(requestType)) {
             flowSessionHandler.updatePatientFailedLogin(callSid);
+            FlowSessionRecord flowSessionRecord = (FlowSessionRecord) flowSession;
+            CallDetailRecord callRecord = flowSessionRecord.getCallDetailRecord();
+            CallEvent callEvent = new CallEvent("Pin Failure");
+            callRecord.addCallEvent(callEvent);
+            flowSessionService.updateSession(flowSessionRecord);
             return "{\"dataResult\": \"" + "Success" + "\"}";
         } else {
             return null;
