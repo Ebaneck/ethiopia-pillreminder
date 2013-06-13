@@ -1,5 +1,7 @@
 package org.motechproject.icappr;
 
+import java.io.InputStream;
+
 import org.motechproject.server.config.SettingsFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,6 +34,7 @@ public class PillReminderSettings {
     private static final String UPDATE_FORM_XMLNS_PROPERTY = "update.form.xmlns";
     private static final String STOP_FORM_XMLNS_PROPERTY = "stop.form.xmlns";
     private static final String DEMO_FORM_XMLNS_PROPERTY = "demo.form.xmlns";
+    private static final String DAILY_REPORT_FILE_NAME_PROPERTY = "daily.report.filename";
 
     //languages (english is default)
     private static final String AMHARIC = "amharic";
@@ -146,5 +149,9 @@ public class PillReminderSettings {
     @Deprecated
     public String getCmsliteUrlFor(String soundFilename, String language) {
         return getMotechUrl() + CMSLITE_STREAM_PATH + language + "/" + soundFilename;
+    }
+
+    public String getDailyReportFileName() {
+        return settingsFacade.getProperty(DAILY_REPORT_FILE_NAME_PROPERTY);
     }
 }

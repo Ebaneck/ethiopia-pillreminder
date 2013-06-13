@@ -73,7 +73,7 @@ public class DemoFormHandler {
     }
 
     private String getValue(FormValueElement formElement, String elementName) {
-        FormValueElement ivrElement = formElement.getElementByName(elementName);
+        FormValueElement ivrElement = formElement.getElement(elementName);
         if (ivrElement == null) {
             return null;
         }

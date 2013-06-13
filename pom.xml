@@ -156,6 +156,8 @@
                             org.springframework.ui.velocity,
                             *
                         </Import-Package>
+                        <Embed-Dependency>!*</Embed-Dependency>
+                        <Embed-Transitive>false</Embed-Transitive>
                     </instructions>
                 </configuration>
             </plugin>
@@ -174,19 +176,19 @@
                             <outputFile>target/dependencies.list</outputFile>
                         </configuration>
                     </execution>
-                    <!-- <execution> -->
-                    <!-- <id>copy-osgi-dependencies</id> -->
-                    <!-- <goals> -->
-                    <!-- <goal>copy-dependencies</goal> -->
-                    <!-- </goals> -->
-                    <!-- <configuration> -->
-                    <!-- <includeScope>runtime</includeScope> -->
-                    <!-- <overWriteIfNewer>true</overWriteIfNewer> -->
-                    <!-- <outputDirectory> -->
-                    <!-- ${user.home}/.motech/bundles -->
-                    <!-- </outputDirectory> -->
-                    <!-- </configuration> -->
-                    <!-- </execution> -->
+                    <execution>
+                        <id>copy-osgi-dependencies</id>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeScope>runtime</includeScope>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <outputDirectory>
+                                ${user.home}/.motech/bundles
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>

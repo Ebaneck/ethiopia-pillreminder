@@ -89,7 +89,7 @@ public class CommcareStubFormListener {
             return;
         }
 
-        FormValueElement caseElement = form.getForm().getElementByName("case");
+        FormValueElement caseElement = form.getForm().getElement("case");
 
         if (caseElement == null) {
             logger.info("No case element found");

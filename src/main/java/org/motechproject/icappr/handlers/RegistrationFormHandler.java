@@ -43,7 +43,7 @@ public class RegistrationFormHandler {
 
     private String getValue(FormValueElement formElement, String elementName) {
 
-        FormValueElement clinicElement = formElement.getElementByName(elementName);
+        FormValueElement clinicElement = formElement.getElement(elementName);
 
         if (clinicElement == null) {
             return null;
