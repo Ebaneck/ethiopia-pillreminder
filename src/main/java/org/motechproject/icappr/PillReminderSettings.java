@@ -1,6 +1,10 @@
 package org.motechproject.icappr;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
 
 import org.motechproject.server.config.SettingsFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +39,16 @@ public class PillReminderSettings {
     private static final String STOP_FORM_XMLNS_PROPERTY = "stop.form.xmlns";
     private static final String DEMO_FORM_XMLNS_PROPERTY = "demo.form.xmlns";
     private static final String DAILY_REPORT_FILE_NAME_PROPERTY = "daily.report.filename";
+    private static final String REPORTING_JAR_NAME_PROPERTY = "reporting.jar.name";
+    private static final String REPORTING_JAR_DIRECTORY_PROPERTY = "reporting.jar.directory";
 
     //languages (english is default)
     private static final String AMHARIC = "amharic";
     private static final String SOMALI = "somali";
     private static final String HARARI = "harari";
     private static final String OROMIFFA = "oromiffa";
+    
+    private static final String REPORT_NAMES_FILE_NAME = "reporting-file-names.properties";
 
     @Autowired
     private SettingsFacade settingsFacade;
@@ -153,5 +161,18 @@ public class PillReminderSettings {
 
     public String getDailyReportFileName() {
         return settingsFacade.getProperty(DAILY_REPORT_FILE_NAME_PROPERTY);
+    }
+
+    public String getReportingJarDirectory() {
+        return settingsFacade.getProperty(REPORTING_JAR_DIRECTORY_PROPERTY);
+    }
+
+    public String getReportingJarName() {
+        return settingsFacade.getProperty(REPORTING_JAR_NAME_PROPERTY);
+    }
+
+    public List<Object> getReportNames() {
+        Properties properties = settingsFacade.getProperties(REPORT_NAMES_FILE_NAME);
+        return new ArrayList<Object>(properties.values());
     }
 }

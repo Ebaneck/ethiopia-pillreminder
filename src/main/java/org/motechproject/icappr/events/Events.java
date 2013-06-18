@@ -62,4 +62,6 @@ public interface Events {
     public static final String NO_APPOINTMENT_CONCERNS = BASE_SUBJECT + "NoAppointmentConcern";
 
     public static final String FAILED_PIN = BASE_SUBJECT + "FailedPin";
+
+    public static final String REPORT_EVENT = BASE_SUBJECT + "ReportGenerationEvent";
 }

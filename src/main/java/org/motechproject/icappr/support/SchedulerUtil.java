@@ -4,12 +4,16 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
+
 import org.joda.time.DateTime;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.events.Events;
 import org.motechproject.scheduler.MotechSchedulerService;
+import org.motechproject.scheduler.domain.CronSchedulableJob;
+import org.motechproject.scheduler.domain.RepeatingSchedulableJob;
 import org.motechproject.scheduler.domain.RunOnceSchedulableJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -142,5 +146,22 @@ public class SchedulerUtil {
         } catch (IllegalArgumentException e) {
             logger.error("Did not schedule job that was in the past");
         }
+    }
+
+    private void scheduleCronJob (CronSchedulableJob job) {
+        try {
+            schedulerService.safeScheduleJob(job);
+        } catch (IllegalArgumentException e) {
+            logger.error("Did not schedule job that was in the past");
+        }
+    }
+
+    @PostConstruct
+    public void scheduleReportJob() {
+        MotechEvent reportEvent = new MotechEvent(Events.REPORT_EVENT);
+
+        CronSchedulableJob cronJob = new CronSchedulableJob(reportEvent, "0 0 0 * * ?");
+
+        scheduleCronJob(cronJob);
     }
 }
