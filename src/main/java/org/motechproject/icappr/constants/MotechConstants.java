@@ -20,6 +20,7 @@ public final class MotechConstants {
     public static final String STOP_REASON = "stopReason";
     public static final String CONCERN_TYPE = "concernType";
     public static final String THREE_FAILED_LOGINS = "threeFailures";
+    public static final String RETRIES_LEFT = "retriesLeft";
 
     //Form constant
     public static final String FORM_XMLNS_ATTRIBUTE = "xmlns";

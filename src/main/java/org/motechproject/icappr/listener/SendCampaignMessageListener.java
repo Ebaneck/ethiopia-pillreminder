@@ -3,6 +3,7 @@ package org.motechproject.icappr.listener;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.EventRelay;
 import org.motechproject.event.listener.annotations.MotechListener;
+import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.domain.Request;
 import org.motechproject.icappr.domain.RequestTypes;
 import org.motechproject.icappr.mrs.MrsConstants;
@@ -25,15 +26,17 @@ public class SendCampaignMessageListener {
     private MRSPatientAdapter patientAdapter;
     private MRSPersonUtil personUtil;
     private CallInitiationService callService;
+    private PillReminderSettings pillReminderSettings;
 
     @Autowired
     private EventRelay eventRelay;
 
     @Autowired
-    public SendCampaignMessageListener(MRSPatientAdapter patientAdapter, CallInitiationService callService, MRSPersonUtil personUtil) {
+    public SendCampaignMessageListener(MRSPatientAdapter patientAdapter, CallInitiationService callService, MRSPersonUtil personUtil, PillReminderSettings pillReminderSettings) {
         this.patientAdapter = patientAdapter;
         this.callService = callService;
         this.personUtil = personUtil;
+        this.pillReminderSettings = pillReminderSettings;
     }
 
     @MotechListener(subjects = { EventKeys.SEND_MESSAGE })
@@ -68,6 +71,7 @@ public class SendCampaignMessageListener {
         request.setMotechId(patientId);
         request.setPhoneNumber(phoneNumber);
         request.setType(RequestTypes.PILL_REMINDER_CALL);
+        request.setRetries(pillReminderSettings.getRetryCount());
 
         try {
             callService.initiateCall(request);

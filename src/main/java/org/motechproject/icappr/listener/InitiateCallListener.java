@@ -2,6 +2,7 @@ package org.motechproject.icappr.listener;
 
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
+import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.domain.Request;
 import org.motechproject.icappr.domain.RequestTypes;
@@ -26,6 +27,9 @@ public class InitiateCallListener {
 
     @Autowired
     private MrsEntityFacade mrsEntityFacade;
+
+    @Autowired
+    private PillReminderSettings pillReminderSettings;
 
     @Autowired
     private MRSPersonUtil mrsPersonUtil;
@@ -59,12 +63,19 @@ public class InitiateCallListener {
 
         String motechId = (String) event.getParameters().get(MotechConstants.MOTECH_ID);
         String phoneNumber = (String) event.getParameters().get(MotechConstants.PHONE_NUM);
+        String retriesLeft = (String) event.getParameters().get(MotechConstants.RETRIES_LEFT);
 
         Request request = new Request();
         request.setType(callType);
         request.setMotechId(motechId);
         request.setPhoneNumber(phoneNumber);
         request.setLanguage(getUserPreferredLanguage(motechId));
+
+        if (retriesLeft == null) {
+            request.setRetries(pillReminderSettings.getRetryCount());
+        } else {
+            request.setRetries(retriesLeft);
+        }
 
         if (RequestTypes.APPOINTMENT_CALL.equals(callType)) {
             request.addParameter(MotechConstants.REMINDER_DAYS, "2");

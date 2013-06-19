@@ -9,6 +9,7 @@ public class Request {
     private String phoneNumber;
     private String type;
     private String language;
+    private String retries;
     private Map<String, String> payload = new HashMap<String, String>();
 
     public String getMotechId() {
@@ -55,5 +56,13 @@ public class Request {
         if (payload != null) {
             payload.put(parameter, value);
         }
+    }
+
+    public String getRetries() {
+        return retries;
+    }
+
+    public void setRetries(String retries) {
+        this.retries = retries;
     }
 }

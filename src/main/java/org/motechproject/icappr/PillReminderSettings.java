@@ -41,6 +41,8 @@ public class PillReminderSettings {
     private static final String DAILY_REPORT_FILE_NAME_PROPERTY = "daily.report.filename";
     private static final String REPORTING_JAR_NAME_PROPERTY = "reporting.jar.name";
     private static final String REPORTING_JAR_DIRECTORY_PROPERTY = "reporting.jar.directory";
+    private static final String CALL_RETRY_INTERVAL_IN_MINUTES_PROPERTY = "call.retry.interval.minutes";
+    private static final String RETRY_COUNT_PROPERTY = "num.call.retries";
 
     //languages (english is default)
     private static final String AMHARIC = "amharic";
@@ -174,5 +176,13 @@ public class PillReminderSettings {
     public List<Object> getReportNames() {
         Properties properties = settingsFacade.getProperties(REPORT_NAMES_FILE_NAME);
         return new ArrayList<Object>(properties.values());
+    }
+
+    public int getRetryIntervalMinutes() {
+        return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_INTERVAL_IN_MINUTES_PROPERTY));
+    }
+
+    public String getRetryCount() {
+        return settingsFacade.getProperty(RETRY_COUNT_PROPERTY);
     }
 }

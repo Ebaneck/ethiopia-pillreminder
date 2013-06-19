@@ -8,6 +8,7 @@ import org.motechproject.commcare.events.constants.EventSubjects;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
+import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.domain.RequestTypes;
 import org.motechproject.icappr.events.Events;
@@ -22,9 +23,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class EndOfCallListener {
 
-    private static final int RETRY_MINUTES = 5;
-
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
+
+    @Autowired
+    private PillReminderSettings pillReminderSettings;
 
     @Autowired
     private FlowSessionService flowSessionService;
@@ -63,7 +65,20 @@ public class EndOfCallListener {
         String requestType = session.get(MotechConstants.REQUEST_TYPE);
         String language = session.get(MotechConstants.LANGUAGE);
         String motechId = session.get(MotechConstants.MOTECH_ID);
+        String retriesLeft = session.get(MotechConstants.RETRIES_LEFT);
         String subject = null;
+        
+        int retries = 0;
+        
+        if (retriesLeft != null) {
+            retries = Integer.parseInt(retriesLeft);
+        }
+        
+        if (retries == 0) {
+            return;
+        } else {
+            retries--;
+        }
 
         switch (requestType) {
             case RequestTypes.ADHERENCE_CALL : subject = Events.ADHERENCE_ASSESSMENT_CALL; break;
@@ -79,11 +94,11 @@ public class EndOfCallListener {
         event.getParameters().put(MotechConstants.PHONE_NUM, phoneNum);
         event.getParameters().put(MotechConstants.LANGUAGE, language);
         event.getParameters().put(MotechConstants.REQUEST_TYPE, requestType);
-        event.getParameters().put(EventSubjects.RETRY_CALL, null);
+        event.getParameters().put(MotechConstants.RETRIES_LEFT, Integer.toString(retries));
 
         SchedulerUtil.injectParameterData(motechId, phoneNum, event.getParameters());
 
-        RunOnceSchedulableJob job = new RunOnceSchedulableJob(event, DateTime.now().plusMinutes(RETRY_MINUTES).toDate());
+        RunOnceSchedulableJob job = new RunOnceSchedulableJob(event, DateTime.now().plusMinutes(pillReminderSettings.getRetryIntervalMinutes()).toDate());
 
         schedulerService.safeScheduleRunOnceJob(job);
     }

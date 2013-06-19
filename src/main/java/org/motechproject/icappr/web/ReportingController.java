@@ -53,4 +53,13 @@ public class ReportingController {
 
         return new HttpEntity<byte[]>(bytes, header);
     }
+
+    @RequestMapping(value = "/buildreport", method = RequestMethod.GET)
+    @ResponseBody
+    public String buildReport(HttpServletRequest request) throws IOException, InterruptedException {
+
+        reportingJobListener.handleReportingJob(null);
+
+        return "success";
+    }
 }

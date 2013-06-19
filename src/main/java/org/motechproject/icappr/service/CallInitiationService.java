@@ -39,6 +39,7 @@ public class CallInitiationService {
         String language = request.getLanguage();
         String motechId = request.getMotechId();
         String requestType = request.getType();
+        String retries = request.getRetries();
 
         String channelName = settings.getVerboiceChannelName();
 
@@ -61,6 +62,7 @@ public class CallInitiationService {
         // flow session so that we can retrieve it at a later time
         payload.put(CallRequestDataKeys.MOTECH_ID, motechId);
         payload.put(CallRequestDataKeys.REQUEST_TYPE, requestType);
+        payload.put(MotechConstants.RETRIES_LEFT, retries);
 
         payload.putAll(request.getPayload());
 
