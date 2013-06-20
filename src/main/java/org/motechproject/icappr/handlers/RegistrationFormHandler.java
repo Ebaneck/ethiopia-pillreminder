@@ -30,8 +30,9 @@ public class RegistrationFormHandler {
         PillReminderRegistration registration = new PillReminderRegistration();
 
         registration.setCaseId(externalId);
-        registration.setClinic(getValue(topFormElement, "mrn"));
+        registration.setMrn(getValue(topFormElement, "mrn"));
         registration.setPin(getValue(topFormElement, "pin"));
+        registration.setStudySite(getValue(topFormElement, "study_site"));
         registration.setPreferredLanguage(getValue(topFormElement, "preferred_language"));
         registration.setPhoneNumber(getValue(topFormElement, "phone_number"));
         registration.setIptInitiationDate(getValue(topFormElement, "ipt_initiation"));

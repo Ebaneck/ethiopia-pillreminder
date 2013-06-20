@@ -4,12 +4,12 @@ public class PillReminderRegistration extends PillReminderForm {
 
     private String phoneNumber;
     private String pin;
-    private String clinic;
-    private String nextCampaign;
+    private String mrn;
     private String preferredLanguage;
     private String nextAppointment;
     private String iptInitiationDate;
     private String preferredCallTime;
+    private String studySite;
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -19,28 +19,12 @@ public class PillReminderRegistration extends PillReminderForm {
         return pin;
     }
 
-    public String getClinic() {
-        return clinic;
-    }
-
-    public String nextCampaign() {
-        return nextCampaign;
-    }
-
-    public void setClinic(String string) {
-        this.clinic = string;
-    }
-
     public void setPhoneNumber(String string) {
         this.phoneNumber = string;
     }
 
     public void setPin(String string) {
         this.pin = string;
-    }
-
-    public void setNextCampaign(String string) {
-        this.nextCampaign = string;
     }
 
     public String getPreferredLanguage() {
@@ -75,8 +59,19 @@ public class PillReminderRegistration extends PillReminderForm {
         this.preferredCallTime = preferredCallTime;
     }
 
-    public String getNextCampaign() {
-        return nextCampaign;
+    public String getStudySite() {
+        return studySite;
     }
 
+    public void setStudySite(String studySite) {
+        this.studySite = studySite;
+    }
+
+    public String getMrn() {
+        return mrn;
+    }
+
+    public void setMrn(String mrn) {
+        this.mrn = mrn;
+    }
 }

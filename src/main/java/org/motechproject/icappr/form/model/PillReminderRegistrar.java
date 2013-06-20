@@ -67,7 +67,7 @@ public class PillReminderRegistrar {
 
     private void createGenericPatient(PillReminderRegistration registration) {
         MRSFacilityDto mrsFacilityDto = new MRSFacilityDto();
-        mrsFacilityDto.setFacilityId(registration.getClinic());
+        mrsFacilityDto.setFacilityId(registration.getStudySite());
         facilityAdapter.saveFacility(mrsFacilityDto);
 
         MRSPerson person = new MRSPersonDto();
@@ -76,30 +76,12 @@ public class PillReminderRegistrar {
         attributes.add(new MRSAttributeDto(MrsConstants.PERSON_LANGUAGE_ATTR, registration.getPreferredLanguage()));
         attributes.add(new MRSAttributeDto(MrsConstants.PERSON_PHONE_NUMBER_ATTR, registration.getPhoneNumber()));
         attributes.add(new MRSAttributeDto(MrsConstants.PERSON_PIN_ATTR, registration.getPin()));
-
+        attributes.add(new MRSAttributeDto(MrsConstants.IPT_INITIATION_DATE, registration.getIptInitiationDate()));
+        attributes.add(new MRSAttributeDto(MrsConstants.PATIENT_MRN, registration.getStudySite()));
         person.setAttributes(attributes);
 
         MRSPatient patient = new MRSPatientDto(null, mrsFacilityDto, person, registration.getCaseId());
         logger.debug("Creating generic patient with patient ID/case ID " + registration.getCaseId());
         patientAdapter.savePatient(patient);
     }
-
-    public PillReminderRegistration getRegistrationForPatient(String patientId) {
-        MRSPatient patient = patientAdapter.getPatientByMotechId(patientId);
-        if (patient == null) {
-            return null;
-        }
-
-        PillReminderRegistration registration = new PillReminderRegistration();
-        registration.setClinic(patient.getFacility().getName());
-        registration.setCaseId(patientId);
-
-        List<MRSAttribute> attrs = patient.getPerson().getAttributes();
-        registration.setNextCampaign(MRSPersonUtil.getAttrValue(MrsConstants.PERSON_NEXT_CAMPAIGN_ATTR, attrs));
-        registration.setPhoneNumber(MRSPersonUtil.getAttrValue(MrsConstants.PERSON_PHONE_NUMBER_ATTR, attrs));
-        registration.setPin(MRSPersonUtil.getAttrValue(MrsConstants.PERSON_PIN_ATTR, attrs));
-
-        return registration;
-    }
-
 }

@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 import org.motechproject.callflow.domain.CallDetailRecord;
 import org.motechproject.callflow.domain.CallDetailRecord.Disposition;
 import org.motechproject.callflow.service.FlowSessionService;
-import org.motechproject.commcare.events.constants.EventSubjects;
+import org.motechproject.decisiontree.core.EventKeys;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EndOfCallListener {
+public class EndOfCallRetryListener {
 
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
@@ -34,7 +34,7 @@ public class EndOfCallListener {
     @Autowired
     private MotechSchedulerService schedulerService;
 
-    @MotechListener(subjects = EventSubjects.END_OF_CALL)
+    @MotechListener(subjects = EventKeys.END_OF_CALL_EVENT)
     public void handleEndOfCall(MotechEvent event) {
         logger.debug("Handling end of call event...");
 
@@ -48,7 +48,6 @@ public class EndOfCallListener {
         Disposition disposition = record.getDisposition();
 
         if (Disposition.BUSY.equals(disposition) || Disposition.NO_ANSWER.equals(disposition)) {
-            logger.debug("Retrying call...");
             retryCall(callId);
         }
     }
@@ -67,16 +66,17 @@ public class EndOfCallListener {
         String motechId = session.get(MotechConstants.MOTECH_ID);
         String retriesLeft = session.get(MotechConstants.RETRIES_LEFT);
         String subject = null;
-        
+
         int retries = 0;
-        
+
         if (retriesLeft != null) {
             retries = Integer.parseInt(retriesLeft);
         }
-        
+
         if (retries == 0) {
             return;
         } else {
+            logger.debug("Rescheduling retry call for session: " + callId);
             retries--;
         }
 

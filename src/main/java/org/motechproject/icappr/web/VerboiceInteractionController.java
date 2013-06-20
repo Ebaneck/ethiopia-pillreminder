@@ -163,6 +163,7 @@ public class VerboiceInteractionController {
             CallDetailRecord callRecord = flowSessionRecord.getCallDetailRecord();
             CallEvent callEvent = new CallEvent("Pin Failure");
             callRecord.addCallEvent(callEvent);
+            callRecord.setDisposition(CallDetailRecord.Disposition.AUTHENTICATION_FAILED);
             flowSessionService.updateSession(flowSessionRecord);
             return "{\"dataResult\": \"" + "Success" + "\"}";
         } else {

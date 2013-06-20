@@ -57,36 +57,6 @@ public class MRSPersonUtil {
         return person;
     }
 
-    public MRSPersonDto createAndSaveGenericPatient(PillReminderRegistration registration){
-
-        List<? extends MRSFacility> facilities = mrsFacilityAdapter
-                .getFacilities(clinicMappings.get(registration.getClinic()));
-        if (facilities.size() == 0) {
-            throw new RuntimeException("Could not find Facility with name: "
-                    + clinicMappings.get(registration.getClinic()));
-        }
-        MRSFacilityDto facility = (MRSFacilityDto)facilities.get(0);
-
-        MRSPersonDto person = new MRSPersonDto(); 
-        person.setFirstName("MOTECH Generic Patient");
-        person.setLastName("MOTECH Generic Patient");
-        person.setDateOfBirth(DateUtil.now());
-        person.setGender("F");
-        person.setAddress("Generic Address");
-        setAttribute(person, registration.getPreferredLanguage(), MrsConstants.PERSON_LANGUAGE_ATTR);
-        setAttribute(person, registration.getPhoneNumber(), MrsConstants.PERSON_PHONE_NUMBER_ATTR);
-        setAttribute(person, registration.getPin(), MrsConstants.PERSON_PIN_ATTR);
-        setAttribute(person, registration.nextCampaign(), MrsConstants.PERSON_NEXT_CAMPAIGN_ATTR);
-        setAttribute(person, "0", MrsConstants.PERSON_NUM_PIN_ATTEMPTS);
-        MRSPatientDto patient = new MRSPatientDto();
-        patient.setPatientId(UUID.randomUUID().toString());
-        patient.setMotechId(registration.getCaseId());
-        patient.setPerson(person);
-        patient.setFacility(facility);	        
-        mrsPatientAdapter.savePatient(patient);
-        return person;
-    }
-
     public MRSPerson getPersonByID(String motechID){
         ArrayList<MRSPerson> allPersons = (ArrayList<MRSPerson>) mrsPersonAdapter.findAllPersons();
         for(MRSPerson person: allPersons){

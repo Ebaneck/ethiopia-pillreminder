@@ -22,4 +22,7 @@ public interface MrsConstants {
 
     final String DUMMY_PERSON_ATTR = "DemoPerson";
 
+    final String IPT_INITIATION_DATE = "ipt_initiation_date";
+    final String STUDY_SITE = "study_site";
+    final String PATIENT_MRN = "mrn";
 }

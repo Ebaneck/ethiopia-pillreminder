@@ -30,7 +30,7 @@ public class ReportingJobListener {
     @MotechListener( subjects = Events.REPORT_EVENT)
     public void handleReportingJob(MotechEvent event) throws IOException, InterruptedException {
 
-        DateTime today = DateTime.now();
+        DateTime today = DateTime.now().withHourOfDay(0).withSecondOfMinute(0).withMillisOfSecond(0);
 
         List<Object> reportsToGenerate = pillReminderSettings.getReportNames();
 
