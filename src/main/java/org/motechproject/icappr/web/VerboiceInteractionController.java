@@ -158,7 +158,7 @@ public class VerboiceInteractionController {
         if (MotechConstants.REMINDER_DAYS.equals(requestType)) {
             return "{\"dataResult\": \"" + flowSession.get(MotechConstants.REMINDER_DAYS) + "\"}";
         } else if (MotechConstants.THREE_FAILED_LOGINS.equals(requestType)) {
-            flowSessionHandler.updatePatientFailedLogin(callSid);
+            //flowSessionHandler.updatePatientFailedLogin(callSid);
             FlowSessionRecord flowSessionRecord = (FlowSessionRecord) flowSession;
             CallDetailRecord callRecord = flowSessionRecord.getCallDetailRecord();
             CallEvent callEvent = new CallEvent("Pin Failure");

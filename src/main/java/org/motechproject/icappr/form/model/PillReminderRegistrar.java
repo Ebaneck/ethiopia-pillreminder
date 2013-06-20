@@ -77,7 +77,7 @@ public class PillReminderRegistrar {
         attributes.add(new MRSAttributeDto(MrsConstants.PERSON_PHONE_NUMBER_ATTR, registration.getPhoneNumber()));
         attributes.add(new MRSAttributeDto(MrsConstants.PERSON_PIN_ATTR, registration.getPin()));
         attributes.add(new MRSAttributeDto(MrsConstants.IPT_INITIATION_DATE, registration.getIptInitiationDate()));
-        attributes.add(new MRSAttributeDto(MrsConstants.PATIENT_MRN, registration.getStudySite()));
+        attributes.add(new MRSAttributeDto(MrsConstants.PATIENT_MRN, registration.getMrn()));
         person.setAttributes(attributes);
 
         MRSPatient patient = new MRSPatientDto(null, mrsFacilityDto, person, registration.getCaseId());

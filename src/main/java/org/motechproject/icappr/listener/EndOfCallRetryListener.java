@@ -8,7 +8,6 @@ import org.motechproject.decisiontree.core.EventKeys;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
-import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.domain.RequestTypes;
 import org.motechproject.icappr.events.Events;
@@ -24,9 +23,6 @@ import org.springframework.stereotype.Component;
 public class EndOfCallRetryListener {
 
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
-
-    @Autowired
-    private PillReminderSettings pillReminderSettings;
 
     @Autowired
     private FlowSessionService flowSessionService;
@@ -73,12 +69,20 @@ public class EndOfCallRetryListener {
             retries = Integer.parseInt(retriesLeft);
         }
 
+        //Probably should make this declarative somewhere
+        int scheduleDelay = 10;
+
         if (retries == 0) {
             return;
-        } else {
-            logger.debug("Rescheduling retry call for session: " + callId);
-            retries--;
+        } else if (retries == 2) {
+            scheduleDelay = 30;
+        } else if (retries == 1) {
+            scheduleDelay = 60;
         }
+
+        logger.debug("Rescheduling retry call for session: " + callId);
+        retries--;
+
 
         switch (requestType) {
             case RequestTypes.ADHERENCE_CALL : subject = Events.ADHERENCE_ASSESSMENT_CALL; break;
@@ -98,7 +102,7 @@ public class EndOfCallRetryListener {
 
         SchedulerUtil.injectParameterData(motechId, phoneNum, event.getParameters());
 
-        RunOnceSchedulableJob job = new RunOnceSchedulableJob(event, DateTime.now().plusMinutes(pillReminderSettings.getRetryIntervalMinutes()).toDate());
+        RunOnceSchedulableJob job = new RunOnceSchedulableJob(event, DateTime.now().plusMinutes(scheduleDelay).toDate());
 
         schedulerService.safeScheduleRunOnceJob(job);
     }
