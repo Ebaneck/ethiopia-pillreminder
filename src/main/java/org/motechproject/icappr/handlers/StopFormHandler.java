@@ -1,10 +1,12 @@
 package org.motechproject.icappr.handlers;
 
-import java.util.Map;
 import org.joda.time.DateTime;
 import org.motechproject.commcare.domain.CommcareForm;
 import org.motechproject.commcare.domain.FormValueElement;
-import org.motechproject.icappr.constants.CaseConstants;
+import org.motechproject.event.MotechEvent;
+import org.motechproject.event.listener.EventRelay;
+import org.motechproject.icappr.constants.MotechConstants;
+import org.motechproject.icappr.events.Events;
 import org.motechproject.icappr.support.SchedulerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +19,13 @@ public class StopFormHandler {
     @Autowired
     private SchedulerUtil schedulerUtil;
 
+    @Autowired
+    private EventRelay eventRelay;
+
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     public void handleForm(CommcareForm form, String externalId) {
-        logger.debug("Handling Stop form...");
+        logger.debug("Handling Stop form for patient: " + externalId);
 
         FormValueElement topFormElement = form.getForm();
 
@@ -28,8 +33,8 @@ public class StopFormHandler {
             return;
         }
 
-        String stopDate = getValue(topFormElement, "stop_date");
-        String stopReason =  getValue(topFormElement, "stop_reason");    //"opt_out" or "ipt_completion"
+        String stopDate = getValue(topFormElement, MotechConstants.STOP_DATE);
+        String stopReason =  getValue(topFormElement, MotechConstants.STOP_REASON);    //"opt_out" or "ipt_completion"
 
         DateTime stopDateTime = DateTime.parse(stopDate);
 
@@ -38,6 +43,13 @@ public class StopFormHandler {
         } else {
             schedulerUtil.scheduleEndEvent(externalId, DateTime.parse(stopDate), stopReason);
         }
+
+        MotechEvent stopRequest = new MotechEvent(Events.STOP_REQUEST);
+        stopRequest.getParameters().put(MotechConstants.MOTECH_ID, externalId);
+        stopRequest.getParameters().put(MotechConstants.STOP_DATE, stopDate);
+        stopRequest.getParameters().put(MotechConstants.STOP_REASON, stopReason);
+
+        eventRelay.sendEventMessage(stopRequest);
     }
 
     private String getValue(FormValueElement formElement, String elementName) {

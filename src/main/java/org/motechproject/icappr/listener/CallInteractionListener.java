@@ -29,12 +29,14 @@ public class CallInteractionListener {
 
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
-    public final static String YES_ANSWER = "yes";
-    public final static String NO_ANSWER = "no";
-    public final static String SIDE_EFFECT_ENCOUNTER_CALL = "Side Effect Call";
+    public static final String YES_ANSWER = "yes";
+    public static final String NO_ANSWER = "no";
+    public static final String SIDE_EFFECT_ENCOUNTER_CALL = "Side Effect Call";
     public static final String ADHERENCE_SURVEY_ENCOUNTER_CALL = "Adherence Survey Call";
     public static final String PATIENT_CONCERN_ENCOUNTER = "Patient Expressed Concern";
-    public final static String FLOW_SESSION_ID = "flowSessionId";
+    public static final String FLOW_SESSION_ID = "flowSessionId";
+    public static final String PIN_FAILURE = "PIN Failure Encounter";
+    public static final String STOP_REQUEST = "Stop Request Encounter";
 
     @Autowired
     private MRSEncounterAdapter encounterAdapter;
@@ -134,11 +136,33 @@ public class CallInteractionListener {
         concernEvent.getParameters().put(MotechConstants.MOTECH_ID, motechId);
 
         switch (event.getSubject()) {
-            case Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS:
-            case Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER); break;
-            case Events.NO_ADHERENCE_CONCERNS:
-            case Events.NO_APPOINTMENT_CONCERNS: createEncounter(motechId, event, flowSessionId, NO_ANSWER, PATIENT_CONCERN_ENCOUNTER); break;
+            case Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Adherence" ); break;
+            case Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Appointment" ); break;
+            case Events.NO_ADHERENCE_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Adherence" ); break;
+            case Events.NO_APPOINTMENT_CONCERNS: createEncounter(motechId, event, flowSessionId, NO_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Appointment"); break;
         }
+    }
+    
+    @MotechListener(subjects = Events.PIN_FAILURE)
+    public void handlePinFailure(MotechEvent event) {
+        String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
+
+        FlowSession flowSession = flowSessionService.getSession(flowSessionId);
+        
+        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
+
+        createEncounter(motechId, event, flowSessionId, YES_ANSWER, PIN_FAILURE);
+    }
+    
+    @MotechListener(subjects = Events.STOP_REQUEST)
+    public void handleStopRequest(MotechEvent event) {
+        String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
+
+        FlowSession flowSession = flowSessionService.getSession(flowSessionId);
+        
+        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
+
+        createEncounter(motechId, event, flowSessionId, YES_ANSWER, STOP_REQUEST);        
     }
 
     private void createEncounter(String motechId, MotechEvent event, String flowSessionId, String answer, String encounterType) {

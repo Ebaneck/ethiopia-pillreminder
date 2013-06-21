@@ -64,4 +64,9 @@ public interface Events {
     public static final String FAILED_PIN = BASE_SUBJECT + "FailedPin";
 
     public static final String REPORT_EVENT = BASE_SUBJECT + "ReportGenerationEvent";
+
+    //This event is for reporting purposes only (the other stop request event is fired upon the end of the patient's program)
+    public static final String STOP_REQUEST = BASE_SUBJECT + "Reporting.StopRequest";
+
+    public static final String PIN_FAILURE = BASE_SUBJECT + "PinFailure";
 }

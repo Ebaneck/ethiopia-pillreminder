@@ -38,6 +38,7 @@ public class VerboiceInteractionController {
     public final static String ANSWER = "answer";
     public final static String QUESTION_NAME = "questionName";
     public final static String CONCERN_TYPE = "concernType";
+    private static final String INPUT_VALUE = "userInput";
 
     @Autowired
     private SettingsFacade facade;
@@ -75,28 +76,29 @@ public class VerboiceInteractionController {
 
         if (YES_INPUT.equals(choice)) {
             switch (question) {
-                case "question1" : eventToRaise = Events.YES_YELLOW_SKIN_OR_EYES; break;
-                case "question2" : eventToRaise = Events.YES_ABDOMINAL_PAIN_OR_VOMITING; break;
-                case "question3" : eventToRaise = Events.YES_SKIN_RASH_OR_ITCHY_SKIN; break;
-                case "question4" : eventToRaise = Events.TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET; break;
-                case "adherence1" : eventToRaise = Events.YES_MEDICATION_YESTERDAY; break;
-                case "adherence2" : eventToRaise = Events.YES_MEDICATION_TWO_DAYS_AGO; break;
-                case "adherence3" : eventToRaise = Events.YES_MEDICATION_THREE_DAYS_AGO; break;
+            case "question1" : eventToRaise = Events.YES_YELLOW_SKIN_OR_EYES; break;
+            case "question2" : eventToRaise = Events.YES_ABDOMINAL_PAIN_OR_VOMITING; break;
+            case "question3" : eventToRaise = Events.YES_SKIN_RASH_OR_ITCHY_SKIN; break;
+            case "question4" : eventToRaise = Events.TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET; break;
+            case "adherence1" : eventToRaise = Events.NO_MEDICATION_YESTERDAY; break;
+            case "adherence2" : eventToRaise = Events.NO_MEDICATION_TWO_DAYS_AGO; break;
+            case "adherence3" : eventToRaise = Events.NO_MEDICATION_THREE_DAYS_AGO; break;
             } 
         } else if (NO_INPUT.equals(choice)){
             switch (question) {
-                case "question1" : eventToRaise = Events.NO_YELLOW_SKIN_OR_EYES; break;
-                case "question2" : eventToRaise = Events.NO_ABDOMINAL_PAIN_OR_VOMITING; break;
-                case "question3" : eventToRaise = Events.NO_SKIN_RASH_OR_ITCHY_SKIN; break;
-                case "question4" : eventToRaise = Events.NO_TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET; break;
-                case "adherence1" : eventToRaise = Events.NO_MEDICATION_YESTERDAY; break;
-                case "adherence2" : eventToRaise = Events.NO_MEDICATION_TWO_DAYS_AGO; break;
-                case "adherence3" : eventToRaise = Events.NO_MEDICATION_THREE_DAYS_AGO; break;
+            case "question1" : eventToRaise = Events.NO_YELLOW_SKIN_OR_EYES; break;
+            case "question2" : eventToRaise = Events.NO_ABDOMINAL_PAIN_OR_VOMITING; break;
+            case "question3" : eventToRaise = Events.NO_SKIN_RASH_OR_ITCHY_SKIN; break;
+            case "question4" : eventToRaise = Events.NO_TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET; break;
+            case "adherence1" : eventToRaise = Events.YES_MEDICATION_YESTERDAY; break;
+            case "adherence2" : eventToRaise = Events.YES_MEDICATION_TWO_DAYS_AGO; break;
+            case "adherence3" : eventToRaise = Events.YES_MEDICATION_THREE_DAYS_AGO; break;
             }
         }
 
         MotechEvent event = new MotechEvent(eventToRaise);
         event.getParameters().put(FLOW_SESSION_ID, callSid);
+        event.getParameters().put(INPUT_VALUE, choice);
 
         eventRelay.sendEventMessage(event);
 
@@ -115,8 +117,8 @@ public class VerboiceInteractionController {
         if (YES_INPUT.equals(choice)) {
             String eventToRaise = Events.INPUT_ERROR_EVENT;
             switch (concern) {
-                case "adherenceConcern" : eventToRaise = Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS; break;
-                case "appointmentConcern" : eventToRaise = Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS; break;
+            case "adherenceConcern" : eventToRaise = Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS; break;
+            case "appointmentConcern" : eventToRaise = Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS; break;
 
             }
 
@@ -127,8 +129,8 @@ public class VerboiceInteractionController {
         } else if (NO_INPUT.equals(choice)) {
             String eventToRaise = Events.INPUT_ERROR_EVENT;
             switch (concern) {
-                case "adherenceConcern" : eventToRaise = Events.NO_ADHERENCE_CONCERNS; break;
-                case "appointmentConcern" : eventToRaise = Events.NO_APPOINTMENT_CONCERNS; break;
+            case "adherenceConcern" : eventToRaise = Events.NO_ADHERENCE_CONCERNS; break;
+            case "appointmentConcern" : eventToRaise = Events.NO_APPOINTMENT_CONCERNS; break;
             }
 
             MotechEvent event = new MotechEvent(eventToRaise);
@@ -158,13 +160,18 @@ public class VerboiceInteractionController {
         if (MotechConstants.REMINDER_DAYS.equals(requestType)) {
             return "{\"dataResult\": \"" + flowSession.get(MotechConstants.REMINDER_DAYS) + "\"}";
         } else if (MotechConstants.THREE_FAILED_LOGINS.equals(requestType)) {
-            //flowSessionHandler.updatePatientFailedLogin(callSid);
             FlowSessionRecord flowSessionRecord = (FlowSessionRecord) flowSession;
             CallDetailRecord callRecord = flowSessionRecord.getCallDetailRecord();
             CallEvent callEvent = new CallEvent("Pin Failure");
             callRecord.addCallEvent(callEvent);
             callRecord.setDisposition(CallDetailRecord.Disposition.AUTHENTICATION_FAILED);
             flowSessionService.updateSession(flowSessionRecord);
+
+            MotechEvent event = new MotechEvent(Events.PIN_FAILURE);
+            event.getParameters().put(FLOW_SESSION_ID, callSid);
+
+            eventRelay.sendEventMessage(event);
+
             return "{\"dataResult\": \"" + "Success" + "\"}";
         } else {
             return null;
