@@ -162,7 +162,7 @@ public class CallInteractionListener {
         
         String motechId = flowSession.get(MotechConstants.MOTECH_ID);
 
-        createEncounter(motechId, event, flowSessionId, YES_ANSWER, STOP_REQUEST);        
+        createEncounter(motechId, event, flowSessionId, (String) event.getParameters().get(MotechConstants.STOP_REASON), STOP_REQUEST);        
     }
 
     private void createEncounter(String motechId, MotechEvent event, String flowSessionId, String answer, String encounterType) {
