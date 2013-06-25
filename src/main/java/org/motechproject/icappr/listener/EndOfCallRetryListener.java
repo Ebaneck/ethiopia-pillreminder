@@ -8,10 +8,12 @@ import org.motechproject.decisiontree.core.EventKeys;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
+import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.domain.RequestTypes;
 import org.motechproject.icappr.events.Events;
 import org.motechproject.icappr.support.SchedulerUtil;
+import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.motechproject.scheduler.MotechSchedulerService;
 import org.motechproject.scheduler.domain.RunOnceSchedulableJob;
 import org.slf4j.Logger;
@@ -29,6 +31,12 @@ public class EndOfCallRetryListener {
 
     @Autowired
     private MotechSchedulerService schedulerService;
+
+    @Autowired
+    private MRSPatientAdapter patientAdapter;
+
+    @Autowired
+    private PillReminderSettings pillReminderSettings;
 
     @MotechListener(subjects = EventKeys.END_OF_CALL_EVENT)
     public void handleEndOfCall(MotechEvent event) {
@@ -56,10 +64,16 @@ public class EndOfCallRetryListener {
             return;
         }
 
+        String motechId = session.get(MotechConstants.MOTECH_ID);
+
+        if (patientAdapter.getPatientByMotechId(motechId) == null && pillReminderSettings.retryTestOn().equals(false)) {
+            //Demo "patients" are persisted as MRS Person objects - no retry calls are made here
+            return;
+        }
+
         String phoneNum = session.getPhoneNumber();
         String requestType = session.get(MotechConstants.REQUEST_TYPE);
         String language = session.get(MotechConstants.LANGUAGE);
-        String motechId = session.get(MotechConstants.MOTECH_ID);
         String retriesLeft = session.get(MotechConstants.RETRIES_LEFT);
         String subject = null;
 
@@ -82,7 +96,6 @@ public class EndOfCallRetryListener {
 
         logger.debug("Rescheduling retry call for session: " + callId);
         retries--;
-
 
         switch (requestType) {
             case RequestTypes.ADHERENCE_CALL : subject = Events.ADHERENCE_ASSESSMENT_CALL; break;

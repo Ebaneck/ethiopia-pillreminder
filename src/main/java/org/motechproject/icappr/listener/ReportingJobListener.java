@@ -27,19 +27,24 @@ public class ReportingJobListener {
 
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
-    @MotechListener( subjects = Events.REPORT_EVENT)
-    public void handleReportingJob(MotechEvent event) throws IOException, InterruptedException {
+    @MotechListener( subjects = Events.DAILY_REPORT_EVENT)
+    public void handleDailyReportingJob(MotechEvent event) throws IOException, InterruptedException {
 
-        DateTime today = DateTime.now().withHourOfDay(0).withSecondOfMinute(0).withMillisOfSecond(0);
+        DateTime today = DateTime.now().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
 
-        List<Object> reportsToGenerate = pillReminderSettings.getReportNames();
+        logger.debug("Generating weekly report for the period of: " + today.toString() + " to: " + today.minusDays(1).toString());
 
-        logger.debug(reportsToGenerate.size() + "");
+        generateReport(pillReminderSettings.getDailyReportName(), today, today.minusDays(1), false);
+    }
 
-        for (Object fileName : reportsToGenerate) {
-            generateReport((String) fileName, today, today.minusDays(1), false);
-            generateReport((String) fileName, today, today.minusWeeks(1), true);
-        }
+    @MotechListener( subjects = Events.WEEKLY_REPORT_EVENT)
+    public void handleWeeklyReportingJob(MotechEvent event) throws IOException, InterruptedException {
+
+        DateTime today = DateTime.now().plusDays(1).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+
+        logger.debug("Generating weekly report for the period of: " + today.toString() + " to: " + today.minusWeeks(1).toString());
+
+        generateReport(pillReminderSettings.getWeeklyReportName(), today, today.minusWeeks(1), true);
     }
 
     public synchronized void generateReport(String reportName, DateTime startDate, DateTime endDate, boolean weekly) throws IOException, InterruptedException {
@@ -52,20 +57,18 @@ public class ReportingJobListener {
             reportFileName.append("-weekly");
         }
 
-        logger.debug("Generating report for: " + reportName);
         ProcessBuilder pb = new ProcessBuilder("java", "-jar", pillReminderSettings.getReportingJarName(), reportName, startDate.toString(), endDate.toString(), reportFileName.toString());
         pb.directory(new File(pillReminderSettings.getReportingJarDirectory()));
         Process p = pb.start();
 
         processChildProcessStreams(p);
-        
+
         p.waitFor();
     }
 
     private void processChildProcessStreams(Process p) {
         InputStreamConsumer inputStream = new InputStreamConsumer(p.getInputStream());
 
-        logger.debug("Submitting new thread");
         executorService.submit(inputStream);
     }
 

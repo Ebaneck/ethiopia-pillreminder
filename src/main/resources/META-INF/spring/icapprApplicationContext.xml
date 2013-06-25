@@ -20,7 +20,6 @@
             <list>
                 <value>classpath:icap-pillreminder.properties</value>
                 <value>classpath:pentaho-report.properties</value>
-                <value>classpath:reporting-file-names.properties</value>
             </list>
         </property>
     </bean>

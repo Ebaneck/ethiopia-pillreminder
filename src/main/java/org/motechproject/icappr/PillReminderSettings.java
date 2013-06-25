@@ -43,14 +43,17 @@ public class PillReminderSettings {
     private static final String REPORTING_JAR_DIRECTORY_PROPERTY = "reporting.jar.directory";
     private static final String CALL_RETRY_INTERVAL_IN_MINUTES_PROPERTY = "call.retry.interval.minutes";
     private static final String RETRY_COUNT_PROPERTY = "num.call.retries";
+    private static final String CRON_JOB_PROPERTY = "report.cron.expression";
+    private static final String WEEKLY_CRON_JOB_PROPERTY = "weekly.report.cron";
+    private static final String DAILY_REPORT_NAME_PROPERTY = "daily.report.name";
+    private static final String WEEKLY_REPORT_NAME_PROPERTY = "weekly.report.name";
+    private static final String RETRY_TEST_ON_PROPERTY = "retry.test.on";
 
     //languages (english is default)
     private static final String AMHARIC = "amharic";
     private static final String SOMALI = "somali";
     private static final String HARARI = "harari";
     private static final String OROMIFFA = "oromiffa";
-    
-    private static final String REPORT_NAMES_FILE_NAME = "reporting-file-names.properties";
 
     @Autowired
     private SettingsFacade settingsFacade;
@@ -173,16 +176,35 @@ public class PillReminderSettings {
         return settingsFacade.getProperty(REPORTING_JAR_NAME_PROPERTY);
     }
 
-    public List<Object> getReportNames() {
-        Properties properties = settingsFacade.getProperties(REPORT_NAMES_FILE_NAME);
-        return new ArrayList<Object>(properties.values());
-    }
-
     public int getRetryIntervalMinutes() {
         return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_INTERVAL_IN_MINUTES_PROPERTY));
     }
 
     public String getRetryCount() {
         return settingsFacade.getProperty(RETRY_COUNT_PROPERTY);
+    }
+
+    public String getReportingCronExpresesion() {
+        return settingsFacade.getProperty(CRON_JOB_PROPERTY);
+    }
+
+    public String getDailyReportingCronExpresesion() {
+        return settingsFacade.getProperty(CRON_JOB_PROPERTY);
+    }
+
+    public String getWeeklyReportingCronExpresesion() {
+        return settingsFacade.getProperty(WEEKLY_CRON_JOB_PROPERTY);
+    }
+
+    public String getDailyReportName() {
+        return settingsFacade.getProperty(DAILY_REPORT_NAME_PROPERTY);
+    }
+
+    public String getWeeklyReportName() {
+        return settingsFacade.getProperty(WEEKLY_REPORT_NAME_PROPERTY);
+    }
+
+    public String retryTestOn() {
+        return settingsFacade.getProperty(RETRY_TEST_ON_PROPERTY);
     }
 }

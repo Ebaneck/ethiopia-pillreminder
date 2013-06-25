@@ -58,7 +58,8 @@ public class ReportingController {
     @ResponseBody
     public String buildReport(HttpServletRequest request) throws IOException, InterruptedException {
 
-        reportingJobListener.handleReportingJob(null);
+        reportingJobListener.handleDailyReportingJob(null);
+        reportingJobListener.handleWeeklyReportingJob(null);
 
         return "success";
     }

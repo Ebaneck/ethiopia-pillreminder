@@ -157,11 +157,17 @@ public class SchedulerUtil {
     }
 
     @PostConstruct
-    public void scheduleReportJob() {
-        MotechEvent reportEvent = new MotechEvent(Events.REPORT_EVENT);
+    public void scheduleReportingJobs() {
+        MotechEvent dailyEvent = new MotechEvent(Events.DAILY_REPORT_EVENT);
 
-        CronSchedulableJob cronJob = new CronSchedulableJob(reportEvent, "0 0 0 * * ?");
+        CronSchedulableJob dailyJob = new CronSchedulableJob(dailyEvent, settings.getDailyReportingCronExpresesion());
 
-        scheduleCronJob(cronJob);
+        scheduleCronJob(dailyJob);
+
+        MotechEvent weeklyEvent = new MotechEvent(Events.WEEKLY_REPORT_EVENT);
+
+        CronSchedulableJob weeklyJob = new CronSchedulableJob(weeklyEvent, settings.getWeeklyReportingCronExpresesion());
+
+        scheduleCronJob(weeklyJob);       
     }
 }

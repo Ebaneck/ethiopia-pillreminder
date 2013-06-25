@@ -2,6 +2,8 @@ package org.motechproject.icappr.listener;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
+
 import org.joda.time.DateTime;
 import org.motechproject.callflow.service.FlowSessionService;
 import org.motechproject.decisiontree.core.FlowSession;
@@ -62,7 +64,7 @@ public class CallInteractionListener {
         if (sideEffectEncounter != null) {
             updateEncounter(sideEffectEncounter, event, motechId, YES_ANSWER);
         } else {
-            createEncounter(motechId, event, flowSessionId, YES_ANSWER, SIDE_EFFECT_ENCOUNTER_CALL);
+            createEncounter(motechId, event, flowSessionId, YES_ANSWER, SIDE_EFFECT_ENCOUNTER_CALL, DateTime.now());
         }
     }
 
@@ -78,7 +80,7 @@ public class CallInteractionListener {
         if (sideEffectEncounter != null) {
             updateEncounter(sideEffectEncounter, event, motechId, NO_ANSWER);
         } else {
-            createEncounter(motechId, event, flowSessionId, NO_ANSWER, SIDE_EFFECT_ENCOUNTER_CALL);
+            createEncounter(motechId, event, flowSessionId, NO_ANSWER, SIDE_EFFECT_ENCOUNTER_CALL, DateTime.now());
         }
     }
 
@@ -94,7 +96,7 @@ public class CallInteractionListener {
         if (sideEffectEncounter != null) {
             updateEncounter(sideEffectEncounter, event, motechId, YES_ANSWER);
         } else {
-            createEncounter(motechId, event, flowSessionId, YES_ANSWER, ADHERENCE_SURVEY_ENCOUNTER_CALL);
+            createEncounter(motechId, event, flowSessionId, YES_ANSWER, ADHERENCE_SURVEY_ENCOUNTER_CALL, DateTime.now());
         }
     }
 
@@ -110,7 +112,7 @@ public class CallInteractionListener {
         if (sideEffectEncounter != null) {
             updateEncounter(sideEffectEncounter, event, motechId, NO_ANSWER);
         } else {
-            createEncounter(motechId, event, flowSessionId, NO_ANSWER, ADHERENCE_SURVEY_ENCOUNTER_CALL);
+            createEncounter(motechId, event, flowSessionId, NO_ANSWER, ADHERENCE_SURVEY_ENCOUNTER_CALL, DateTime.now());
         }
     }
 
@@ -136,10 +138,10 @@ public class CallInteractionListener {
         concernEvent.getParameters().put(MotechConstants.MOTECH_ID, motechId);
 
         switch (event.getSubject()) {
-            case Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Adherence" ); break;
-            case Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Appointment" ); break;
-            case Events.NO_ADHERENCE_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Adherence" ); break;
-            case Events.NO_APPOINTMENT_CONCERNS: createEncounter(motechId, event, flowSessionId, NO_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Appointment"); break;
+            case Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Adherence", DateTime.now() ); break;
+            case Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Appointment", DateTime.now() ); break;
+            case Events.NO_ADHERENCE_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Adherence", DateTime.now()); break;
+            case Events.NO_APPOINTMENT_CONCERNS: createEncounter(motechId, event, flowSessionId, NO_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Appointment", DateTime.now()); break;
         }
     }
     
@@ -151,21 +153,18 @@ public class CallInteractionListener {
         
         String motechId = flowSession.get(MotechConstants.MOTECH_ID);
 
-        createEncounter(motechId, event, flowSessionId, YES_ANSWER, PIN_FAILURE);
+        createEncounter(motechId, event, flowSessionId, YES_ANSWER, PIN_FAILURE, DateTime.now());
     }
     
     @MotechListener(subjects = Events.STOP_REQUEST)
     public void handleStopRequest(MotechEvent event) {
-        String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
 
-        FlowSession flowSession = flowSessionService.getSession(flowSessionId);
-        
-        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
+        String motechId = (String) event.getParameters().get(MotechConstants.MOTECH_ID);
 
-        createEncounter(motechId, event, flowSessionId, (String) event.getParameters().get(MotechConstants.STOP_REASON), STOP_REQUEST);        
+        createEncounter(motechId, event, UUID.randomUUID().toString(), (String) event.getParameters().get(MotechConstants.STOP_REASON), STOP_REQUEST, DateTime.parse((String) event.getParameters().get(MotechConstants.STOP_DATE)));        
     }
 
-    private void createEncounter(String motechId, MotechEvent event, String flowSessionId, String answer, String encounterType) {
+    private void createEncounter(String motechId, MotechEvent event, String flowSessionId, String answer, String encounterType, DateTime obsDate) {
         MRSEncounterDto encounter = new MRSEncounterDto();
         encounter.setDate(DateTime.now());
         encounter.setEncounterId(flowSessionId);
@@ -182,6 +181,7 @@ public class CallInteractionListener {
         observation.setValue(answer);
         observation.setDate(DateTime.now());
         observation.setConceptName(event.getSubject());
+        observation.setDate(obsDate);
         Set<MRSObservation> observations = new HashSet<MRSObservation>();
         observations.add(observation);
         encounter.setObservations(observations);
