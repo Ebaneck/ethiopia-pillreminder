@@ -32,9 +32,9 @@ public class ReportingJobListener {
 
         DateTime today = DateTime.now().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
 
-        logger.debug("Generating weekly report for the period of: " + today.toString() + " to: " + today.minusDays(1).toString());
+        logger.debug("Generating daily report for the period of: " + today.toString() + " to: " + today.minusDays(1).toString());
 
-        generateReport(pillReminderSettings.getDailyReportName(), today, today.minusDays(1), false);
+        generateReport(pillReminderSettings.getDailyReportName(), today.minusDays(1), today, false);
     }
 
     @MotechListener( subjects = Events.WEEKLY_REPORT_EVENT)
@@ -44,7 +44,7 @@ public class ReportingJobListener {
 
         logger.debug("Generating weekly report for the period of: " + today.toString() + " to: " + today.minusWeeks(1).toString());
 
-        generateReport(pillReminderSettings.getWeeklyReportName(), today, today.minusWeeks(1), true);
+        generateReport(pillReminderSettings.getWeeklyReportName(), today.minusWeeks(1), today, true);
     }
 
     public synchronized void generateReport(String reportName, DateTime startDate, DateTime endDate, boolean weekly) throws IOException, InterruptedException {
