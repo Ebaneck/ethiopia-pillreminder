@@ -32,7 +32,7 @@ public class ReportingJobListener {
 
         DateTime today = DateTime.now().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
 
-        logger.debug("Generating daily report for the period of: " + today.toString() + " to: " + today.minusDays(1).toString());
+        logger.debug("Generating daily report for the period of: " + today.toString() + " from: " + today.minusDays(1).toString());
 
         generateReport(pillReminderSettings.getDailyReportName(), today.minusDays(1), today, false);
     }
@@ -42,7 +42,7 @@ public class ReportingJobListener {
 
         DateTime today = DateTime.now().plusDays(1).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
 
-        logger.debug("Generating weekly report for the period of: " + today.toString() + " to: " + today.minusWeeks(1).toString());
+        logger.debug("Generating weekly report for the period of: " + today.toString() + " from: " + today.minusWeeks(1).toString());
 
         generateReport(pillReminderSettings.getWeeklyReportName(), today.minusWeeks(1), today, true);
     }

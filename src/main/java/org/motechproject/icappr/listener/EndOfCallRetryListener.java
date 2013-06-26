@@ -13,6 +13,7 @@ import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.domain.RequestTypes;
 import org.motechproject.icappr.events.Events;
 import org.motechproject.icappr.support.SchedulerUtil;
+import org.motechproject.mrs.services.MRSEncounterAdapter;
 import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.motechproject.scheduler.MotechSchedulerService;
 import org.motechproject.scheduler.domain.RunOnceSchedulableJob;
@@ -38,6 +39,9 @@ public class EndOfCallRetryListener {
     @Autowired
     private PillReminderSettings pillReminderSettings;
 
+    @Autowired
+    private MRSEncounterAdapter encounterAdapter;
+
     @MotechListener(subjects = EventKeys.END_OF_CALL_EVENT)
     public void handleEndOfCall(MotechEvent event) {
         logger.debug("Handling end of call event...");
@@ -45,14 +49,18 @@ public class EndOfCallRetryListener {
         CallDetailRecord record = (CallDetailRecord) event.getParameters().get("call_detail_record");
 
         if (record == null) {
-
             return;
         }
+
         String callId = record.getCallId();
         Disposition disposition = record.getDisposition();
 
         if (Disposition.BUSY.equals(disposition) || Disposition.NO_ANSWER.equals(disposition)) {
             retryCall(callId);
+        } else if (Disposition.FAILED.equals(disposition)) {
+            if (encounterAdapter.getEncounterById(callId) == null) {
+                retryCall(callId);
+            }
         }
     }
 
@@ -66,8 +74,9 @@ public class EndOfCallRetryListener {
 
         String motechId = session.get(MotechConstants.MOTECH_ID);
 
-        if (patientAdapter.getPatientByMotechId(motechId) == null && pillReminderSettings.retryTestOn().equals(false)) {
+        if (patientAdapter.getPatientByMotechId(motechId) == null && pillReminderSettings.retryTestOn().equals("false")) {
             //Demo "patients" are persisted as MRS Person objects - no retry calls are made here
+            logger.debug("Demo mode, no retry call for busy and no answer");
             return;
         }
 
@@ -87,11 +96,12 @@ public class EndOfCallRetryListener {
         int scheduleDelay = 10;
 
         if (retries == 0) {
+            logger.debug("No retries left for call");
             return;
         } else if (retries == 2) {
-            scheduleDelay = 30;
+            scheduleDelay = 20;
         } else if (retries == 1) {
-            scheduleDelay = 60;
+            scheduleDelay = 30;
         }
 
         logger.debug("Rescheduling retry call for session: " + callId);
