@@ -30,34 +30,30 @@ public class ReportingJobListener {
     @MotechListener( subjects = Events.DAILY_REPORT_EVENT)
     public void handleDailyReportingJob(MotechEvent event) throws IOException, InterruptedException {
 
-        DateTime today = DateTime.now().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+        DateTime today = DateTime.now().withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
 
         logger.debug("Generating daily report for the period of: " + today.toString() + " from: " + today.minusDays(1).toString());
 
-        generateReport(pillReminderSettings.getDailyReportName(), today.minusDays(1), today, false);
+        generateReport(pillReminderSettings.getDailyReportName(), today.minusDays(1), today, false, pillReminderSettings.getDailyOutputDirectory());
     }
 
     @MotechListener( subjects = Events.WEEKLY_REPORT_EVENT)
     public void handleWeeklyReportingJob(MotechEvent event) throws IOException, InterruptedException {
 
-        DateTime today = DateTime.now().plusDays(1).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+        DateTime today = DateTime.now().withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
 
         logger.debug("Generating weekly report for the period of: " + today.toString() + " from: " + today.minusWeeks(1).toString());
 
-        generateReport(pillReminderSettings.getWeeklyReportName(), today.minusWeeks(1), today, true);
+        generateReport(pillReminderSettings.getWeeklyReportName(), today.minusWeeks(1), today, true, pillReminderSettings.getWeeklyOutputDirectory());
     }
 
-    public synchronized void generateReport(String reportName, DateTime startDate, DateTime endDate, boolean weekly) throws IOException, InterruptedException {
+    public synchronized void generateReport(String reportName, DateTime startDate, DateTime endDate, boolean weekly, String outputDirectory) throws IOException, InterruptedException {
         int year = endDate.getYear();
         int month = endDate.getMonthOfYear();
         int day = endDate.getDayOfMonth();
-        StringBuilder reportFileName = new StringBuilder(reportName + "." + month + "." + day + "." + year);
+        StringBuilder reportFileName = new StringBuilder(reportName.replace(".ktr", "") + "." + month + "." + day + "." + year);
 
-        if (weekly) {
-            reportFileName.append("-weekly");
-        }
-
-        ProcessBuilder pb = new ProcessBuilder("java", "-jar", pillReminderSettings.getReportingJarName(), reportName, startDate.toString(), endDate.toString(), reportFileName.toString());
+        ProcessBuilder pb = new ProcessBuilder("java", "-jar", pillReminderSettings.getReportingJarName(), reportName, startDate.toString(), endDate.toString(), outputDirectory + "\\" +  reportFileName.toString());
         pb.directory(new File(pillReminderSettings.getReportingJarDirectory()));
         Process p = pb.start();
 

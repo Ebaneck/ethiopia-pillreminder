@@ -44,16 +44,25 @@ public class EndOfCallRetryListener {
 
     @MotechListener(subjects = EventKeys.END_OF_CALL_EVENT)
     public void handleEndOfCall(MotechEvent event) {
-        logger.debug("Handling end of call event...");
+
+        logger.trace("Handling end of all");
+
+        if (!"true".equals(pillReminderSettings.getRetryEnabled())) {
+            logger.trace("Retry is disabled.");
+            return;
+        }
 
         CallDetailRecord record = (CallDetailRecord) event.getParameters().get("call_detail_record");
 
         if (record == null) {
+            logger.debug("No corresponding record found");
             return;
         }
 
         String callId = record.getCallId();
         Disposition disposition = record.getDisposition();
+
+        logger.debug("End of call ID: " + callId + " and disposition: " + disposition.toString());
 
         if (Disposition.BUSY.equals(disposition) || Disposition.NO_ANSWER.equals(disposition)) {
             retryCall(callId);
@@ -76,7 +85,7 @@ public class EndOfCallRetryListener {
 
         if (patientAdapter.getPatientByMotechId(motechId) == null && pillReminderSettings.retryTestOn().equals("false")) {
             //Demo "patients" are persisted as MRS Person objects - no retry calls are made here
-            logger.debug("Demo mode, no retry call for busy and no answer");
+            logger.trace("Demo mode, no retry call for busy and no answer");
             return;
         }
 
@@ -96,7 +105,7 @@ public class EndOfCallRetryListener {
         int scheduleDelay = 10;
 
         if (retries == 0) {
-            logger.debug("No retries left for call");
+            logger.trace("No retries left for call with Id: " + callId);
             return;
         } else if (retries == 2) {
             scheduleDelay = 20;
@@ -104,8 +113,8 @@ public class EndOfCallRetryListener {
             scheduleDelay = 30;
         }
 
-        logger.debug("Rescheduling retry call for session: " + callId);
         retries--;
+        logger.debug("Rescheduling retry call for session: " + callId + " (retries left: " + retries + ")");
 
         switch (requestType) {
             case RequestTypes.ADHERENCE_CALL : subject = Events.ADHERENCE_ASSESSMENT_CALL; break;

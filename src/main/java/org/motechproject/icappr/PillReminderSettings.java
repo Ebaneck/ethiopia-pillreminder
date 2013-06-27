@@ -1,11 +1,5 @@
 package org.motechproject.icappr;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
-
 import org.motechproject.server.config.SettingsFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,6 +42,9 @@ public class PillReminderSettings {
     private static final String DAILY_REPORT_NAME_PROPERTY = "daily.report.name";
     private static final String WEEKLY_REPORT_NAME_PROPERTY = "weekly.report.name";
     private static final String RETRY_TEST_ON_PROPERTY = "retry.test.on";
+    private static final String WEEKLY_DIRECTORY_PROPERTY = "weekly.report.output.directory";
+    private static final String DAILY_DIRECTORY_PROPERTY = "daily.report.output.directory";
+    private static final String RETRY_ENABLED_PROPERTY = "retry.enabled";
 
     //languages (english is default)
     private static final String AMHARIC = "amharic";
@@ -206,5 +203,17 @@ public class PillReminderSettings {
 
     public String retryTestOn() {
         return settingsFacade.getProperty(RETRY_TEST_ON_PROPERTY);
+    }
+
+    public String getWeeklyOutputDirectory() {
+        return settingsFacade.getProperty(WEEKLY_DIRECTORY_PROPERTY);
+    }
+
+    public String getDailyOutputDirectory() {
+        return settingsFacade.getProperty(DAILY_DIRECTORY_PROPERTY);
+    }
+
+    public String getRetryEnabled() {
+        return settingsFacade.getProperty(RETRY_ENABLED_PROPERTY);
     }
 }
