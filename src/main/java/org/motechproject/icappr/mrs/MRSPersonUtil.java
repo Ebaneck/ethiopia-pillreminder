@@ -6,17 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.motechproject.commons.date.util.DateUtil;
 import org.motechproject.mrs.model.MRSAttributeDto;
-import org.motechproject.mrs.model.MRSFacilityDto;
-import org.motechproject.mrs.model.MRSPatientDto;
 import org.motechproject.mrs.model.MRSPersonDto;
-import org.motechproject.icappr.form.model.PillReminderRegistration;
 import org.motechproject.mrs.domain.MRSAttribute;
-import org.motechproject.mrs.domain.MRSFacility;
 import org.motechproject.mrs.domain.MRSPerson;
-import org.motechproject.mrs.services.MRSFacilityAdapter;
-import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.motechproject.mrs.services.MRSPersonAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,8 +21,6 @@ import org.springframework.stereotype.Component;
 public class MRSPersonUtil {   
 
     private final MRSPersonAdapter mrsPersonAdapter;
-    private final MRSFacilityAdapter mrsFacilityAdapter;
-    private final MRSPatientAdapter mrsPatientAdapter;
 
     private static final Map<String, String> clinicMappings = new HashMap<>();
 
@@ -39,10 +30,8 @@ public class MRSPersonUtil {
     }
 
     @Autowired
-    public MRSPersonUtil(MRSPersonAdapter mrsPersonAdapter, MRSFacilityAdapter mrsFacilityAdapter, MRSPatientAdapter mrsPatientAdapter){
+    public MRSPersonUtil(MRSPersonAdapter mrsPersonAdapter){
         this.mrsPersonAdapter = mrsPersonAdapter;
-        this.mrsFacilityAdapter = mrsFacilityAdapter;
-        this.mrsPatientAdapter = mrsPatientAdapter;
     }
 
     public MRSPersonDto createAndSaveDemoPerson(String phoneNum, String pin, String language) {

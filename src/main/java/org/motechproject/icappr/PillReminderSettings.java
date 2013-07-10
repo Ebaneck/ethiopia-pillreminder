@@ -13,7 +13,6 @@ public class PillReminderSettings {
 
     private static final String MOTECH_URL_PROPERTY = "motech.url";
     private static final String VERBOICE_CHANNEL_NAME_PROPERTY = "verboice.channel.name";
-    private static final String CMSLITE_STREAM_PATH = "/module/cmsliteapi/stream/";
     private static final String SIDE_EFFECTS_DAYS_LATER_PROPERTY = "side.effect.days.later";
     private static final String SIDE_EFFECTS_HOUR_OF_DAY_PROPERTY = "side.effect.hour.of.day";
     private static final String SIDE_EFFECTS_MINUTE_OF_HOUR_PROPERTY = "side.effect.minute.of.hour";
@@ -154,11 +153,6 @@ public class PillReminderSettings {
             case OROMIFFA: return language;
             default: return "english";
         }
-    }
-
-    @Deprecated
-    public String getCmsliteUrlFor(String soundFilename, String language) {
-        return getMotechUrl() + CMSLITE_STREAM_PATH + language + "/" + soundFilename;
     }
 
     public String getDailyReportFileName() {

@@ -27,7 +27,7 @@ public class RAMessageHandler {
     @Autowired
     private EventRelay eventRelay;
 
-    @MotechListener( subjects = {Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS, Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS} )
+//    @MotechListener( subjects = {Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS, Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS} )
     public void sendRAMessage(MotechEvent event) {
         String flowSessionId = (String) event.getParameters().get("flowSessionId");
         FlowSessionRecord flowSession = (FlowSessionRecord) flowSessionService.getSession(flowSessionId);

@@ -5,14 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.joda.time.DateTime;
 import org.motechproject.icappr.mrs.MrsConstants;
 import org.motechproject.mrs.domain.MRSAttribute;
 import org.motechproject.mrs.domain.MRSEncounter;
-import org.motechproject.mrs.domain.MRSObservation;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.domain.MRSPerson;
 import org.motechproject.mrs.model.MRSAttributeDto;
@@ -29,6 +26,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * This class if for testing purposes only.
+ */
 @Controller
 public class TestDataController {
 
