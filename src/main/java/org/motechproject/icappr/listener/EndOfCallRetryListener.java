@@ -1,10 +1,7 @@
 package org.motechproject.icappr.listener;
 
 import org.joda.time.DateTime;
-import org.motechproject.callflow.domain.CallDetailRecord;
-import org.motechproject.callflow.domain.CallDetailRecord.Disposition;
 import org.motechproject.callflow.service.FlowSessionService;
-import org.motechproject.decisiontree.core.EventKeys;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
@@ -13,6 +10,9 @@ import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.domain.RequestTypes;
 import org.motechproject.icappr.events.Events;
 import org.motechproject.icappr.support.SchedulerUtil;
+import org.motechproject.ivr.domain.CallDetailRecord;
+import org.motechproject.ivr.domain.CallDisposition;
+import org.motechproject.ivr.domain.EventKeys;
 import org.motechproject.mrs.services.MRSEncounterAdapter;
 import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.motechproject.scheduler.MotechSchedulerService;
@@ -60,13 +60,13 @@ public class EndOfCallRetryListener {
         }
 
         String callId = record.getCallId();
-        Disposition disposition = record.getDisposition();
+        CallDisposition disposition = record.getDisposition();
 
         logger.debug("End of call ID: " + callId + " and disposition: " + disposition.toString());
 
-        if (Disposition.BUSY.equals(disposition) || Disposition.NO_ANSWER.equals(disposition)) {
+        if (CallDisposition.BUSY.equals(disposition) || CallDisposition.NO_ANSWER.equals(disposition)) {
             retryCall(callId);
-        } else if (Disposition.FAILED.equals(disposition)) {
+        } else if (CallDisposition.FAILED.equals(disposition)) {
             if (encounterAdapter.getEncounterById(callId) == null) {
                 retryCall(callId);
             }

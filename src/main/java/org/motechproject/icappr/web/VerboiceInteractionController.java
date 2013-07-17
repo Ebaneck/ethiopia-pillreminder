@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.IOUtils;
-import org.motechproject.callflow.domain.CallDetailRecord;
-import org.motechproject.callflow.domain.CallEvent;
 import org.motechproject.callflow.domain.FlowSessionRecord;
 import org.motechproject.callflow.service.FlowSessionService;
 import org.motechproject.decisiontree.core.FlowSession;
@@ -15,6 +13,10 @@ import org.motechproject.icappr.PillReminderSettings;
 import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.events.Events;
 import org.motechproject.icappr.support.FlowSessionHandler;
+import org.motechproject.ivr.domain.CallDetailRecord;
+import org.motechproject.ivr.domain.CallDisposition;
+import org.motechproject.ivr.domain.CallEvent;
+import org.motechproject.ivr.domain.CallEventLog;
 import org.motechproject.server.config.SettingsFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -162,9 +164,9 @@ public class VerboiceInteractionController {
         } else if (MotechConstants.THREE_FAILED_LOGINS.equals(requestType)) {
             FlowSessionRecord flowSessionRecord = (FlowSessionRecord) flowSession;
             CallDetailRecord callRecord = flowSessionRecord.getCallDetailRecord();
-            CallEvent callEvent = new CallEvent("Pin Failure");
+            CallEventLog callEvent = new CallEventLog("Pin Failure");
             callRecord.addCallEvent(callEvent);
-            callRecord.setDisposition(CallDetailRecord.Disposition.AUTHENTICATION_FAILED);
+            callRecord.setDisposition(CallDisposition.ANSWERED);
             flowSessionService.updateSession(flowSessionRecord);
 
             MotechEvent event = new MotechEvent(Events.PIN_FAILURE);
