@@ -45,27 +45,7 @@
         </dependency>
         <dependency>
             <groupId>org.motechproject</groupId>
-            <artifactId>motech-appointments-api</artifactId>
-            <version>${motech.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.motechproject</groupId>
-            <artifactId>motech-cmslite-api</artifactId>
-            <version>${motech.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.motechproject</groupId>
-            <artifactId>motech-pillreminder-api</artifactId>
-            <version>${motech.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.motechproject</groupId>
             <artifactId>motech-ivr-verboice</artifactId>
-            <version>${motech.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.motechproject</groupId>
-            <artifactId>motech-openmrs-ws</artifactId>
             <version>${motech.version}</version>
         </dependency>
         <dependency>
@@ -75,7 +55,7 @@
         </dependency>
         <dependency>
             <groupId>org.motechproject</groupId>
-            <artifactId>motech-mrs-couchdb</artifactId>
+            <artifactId>motech-mrs-api</artifactId>
             <version>${motech.version}</version>
         </dependency>
         <dependency>
@@ -160,19 +140,19 @@
                             <outputFile>target/dependencies.list</outputFile>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>copy-osgi-dependencies</id>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeScope>runtime</includeScope>
-                            <overWriteIfNewer>true</overWriteIfNewer>
-                            <outputDirectory>
-                                ${user.home}/.motech/bundles
-                            </outputDirectory>
-                        </configuration>
-                    </execution>
+<!--                     <execution> -->
+<!--                         <id>copy-osgi-dependencies</id> -->
+<!--                         <goals> -->
+<!--                             <goal>copy-dependencies</goal> -->
+<!--                         </goals> -->
+<!--                         <configuration> -->
+<!--                             <includeScope>runtime</includeScope> -->
+<!--                             <overWriteIfNewer>true</overWriteIfNewer> -->
+<!--                             <outputDirectory> -->
+<!--                                 ${user.home}/.motech/bundles -->
+<!--                             </outputDirectory> -->
+<!--                         </configuration> -->
+<!--                     </execution> -->
                 </executions>
             </plugin>
             <plugin>
