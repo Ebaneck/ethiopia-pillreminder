@@ -4,9 +4,6 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 
-    <osgi:reference cardinality="0..1" id="flowSessionServiceOsgi"
-        interface="org.motechproject.callflow.service.FlowSessionService" />
-
     <osgi:reference cardinality="0..1" id="mrsPatientAdapterOsgi" interface="org.motechproject.mrs.services.MRSPatientAdapter" bean-name="couchPatientAdapter"/>
 
     <osgi:reference cardinality="0..1" id="mrsFacilityAdapterOsgi" interface="org.motechproject.mrs.services.MRSFacilityAdapter" bean-name="couchFacilityAdapter"/>
@@ -17,35 +14,51 @@
     
     <osgi:reference cardinality="0..1" id="couchPersonAdapter" interface="org.motechproject.mrs.services.MRSPersonAdapter" bean-name="couchPersonAdapter"/>
 
+    <osgi:reference cardinality="0..1" id="couchProviderAdapter" interface="org.motechproject.mrs.services.MRSProviderAdapter" bean-name="couchProviderAdapter"/>
+
     <osgi:reference cardinality="0..1" id="eventRelayOsgi" interface="org.motechproject.event.listener.EventRelay" />
 
     <osgi:reference id="eventListenerRegistryServiceOsgi" cardinality="0..1"
         interface="org.motechproject.event.listener.EventListenerRegistryService" />
 
-    <osgi:reference id="ivrServiceOsgi" cardinality="0..1" interface="org.motechproject.ivr.service.contract.IVRService" />
-
     <osgi:reference id="platformSettingsServiceOsgi" cardinality="0..1"
         interface="org.motechproject.server.config.service.PlatformSettingsService" />
 
-<!--     <osgi:reference id="cmsliteServiceOsgi" cardinality="0..1" -->
-<!--         interface="org.motechproject.cmslite.api.service.CMSLiteService" /> -->
-
-    <osgi:service id="pillReminderSettingOsgi" ref="pillReminderSettings" interface="org.motechproject.icappr.PillReminderSettings"/>
-
-<!--     Following come from the demo  -->
-
     <osgi:reference id="couchDbManager" interface="org.motechproject.commons.couchdb.service.CouchDbManager" />
 
-    <osgi:reference id="formService" cardinality="0..1" interface="org.motechproject.commcare.service.CommcareFormService" />
-    
-    <osgi:reference id="caseService" cardinality="0..1" interface="org.motechproject.commcare.service.CommcareCaseService" />
-
-    <bean id="dbConnector" factory-bean="couchDbManager" factory-method="getConnector">
-        <constructor-arg value="icap-pr" />
+    <bean id="couchPersonDatabaseConnector" factory-bean="couchDbManager"
+        factory-method="getConnector">
+        <constructor-arg value="motech-person-repository" />
     </bean>
-    <!-- get a settings instance to store your module's properties -->
-       
-    <osgi:reference id="messageCampaignService" cardinality="0..1" interface="org.motechproject.messagecampaign.service.MessageCampaignService" />
 
-	<osgi:reference id="schedulerServiceOsgi" cardinality="0..1" interface="org.motechproject.scheduler.MotechSchedulerService"/>
+    <bean id="couchConceptDatabaseConnector" factory-bean="couchDbManager"
+          factory-method="getConnector">
+        <constructor-arg value="motech-concept-repository" />
+    </bean>
+
+    <bean id="couchProviderDatabaseConnector" factory-bean="couchDbManager"
+        factory-method="getConnector">
+        <constructor-arg value="motech-provider-repository" />
+    </bean>
+
+    <bean id="couchPatientDatabaseConnector" factory-bean="couchDbManager"
+        factory-method="getConnector">
+        <constructor-arg value="motech-patient-repository" />
+    </bean>
+
+    <bean id="couchFacilityDatabaseConnector" factory-bean="couchDbManager"
+        factory-method="getConnector">
+        <constructor-arg value="motech-facility-repository" />
+    </bean>
+
+    <bean id="couchEncounterDatabaseConnector" factory-bean="couchDbManager"
+        factory-method="getConnector">
+        <constructor-arg value="motech-encounter-repository" />
+    </bean>
+
+
+    <bean id="couchObservationDatabaseConnector" factory-bean="couchDbManager"
+        factory-method="getConnector">
+        <constructor-arg value="motech-observation-repository" />
+    </bean>
 </beans>

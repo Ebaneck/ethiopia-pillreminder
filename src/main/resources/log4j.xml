@@ -9,30 +9,9 @@
         </layout>
     </appender>
 
-    <appender name="FA2" class="org.apache.log4j.FileAppender">
-        <param name="File" value="ICAPPRLogging.log" />
-        <param name="Append" value="true" />
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d %-5p [%c] %m%n" />
-        </layout>
-    </appender>
-
-    <appender name="FA3" class="org.apache.log4j.FileAppender">
-        <param name="File" value="ICAPPRInteractions.log" />
-        <param name="Append" value="true" />
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d %-5p [%c] %m%n" />
-        </layout>
-    </appender>
-
-    <logger name="motech-icappr">
+    <logger name="motech-mrs-entity-converter">
         <level value="DEBUG" />
-        <appender-ref ref="FA2" />
-    </logger>
-
-    <logger name="interaction-log">
-        <level value="DEBUG" />
-        <appender-ref ref="FA3" />
+        <appender-ref ref="CONSOLE" />
     </logger>
 
 </log4j:configuration>
