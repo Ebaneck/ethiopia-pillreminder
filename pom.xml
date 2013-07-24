@@ -95,9 +95,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Context-Path>icappr</Context-Path>
                         <Blueprint-Enabled>true</Blueprint-Enabled>
-                        <Context-File>META-INF/spring/icapprApplicationContext.xml</Context-File>
                         <Context-Path>icappr</Context-Path>
                         <Resource-Path>icappr/resources</Resource-Path>
                         <Export-Package>
