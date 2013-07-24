@@ -2,11 +2,14 @@ package org.motechproject.converter.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 import org.motechproject.converter.repository.AllCouchEncountersImpl;
 import org.motechproject.converter.support.CouchDAOBroker;
 import org.motechproject.couch.mrs.model.CouchEncounterImpl;
 import org.motechproject.mrs.domain.MRSEncounter;
+import org.motechproject.mrs.domain.MRSObservation;
 import org.motechproject.mrs.model.MRSEncounterDto;
 import org.motechproject.mrs.services.MRSEncounterAdapter;
 import org.slf4j.Logger;
@@ -50,7 +53,7 @@ public class MrsEntityConverterController {
             convertAndSaveEncounterInMemory(fullEncounter);
             allEncounters.remove(encounter);
         }
-        
+
         logger.debug("All encounters saved in memory, # of encounters: " + encountersInMemory.size());
     }
 
@@ -60,8 +63,21 @@ public class MrsEntityConverterController {
         for (MRSEncounter encounter : encountersInMemory) {
             encounterAdapter.createEncounter(encounter);
         }
-        
+
         logger.debug("All encounters saved to DB, # of encounters: " + encountersInMemory.size());
+    }
+
+    @RequestMapping("/fixIds")
+    @ResponseBody
+    public void fixIds() {
+        for (MRSEncounter encounter : encountersInMemory) {
+            Set<? extends MRSObservation> observations =  encounter.getObservations();
+            if (observations != null) {
+                for (MRSObservation obs : observations) {
+                    obs.setPatientId(encounter.getPatient().getPatientId());
+                }
+            }
+        }
     }
 
     private void convertAndSaveEncounterInMemory(MRSEncounter fullEncounter) {
