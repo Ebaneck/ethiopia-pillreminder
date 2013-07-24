@@ -1,0 +1,89 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+
+package "listeners" <<rect>> {
+class CallInteractionListener {
+    <<consume>>
+    YES_SKIN_RASH_OR_ITCHY_SKIN
+    NO_SKIN_RASH_OR_ITCHY_SKIN
+    PIN_FAILURE
+    etc...
+    __
+	+handleSideEffectEvents()
+	+handleNoSideEffectEvents()
+	+handlePinFailure()
+	etc...
+	-createEncounter()
+    -updateEncounter()
+}
+
+class InitiateCallListener {
+    <consume>>
+    PILL_REMINDER_CALL
+    SIDE_EFFECTS_SURVEY_CALL
+    etc...
+    __
+    callService : CallInitiationService
+    __
+    initiateCallByType()
+}
+
+class SendCampaignMessageListener {
+    <<consume>>
+    SEND_MESSAGE
+    __
+    callService : CallInitiationService
+    __
+    sendCampaignMessage()
+}
+
+class CommcareStubFormListener {
+    <<consume>>
+    FORM_STUB_EVENT
+    ____
+	registrationFormHandler : RegistrationFormHandler
+	__
+    +handleStubForm()
+}
+
+}
+
+class PillReminderRegistrar {
+    +register()
+}
+
+class RegistrationFormHandler {
+    -pillReminderRegistrar : PillReminderRegistrar
+    +handleForm()
+}
+
+class CallInitiationService {
+    +initiateCall()
+}
+
+class VerboiceInteractionController {
+    eventRelay : EventRelay
+    __
+    manifest() : String
+    sideEffect() : String
+    adherenceAnswer() : String
+    getData() : String
+    __
+    <<emit>>
+    YES_SKIN_RASH_OR_ITCHY_SKIN
+    NO_SKIN_RASH_OR_ITCHY_SKIN
+    PIN_FAILURE
+    etc...
+}
+
+' Aggregation
+CommcareStubFormListener o-- RegistrationFormHandler
+InitiateCallListener o-- CallInitiationService
+RegistrationFormHandler o-- PillReminderRegistrar
+SendCampaignMessageListener o-- CallInitiationService
+
+' Events
+VerboiceInteractionController .. CallInteractionListener
+
+@enduml
