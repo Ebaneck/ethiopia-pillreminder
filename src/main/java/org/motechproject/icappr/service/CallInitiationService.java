@@ -66,7 +66,7 @@ public class CallInitiationService {
 
         payload.putAll(request.getPayload());
 
-        String callbackStatusUrl = settings.getMotechUrl() + "/module/verboice/ivr/callstatus";
+        String callbackStatusUrl = settings.getMotechUrl() + "/module/verboice/web-api/ivr/callstatus";
 
 
         payload.put(CallRequestDataKeys.STATUS_CALLBACK_URL, callbackStatusUrl);
