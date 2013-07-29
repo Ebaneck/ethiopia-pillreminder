@@ -121,6 +121,7 @@ public class SchedulerUtil {
         MotechEvent endEvent = new MotechEvent(Events.END_CALLS);
         endEvent.getParameters().put(MotechConstants.MOTECH_ID, motechId);
         endEvent.getParameters().put(MotechConstants.STOP_REASON, stopReason);
+        endEvent.getParameters().put(MotechSchedulerService.JOB_ID_KEY, motechId);
 
         RunOnceSchedulableJob endJob = new RunOnceSchedulableJob(endEvent, stopDate.toDate());
 
