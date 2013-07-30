@@ -11,6 +11,7 @@ import org.motechproject.couch.mrs.model.CouchEncounterImpl;
 import org.motechproject.mrs.domain.MRSEncounter;
 import org.motechproject.mrs.domain.MRSObservation;
 import org.motechproject.mrs.model.MRSEncounterDto;
+import org.motechproject.mrs.model.MRSPatientDto;
 import org.motechproject.mrs.services.MRSEncounterAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +51,7 @@ public class MrsEntityConverterController {
 
         for (CouchEncounterImpl encounter : encounters) {
             MRSEncounter fullEncounter = broker.buildFullEncounter(encounter);
-            convertAndSaveEncounterInMemory(fullEncounter);
+            convertAndSaveEncounterInMemory(fullEncounter, encounter.getPatientId());
             allEncounters.remove(encounter);
         }
 
@@ -80,7 +81,7 @@ public class MrsEntityConverterController {
         }
     }
 
-    private void convertAndSaveEncounterInMemory(MRSEncounter fullEncounter) {
+    private void convertAndSaveEncounterInMemory(MRSEncounter fullEncounter, String motechId) {
         MRSEncounterDto convertedEncounter = new MRSEncounterDto();
 
         //convertedEncounter.setCreator(fullEncounter.getCreator());
@@ -91,6 +92,13 @@ public class MrsEntityConverterController {
         convertedEncounter.setObservations(fullEncounter.getObservations());
         convertedEncounter.setPatient(fullEncounter.getPatient());
         convertedEncounter.setProvider(fullEncounter.getProvider());
+
+        if (fullEncounter.getPatient() == null) {
+            logger.debug("Patient: " + motechId + " was null. Creating new one");
+            MRSPatientDto mrsPatient = new MRSPatientDto();
+            mrsPatient.setMotechId(motechId);
+            convertedEncounter.setPatient(mrsPatient);
+        }
 
         encountersInMemory.add(convertedEncounter);
     }
