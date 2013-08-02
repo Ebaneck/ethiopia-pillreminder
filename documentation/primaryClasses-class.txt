@@ -2,88 +2,95 @@
 skinparam style strictuml
 skinparam classAttributeIconSize 0
 
-package "listeners" <<rect>> {
-class CallInteractionListener {
-    <<consume>>
-    YES_SKIN_RASH_OR_ITCHY_SKIN
-    NO_SKIN_RASH_OR_ITCHY_SKIN
-    PIN_FAILURE
-    etc...
-    __
-	+handleSideEffectEvents()
-	+handleNoSideEffectEvents()
-	+handlePinFailure()
-	etc...
-	-createEncounter()
-    -updateEncounter()
+' Commcare
+class CommcareStubFormListener #lavender {
+    - formService : CommcareFormService
+    - registrationFormHandler : RegistrationFormHandler
+    + handleStubForm()
+}
+class RegistrationFormHandler #lavender {
+    - pillReminderRegistrar : PillReminderRegistrar
+    + handleForm()
+}
+CommcareStubFormListener --> "1" RegistrationFormHandler
+RegistrationFormHandler --> "1" PillReminderRegistrar
+
+' Enrollment
+class PillReminderRegistrar #palegreen {
+    - messageCampaignEnroller : MessageCampaignEnroller
+    - schedulerUtil : SchedulerUtil
+    - patientAdapter : MRSPatientAdapter
+    + register()
+    - createGenericPatient()
+}
+class MessageCampaignEnroller #palegreen {
+    - messageCampaignService : MessageCampaignService
+    + enrollInDailyMessageCampaign()
+    + enrollInWeeklyMessageCampaign() 
+}
+class SchedulerUtil #palegreen {
+    - schedulerService : MotechSchedulerService
+    + scheduleAppointments()
+    + scheduleAdherenceSurvey()
+    + scheduleSideEffectsSurvey()
+}
+PillReminderRegistrar --> "1" MessageCampaignEnroller
+PillReminderRegistrar --> "1" SchedulerUtil
+
+' Call-related events
+note "events\nSEND_MESSAGE" as NotePill
+note "events\nAPPOINTMENT_SCHEDULE_CALL\nADHERENCE_ASSESSMENT_CALL\nSIDE_EFFECTS_SURVEY_CALL" as NoteOther
+MessageCampaignEnroller .. NotePill
+NotePill .. SendCampaignMessageListener
+SchedulerUtil .. NoteOther
+NoteOther .. InitiateCallListener
+
+' Call Initiation
+class SendCampaignMessageListener #silver {
+    - callService : CallInitiationService
+    + sendCampaignMessage()
+}
+class InitiateCallListener #silver {
+    - callService : CallInitiationService 
+    + initiateCallByType()
+}
+class CallInitiationService #silver {
+    - ivrService : IVRService
+    + initiateCall();
+}
+SendCampaignMessageListener --> "1" CallInitiationService
+InitiateCallListener --> "1" CallInitiationService
+
+' Verboice external service
+note "Verboice" as Verboice
+CallInitiationService .. Verboice
+Verboice .. PinAuthenticationController
+Verboice .. VerboiceInteractionController
+
+' Verboice
+class PinAuthenticationController #mistyrose {
+    - flowSessionHandler : FlowSessionHandler
+    + authenticate()
+}
+class VerboiceInteractionController #mistyrose {
+    - flowSessionService : FlowSessionService
+    + sideEffect()
+    + adherenceAnswer()
+    + getData();
 }
 
-class InitiateCallListener {
-    <consume>>
-    PILL_REMINDER_CALL
-    SIDE_EFFECTS_SURVEY_CALL
-    etc...
-    __
-    callService : CallInitiationService
-    __
-    initiateCallByType()
+note "events\nYES_YELLOW_SKIN_OR_EYES\nNO_MEDICATION_TWO_DAYS_AGO\nPIN_FAILURE\netc..." as InCall
+VerboiceInteractionController .. InCall
+InCall .. CallInteractionListener
+
+class CallInteractionListener #mistyrose {
+    - flowSessionService FlowSessionService
+    - encounterAdapter : MRSEncounterAdapter
+	+ handleSideEffectEvents()
+	+ handleAdherenceSurveyNoAnswers()
+	+ handlePinFailure()
+	- createEncounter()
+	- updateEncounter()
 }
-
-class SendCampaignMessageListener {
-    <<consume>>
-    SEND_MESSAGE
-    __
-    callService : CallInitiationService
-    __
-    sendCampaignMessage()
-}
-
-class CommcareStubFormListener {
-    <<consume>>
-    FORM_STUB_EVENT
-    ____
-	registrationFormHandler : RegistrationFormHandler
-	__
-    +handleStubForm()
-}
-
-}
-
-class PillReminderRegistrar {
-    +register()
-}
-
-class RegistrationFormHandler {
-    -pillReminderRegistrar : PillReminderRegistrar
-    +handleForm()
-}
-
-class CallInitiationService {
-    +initiateCall()
-}
-
-class VerboiceInteractionController {
-    eventRelay : EventRelay
-    __
-    manifest() : String
-    sideEffect() : String
-    adherenceAnswer() : String
-    getData() : String
-    __
-    <<emit>>
-    YES_SKIN_RASH_OR_ITCHY_SKIN
-    NO_SKIN_RASH_OR_ITCHY_SKIN
-    PIN_FAILURE
-    etc...
-}
-
-' Aggregation
-CommcareStubFormListener o-- RegistrationFormHandler
-InitiateCallListener o-- CallInitiationService
-RegistrationFormHandler o-- PillReminderRegistrar
-SendCampaignMessageListener o-- CallInitiationService
-
-' Events
-VerboiceInteractionController .. CallInteractionListener
 
 @enduml
