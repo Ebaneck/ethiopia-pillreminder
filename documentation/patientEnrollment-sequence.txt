@@ -1,0 +1,58 @@
+@startuml
+skinparam style strictuml
+skinparam SequenceBoxBorderColor white
+
+participant Worker
+participant "Commcare HQ" as commHQ
+box "Motech" #ivory
+participant "Commcare API" as commAPI
+participant "Platform Events" as Events
+participant "Message Campaign Service" as Campaign
+participant "MRS Services" as MRS
+end box
+box "ICAPPR" #ghostwhite
+participant CommcareStubFormListener
+participant PillReminderRegistrar
+end box
+
+activate Worker
+Worker -> commHQ : submit form\n(L, T)
+deactivate Worker
+activate commHQ
+
+commHQ -> commAPI : forward stub form HTTP
+deactivate commHQ
+activate commAPI
+
+commAPI ->> Events : FORM_STUB_EVENT
+deactivate commAPI
+activate Events
+Events -> CommcareStubFormListener : handleStubForm()
+deactivate Events
+activate CommcareStubFormListener
+
+CommcareStubFormListener -> commAPI : retrieveForm()
+activate commAPI
+
+commAPI -> commHQ : request full form HTTP
+activate commHQ
+
+commHQ -->> commAPI : JSON\n(L, T)
+deactivate commHQ
+
+commAPI -->> CommcareStubFormListener : CommcareForm\n(L, T)
+deactivate commAPI
+
+CommcareStubFormListener -> PillReminderRegistrar : register()\n(L, T)
+deactivate CommcareStubFormListener
+activate PillReminderRegistrar
+
+PillReminderRegistrar -> MRS : savePatient()\n(L)
+PillReminderRegistrar -> Campaign : startFor()\n(T)
+deactivate PillReminderRegistrar
+activate Campaign
+
+Campaign ->> Events : SEND_MESSAGE
+deactivate Campaign
+
+@enduml
