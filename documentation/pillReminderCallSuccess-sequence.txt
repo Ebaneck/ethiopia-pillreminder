@@ -1,27 +1,31 @@
 @startuml
 skinparam style strictuml
 skinparam SequenceBoxBorderColor white
-skinparam sequenceBoxBackgroundColor ivory
 
-box "Motech"
-participant "Motech Events" as ME
-participant "ICAPPR" as ICAP
-participant "IVR-Verboice" as IVR
+box "ICAPPR" #ghostwhite
+participant CallInitiationService
+participant PinAuthenticationController
+participant VerboiceInteractionController
 end box
+
+box "Motech" #ivory
+participant "IVR Service" as IVR
+end box
+
 participant "Verboice" as V
 participant "Patient" as P
 
-ME ->> ICAP : PILL_REMINDER_CALL
-activate ICAP
+box "Motech" #ivory
+participant "Platform Events" as Events
+end box
 
-ICAP -> IVR : initiateCall()
+CallInitiationService -> IVR : initiateCall()
 activate IVR
 
 IVR -> V : HTTP call
 activate V
 IVR <<-- V : call Id
 deactivate IVR
-deactivate ICAP
 
 V ->> P : ring phone (SIP, etc.)
 
@@ -30,7 +34,7 @@ activate IVR
 V <<-- IVR : next status URL
 deactivate IVR
 
-V <<-- P : answer phone
+V <<- P : answer phone
 activate P
 
 V -> IVR : HTTP status "in-progress"
@@ -40,17 +44,18 @@ deactivate IVR
 
 V -> P : play Motech music
 V <<-- P : enter pin
-V -> ICAP : HTTP authenticate
-activate ICAP
-V <<-- ICAP : result=true
-deactivate ICAP
+V -> PinAuthenticationController : HTTP authenticate
+activate PinAuthenticationController
+V <<-- PinAuthenticationController : result=true
+deactivate PinAuthenticationController
 
 V -> P : play "concern?"
 V <<-- P : answer "no"
-V -> ICAP : HTTP patientConcern
-activate ICAP
-ICAP ->> ME : NO_ADHERENCE_CONCERNS
-deactivate ICAP
+V -> VerboiceInteractionController : HTTP patientConcern
+activate VerboiceInteractionController
+VerboiceInteractionController ->> Events : NO_ADHERENCE_CONCERNS
+deactivate VerboiceInteractionController
+note right of Events : to medical\nrecords
 V -> P : play "goodbye"
 P -> P : hang up
 deactivate P
@@ -64,7 +69,9 @@ deactivate IVR
 V -> IVR : HTTP status "Disconnect"
 activate IVR
 V <<-- IVR : next status URL
-deactivate IVR
 deactivate V
+
+IVR ->> Events : END_OF_CALL_EVENT
+deactivate IVR
 
 @enduml

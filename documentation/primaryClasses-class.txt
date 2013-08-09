@@ -8,27 +8,22 @@ class CommcareStubFormListener #lavender {
     - registrationFormHandler : RegistrationFormHandler
     + handleStubForm()
 }
-class RegistrationFormHandler #lavender {
-    - pillReminderRegistrar : PillReminderRegistrar
-    + handleForm()
-}
-CommcareStubFormListener --> "1" RegistrationFormHandler
-RegistrationFormHandler --> "1" PillReminderRegistrar
+CommcareStubFormListener --> "1" PillReminderRegistrar
 
 ' Enrollment
-class PillReminderRegistrar #palegreen {
+class PillReminderRegistrar #lavender {
     - messageCampaignEnroller : MessageCampaignEnroller
     - schedulerUtil : SchedulerUtil
     - patientAdapter : MRSPatientAdapter
     + register()
     - createGenericPatient()
 }
-class MessageCampaignEnroller #palegreen {
+class MessageCampaignEnroller #lavender {
     - messageCampaignService : MessageCampaignService
     + enrollInDailyMessageCampaign()
     + enrollInWeeklyMessageCampaign() 
 }
-class SchedulerUtil #palegreen {
+class SchedulerUtil #lavender {
     - schedulerService : MotechSchedulerService
     + scheduleAppointments()
     + scheduleAdherenceSurvey()
@@ -46,15 +41,15 @@ SchedulerUtil .. NoteOther
 NoteOther .. InitiateCallListener
 
 ' Call Initiation
-class SendCampaignMessageListener #silver {
+class SendCampaignMessageListener #palegreen {
     - callService : CallInitiationService
     + sendCampaignMessage()
 }
-class InitiateCallListener #silver {
+class InitiateCallListener #palegreen {
     - callService : CallInitiationService 
     + initiateCallByType()
 }
-class CallInitiationService #silver {
+class CallInitiationService #palegreen {
     - ivrService : IVRService
     + initiateCall();
 }

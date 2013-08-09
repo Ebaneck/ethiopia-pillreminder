@@ -1,0 +1,75 @@
+@startuml
+skinparam style strictuml
+skinparam SequenceBoxBorderColor white
+
+box "Motech" #ivory
+participant "Platform Events" as Events
+participant "MRS Services" as MRS
+participant "IVR Service" as IVR
+end box
+box "ICAPPR" #ghostwhite
+participant SendCampaignMessageListener
+participant InitiateCallListener
+participant CallInitiationService
+participant EndOfCallRetryListener
+end box
+
+->> Events : SEND_MESSAGE
+note left of Events : from registration
+activate Events
+Events -> SendCampaignMessageListener : sendCampaignMessage()
+deactivate Events
+activate SendCampaignMessageListener
+
+SendCampaignMessageListener -> MRS : getPatientByMotechId()
+activate MRS
+MRS -->> SendCampaignMessageListener : <i>(L)</i>
+deactivate MRS
+
+SendCampaignMessageListener -> CallInitiationService : initiateCall() <i>(L)</i>
+deactivate SendCampaignMessageListener
+activate CallInitiationService
+CallInitiationService -> CallInitiationService : getAdherenceFlowId() <i>(L)</i>
+CallInitiationService -> IVR : initiateCall()
+deactivate CallInitiationService
+
+activate IVR #red
+note right of IVR : see call\ndiagram
+IVR ->> Events : END_OF_CALL_EVENT
+deactivate IVR
+activate Events
+Events -> EndOfCallRetryListener : handleEndOfCall()
+deactivate Events
+activate EndOfCallRetryListener
+
+== if call status BUSY or NO_ANSWER ==
+EndOfCallRetryListener -> EndOfCallRetryListener : retryCall()
+EndOfCallRetryListener ->> Events : PILL_REMINDER_CALL
+deactivate EndOfCallRetryListener
+activate Events
+
+Events -> InitiateCallListener : handlePillreminderCall()
+deactivate Events
+activate InitiateCallListener
+
+InitiateCallListener -> MRS : getPatientByMotechId()
+activate MRS
+MRS -->> InitiateCallListener : <i>(L)</i>
+deactivate MRS 
+
+InitiateCallListener -> CallInitiationService : initiateCall() <i>(L)</i>
+deactivate InitiateCallListener
+activate CallInitiationService
+CallInitiationService -> CallInitiationService : getAdherenceFlowId() <i>(L)</i>
+CallInitiationService -> IVR : initiateCall()
+deactivate CallInitiationService
+
+activate IVR #red
+note right of IVR : see call\ndiagram
+IVR ->> Events : END_OF_CALL_EVENT
+deactivate IVR
+activate Events
+Events -> EndOfCallRetryListener : handleEndOfCall()
+deactivate Events
+
+@enduml
