@@ -1,6 +1,25 @@
 @startuml
 skinparam style strictuml
 skinparam SequenceBoxBorderColor white
+skinparam headerFontColor black
+skinparam headerFontSize 12
+
+Title Call Details
+
+left header
+ICAPPR phone calls are implemented with an IVR service called Verboice.
+
+Patients enter PINs and respond to questions by pressing buttons on their
+phones.  Verboice sends these data to the ICAPPR Motech server via
+HTTP requests, configured as Verboice "External Services", which are
+handled by custom end points in within the ICAPPR module.
+(http://verboice.instedd.org/projects/228/external_services).
+
+Verboice also sends generic call status data to the ICAPPR Motech server
+via HTTP requests, configured as Verboice status "Callbacks", which are
+handled by the Motech platform's IVR module.
+endheader
+
 
 box "ICAPPR" #ghostwhite
 participant CallInitiationService

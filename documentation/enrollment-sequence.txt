@@ -1,6 +1,19 @@
 @startuml
 skinparam style strictuml
 skinparam SequenceBoxBorderColor white
+skinparam headerFontColor black
+skinparam headerFontSize 12
+
+title Enrollment
+
+left header
+ICAPPR patients are enrolled through a CommCare application called Enrich Ethiopia
+(https://www.commcarehq.org/a/enrich-ethiopia-copy/).
+
+Enrich Ethiopia defines a Registration form, where health care workers can enter
+patient enrollment data, including a patient's language <i>(L)</i> and preferred call time of day <i>(T)</i>.
+CommCare forwards new forms to the ICAPPR Motech server using the CommCare "stub form" feed. 
+endheader
 
 participant Worker
 participant "Commcare HQ" as commHQ

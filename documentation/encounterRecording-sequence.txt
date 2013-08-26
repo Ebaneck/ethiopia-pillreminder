@@ -2,6 +2,8 @@
 skinparam style strictuml
 skinparam SequenceBoxBorderColor white
 
+title Encounter Recording
+
 box "Motech" #ivory
 participant "Platform Events" as Events
 participant "MRS Services" as MRS
