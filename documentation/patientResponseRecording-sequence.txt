@@ -1,0 +1,57 @@
+@startuml
+skinparam style strictuml
+skinparam SequenceBoxBorderColor white
+
+box "Motech" #ivory
+participant "Platform Events" as Events
+participant "MRSEncounterAdapter" as MRS
+end box
+
+box "ICAPPR" #ghostwhite
+participant CallInteractionListener
+end box
+
+->> Events : YES_YELLOW_SKIN_OR_EYES
+note left of Events : from call
+activate Events
+Events -> CallInteractionListener : handleSideEffectEvents()
+deactivate Events
+activate CallInteractionListener
+
+CallInteractionListener -> MRS : getEncounterById()
+activate MRS
+note left of MRS : first response
+MRS -->> CallInteractionListener : null
+deactivate MRS
+
+CallInteractionListener -> CallInteractionListener : createEncounter()
+note right of CallInteractionListener : new encounter for SIDE_EFFECT_ENCOUNTER_CALL\nadd observation YES_YELLOW_SKIN_OR_EYES
+
+CallInteractionListener -> MRS : createEncounter()
+activate MRS
+deactivate MRS
+deactivate CallInteractionListener
+
+->> Events : NO_SKIN_RASH_OR_ITCHY_SKIN
+note left of Events : from call
+activate Events
+Events -> CallInteractionListener : handleSideEffectEvents()
+deactivate Events
+activate CallInteractionListener
+
+CallInteractionListener -> MRS : getEncounterById()
+activate MRS
+note left of MRS : next response
+MRS -->> CallInteractionListener : encounter
+deactivate MRS
+
+CallInteractionListener -> CallInteractionListener : updateEncounter()
+note right of CallInteractionListener : add observation NO_SKIN_RASH_OR_ITCHY_SKIN
+
+CallInteractionListener -> MRS : createEncounter()
+activate MRS
+note left of MRS : encounter updated
+deactivate MRS
+
+
+@enduml
