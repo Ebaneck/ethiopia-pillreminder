@@ -19,6 +19,7 @@ box "Motech" #ivory
 participant "Platform Events" as Events
 end box
 
+note left of CallInitiationService : from call\ninitiation
 CallInitiationService -> IVR : initiateCall()
 activate IVR
 
@@ -55,7 +56,29 @@ V -> VerboiceInteractionController : HTTP patientConcern
 activate VerboiceInteractionController
 VerboiceInteractionController ->> Events : YES_YELLOW_SKIN_OR_EYES
 deactivate VerboiceInteractionController
-note right of Events : to response\nrecording
+note right of Events : to encounter\nrecording
+
+V -> P : play "abdominal pain?"
+V <<-- P : answer "yes"
+V -> VerboiceInteractionController : HTTP patientConcern
+activate VerboiceInteractionController
+VerboiceInteractionController ->> Events : YES_ABDOMINAL_PAIN_OR_VOMITING
+deactivate VerboiceInteractionController
+
+V -> P : play "skin rash?"
+V <<-- P : answer "no"
+V -> VerboiceInteractionController : HTTP patientConcern
+activate VerboiceInteractionController
+VerboiceInteractionController ->> Events : NO_SKIN_RASH_OR_ITCHY_SKIN
+deactivate VerboiceInteractionController
+
+V -> P : play "tingling?"
+V <<-- P : answer "no"
+V -> VerboiceInteractionController : HTTP patientConcern
+activate VerboiceInteractionController
+VerboiceInteractionController ->> Events : NO_TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET
+deactivate VerboiceInteractionController
+
 V -> P : play "goodbye"
 P -> P : hang up
 deactivate P
@@ -73,5 +96,6 @@ deactivate V
 
 IVR ->> Events : END_OF_CALL_EVENT
 deactivate IVR
+note right of Events : to call\ninitiation
 
 @enduml

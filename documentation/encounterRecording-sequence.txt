@@ -12,7 +12,7 @@ participant CallInteractionListener
 end box
 
 ->> Events : YES_YELLOW_SKIN_OR_EYES
-note left of Events : from call
+note left of Events : from call\ndetails
 activate Events
 Events -> CallInteractionListener : handleSideEffectEvents()
 deactivate Events
@@ -33,7 +33,7 @@ deactivate MRS
 deactivate CallInteractionListener
 
 ->> Events : NO_SKIN_RASH_OR_ITCHY_SKIN
-note left of Events : from call
+note left of Events : from call\ndetails
 activate Events
 Events -> CallInteractionListener : handleSideEffectEvents()
 deactivate Events
