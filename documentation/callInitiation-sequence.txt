@@ -34,7 +34,7 @@ CallInitiationService -> IVR : initiateCall()
 deactivate CallInitiationService
 
 activate IVR #red
-note right of IVR : to call\ndetails
+note over IVR : to call\ndetails
 IVR ->> Events : END_OF_CALL_EVENT
 deactivate IVR
 activate Events
@@ -65,7 +65,7 @@ CallInitiationService -> IVR : initiateCall()
 deactivate CallInitiationService
 
 activate IVR #red
-note right of IVR : to call\ndetails
+note over IVR : to call\ndetails
 IVR ->> Events : END_OF_CALL_EVENT
 deactivate IVR
 activate Events

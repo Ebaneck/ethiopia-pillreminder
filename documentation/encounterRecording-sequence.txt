@@ -4,7 +4,7 @@ skinparam SequenceBoxBorderColor white
 
 box "Motech" #ivory
 participant "Platform Events" as Events
-participant "MRSEncounterAdapter" as MRS
+participant "MRS Services" as MRS
 end box
 
 box "ICAPPR" #ghostwhite
@@ -20,7 +20,7 @@ activate CallInteractionListener
 
 CallInteractionListener -> MRS : getEncounterById()
 activate MRS
-note left of MRS : first response
+note over MRS : first response
 MRS -->> CallInteractionListener : null
 deactivate MRS
 
@@ -41,7 +41,7 @@ activate CallInteractionListener
 
 CallInteractionListener -> MRS : getEncounterById()
 activate MRS
-note left of MRS : next response
+note over MRS : next response
 MRS -->> CallInteractionListener : encounter
 deactivate MRS
 
@@ -50,7 +50,7 @@ note right of CallInteractionListener : add observation NO_SKIN_RASH_OR_ITCHY_SK
 
 CallInteractionListener -> MRS : createEncounter()
 activate MRS
-note left of MRS : encounter updated
+note over MRS : encounter updated
 deactivate MRS
 
 
