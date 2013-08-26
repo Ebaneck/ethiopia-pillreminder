@@ -49,13 +49,13 @@ activate PinAuthenticationController
 V <<-- PinAuthenticationController : result=true
 deactivate PinAuthenticationController
 
-V -> P : play "concern?"
-V <<-- P : answer "no"
+V -> P : play "yellow skin?"
+V <<-- P : answer "yes"
 V -> VerboiceInteractionController : HTTP patientConcern
 activate VerboiceInteractionController
-VerboiceInteractionController ->> Events : NO_ADHERENCE_CONCERNS
+VerboiceInteractionController ->> Events : YES_YELLOW_SKIN_OR_EYES
 deactivate VerboiceInteractionController
-note right of Events : to medical\nrecords
+note right of Events : to response\nrecording
 V -> P : play "goodbye"
 P -> P : hang up
 deactivate P
