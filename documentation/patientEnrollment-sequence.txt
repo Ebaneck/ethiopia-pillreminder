@@ -17,6 +17,7 @@ end box
 box "Motech" #ivory
 participant "MRS Services" as MRS
 participant "Message Campaign Service" as Campaign
+participant "Scheduler Service" as Scheduler
 participant "Platform Events" as Events
 end box
 
@@ -53,12 +54,27 @@ deactivate CommcareStubFormListener
 activate PillReminderRegistrar
 
 PillReminderRegistrar -> MRS : savePatient() <i>(L)</i>
+
+== pill reminders ==
 PillReminderRegistrar -> Campaign : startFor() <i>(T)</i>
-deactivate PillReminderRegistrar
 activate Campaign
 
 Campaign ->> Events : SEND_MESSAGE
 deactivate Campaign
 note right of Events : to call\ninitiation
+
+== appointment reminders ==
+
+PillReminderRegistrar -> Scheduler : safeScheduleRunOnceJob() <i>(T)</i>
+deactivate PillReminderRegistrar
+activate Scheduler
+
+Scheduler ->> Events : APPOINTMENT_SCHEDULE_CALL
+Scheduler ->> Events : SECOND_APPOINTMENT_SCHEDULE_CALL
+deactivate Scheduler
+note right of Events : to call\ninitiation
+
+deactivate PillReminderRegistrar
+
 
 @enduml
