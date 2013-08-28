@@ -1,91 +1,77 @@
 @startuml
 skinparam style strictuml
 skinparam classAttributeIconSize 0
+skinparam classBackgroundColor lavender
 
 Title Primary Classes
 
-' Commcare
-class CommcareStubFormListener #lavender {
+class CommcareStubFormListener {
     - formService : CommcareFormService
-    - registrationFormHandler : RegistrationFormHandler
+    - pillReminderRegistrar : PillReminderRegistrar
     + handleStubForm()
 }
 CommcareStubFormListener --> "1" PillReminderRegistrar
 
-' Enrollment
-class PillReminderRegistrar #lavender {
+class PillReminderRegistrar {
     - messageCampaignEnroller : MessageCampaignEnroller
     - schedulerUtil : SchedulerUtil
     - patientAdapter : MRSPatientAdapter
     + register()
     - createGenericPatient()
 }
-class MessageCampaignEnroller #lavender {
-    - messageCampaignService : MessageCampaignService
-    + enrollInDailyMessageCampaign()
-    + enrollInWeeklyMessageCampaign() 
-}
-class SchedulerUtil #lavender {
+
+class EndOfCallRetryListener {
     - schedulerService : MotechSchedulerService
-    + scheduleAppointments()
-    + scheduleAdherenceSurvey()
-    + scheduleSideEffectsSurvey()
+    - patientAdapter : MRSPatientAdapter
+    + handleEndOfCall()
+    - retryCall()
 }
-PillReminderRegistrar --> "1" MessageCampaignEnroller
-PillReminderRegistrar --> "1" SchedulerUtil
 
-' Call-related events
-note "events\nSEND_MESSAGE" as NotePill
-note "events\nAPPOINTMENT_SCHEDULE_CALL\nADHERENCE_ASSESSMENT_CALL\nSIDE_EFFECTS_SURVEY_CALL" as NoteOther
-MessageCampaignEnroller .. NotePill
-NotePill .. SendCampaignMessageListener
-SchedulerUtil .. NoteOther
-NoteOther .. InitiateCallListener
+PillReminderRegistrar -- SendCampaignMessageListener
+note on link : <<event>>\nSEND_MESSAGE
 
-' Call Initiation
-class SendCampaignMessageListener #palegreen {
+PillReminderRegistrar -- InitiateCallListener
+note on link : <<event>>\nSIDE_EFFECT_ENCOUNTER_CALL,\netc.
+
+EndOfCallRetryListener -- InitiateCallListener
+note on link : <<event>>\nPILL_REMINDER_CALL,\netc.
+
+class SendCampaignMessageListener {
     - callService : CallInitiationService
     + sendCampaignMessage()
 }
-class InitiateCallListener #palegreen {
+class InitiateCallListener {
     - callService : CallInitiationService 
-    + initiateCallByType()
+    + handlePillReminderCall()
+    + handleSideEffectCall()
 }
-class CallInitiationService #palegreen {
+class CallInitiationService {
     - ivrService : IVRService
     + initiateCall();
 }
 SendCampaignMessageListener --> "1" CallInitiationService
 InitiateCallListener --> "1" CallInitiationService
 
-' Verboice external service
-note "Verboice" as Verboice
-CallInitiationService .. Verboice
-Verboice .. PinAuthenticationController
-Verboice .. VerboiceInteractionController
+CallInitiationService -- PinAuthenticationController
+note on link : <<Verboice>>\nauthenticate
 
-' Verboice
-class PinAuthenticationController #mistyrose {
-    - flowSessionHandler : FlowSessionHandler
+CallInitiationService -- VerboiceInteractionController
+note on link : <<Verboice>>\nanswer
+
+class PinAuthenticationController {
     + authenticate()
 }
-class VerboiceInteractionController #mistyrose {
-    - flowSessionService : FlowSessionService
+class VerboiceInteractionController {
     + sideEffect()
-    + adherenceAnswer()
-    + getData();
 }
 
-note "events\nYES_YELLOW_SKIN_OR_EYES\nNO_MEDICATION_TWO_DAYS_AGO\nPIN_FAILURE\netc..." as InCall
-VerboiceInteractionController .. InCall
-InCall .. CallInteractionListener
+VerboiceInteractionController -- CallInteractionListener
+note on link : <<event>>\nYES_YELLOW_SKIN_OR_EYES,\nNO_SKIN_RASH_OR_ITCHY_SKIN,\netc.
 
-class CallInteractionListener #mistyrose {
-    - flowSessionService FlowSessionService
+class CallInteractionListener {
     - encounterAdapter : MRSEncounterAdapter
+    - patientAdapter : MRSPatientAdapter
 	+ handleSideEffectEvents()
-	+ handleAdherenceSurveyNoAnswers()
-	+ handlePinFailure()
 	- createEncounter()
 	- updateEncounter()
 }

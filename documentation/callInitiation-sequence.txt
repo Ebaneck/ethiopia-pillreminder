@@ -31,7 +31,7 @@ deactivate MRS
 SendCampaignMessageListener -> CallInitiationService : initiateCall() <i>(L)</i>
 deactivate SendCampaignMessageListener
 activate CallInitiationService
-CallInitiationService -> CallInitiationService : getAdherenceFlowId() <i>(L)</i>
+note right of CallInitiationService : resolve call\nflow Id <i>(L)</i>
 CallInitiationService -> IVR : initiateCall()
 deactivate CallInitiationService
 
@@ -62,7 +62,7 @@ deactivate MRS
 InitiateCallListener -> CallInitiationService : initiateCall() <i>(L)</i>
 deactivate InitiateCallListener
 activate CallInitiationService
-CallInitiationService -> CallInitiationService : getAdherenceFlowId() <i>(L)</i>
+note right of CallInitiationService : resolve call\nflow Id <i>(L)</i>
 CallInitiationService -> IVR : initiateCall()
 deactivate CallInitiationService
 

@@ -76,14 +76,13 @@ Campaign ->> Events : SEND_MESSAGE
 deactivate Campaign
 note right of Events : to call\ninitiation
 
-== appointment reminders ==
+== side effects ==
 
 PillReminderRegistrar -> Scheduler : safeScheduleRunOnceJob() <i>(T)</i>
 deactivate PillReminderRegistrar
 activate Scheduler
 
-Scheduler ->> Events : APPOINTMENT_SCHEDULE_CALL
-Scheduler ->> Events : SECOND_APPOINTMENT_SCHEDULE_CALL
+Scheduler ->> Events : nSIDE_EFFECT_ENCOUNTER_CALL
 deactivate Scheduler
 note right of Events : to call\ninitiation
 

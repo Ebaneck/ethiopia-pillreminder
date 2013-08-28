@@ -71,7 +71,7 @@ deactivate PinAuthenticationController
 
 V -> P : play "yellow skin?"
 V <<-- P : answer "yes"
-V -> VerboiceInteractionController : HTTP patientConcern
+V -> VerboiceInteractionController : HTTP answer
 activate VerboiceInteractionController
 VerboiceInteractionController ->> Events : YES_YELLOW_SKIN_OR_EYES
 deactivate VerboiceInteractionController
@@ -79,21 +79,21 @@ note right of Events : to encounter\nrecording
 
 V -> P : play "abdominal pain?"
 V <<-- P : answer "yes"
-V -> VerboiceInteractionController : HTTP patientConcern
+V -> VerboiceInteractionController : HTTP answer
 activate VerboiceInteractionController
 VerboiceInteractionController ->> Events : YES_ABDOMINAL_PAIN_OR_VOMITING
 deactivate VerboiceInteractionController
 
 V -> P : play "skin rash?"
 V <<-- P : answer "no"
-V -> VerboiceInteractionController : HTTP patientConcern
+V -> VerboiceInteractionController : HTTP answer
 activate VerboiceInteractionController
 VerboiceInteractionController ->> Events : NO_SKIN_RASH_OR_ITCHY_SKIN
 deactivate VerboiceInteractionController
 
 V -> P : play "tingling?"
 V <<-- P : answer "no"
-V -> VerboiceInteractionController : HTTP patientConcern
+V -> VerboiceInteractionController : HTTP answer
 activate VerboiceInteractionController
 VerboiceInteractionController ->> Events : NO_TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET
 deactivate VerboiceInteractionController
