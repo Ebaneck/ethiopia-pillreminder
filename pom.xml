@@ -2,10 +2,10 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.motechproject.icappr</groupId>
-    <artifactId>motech-mrs-entity-converter</artifactId>
+    <artifactId>motech-flow-session-record-converter</artifactId>
     <version>1.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>MRS Entity Converter</name>
+    <name>Flow Session Record converter</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -95,9 +95,9 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Context-Path>entityConverter</Context-Path>
+                        <Context-Path>flowSessionConverter</Context-Path>
                         <Blueprint-Enabled>true</Blueprint-Enabled>
-                        <Context-File>META-INF/spring/mrsEntityConverterApplicationContext.xml</Context-File>
+                        <Context-File>META-INF/spring/flowSessionRecordConverterApplicationContext.xml</Context-File>
                         <Import-Package>
                             sun.reflect,
                             org.ektorp.impl,

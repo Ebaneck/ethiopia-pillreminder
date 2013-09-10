@@ -1,18 +1,8 @@
 package org.motechproject.converter.web;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import org.motechproject.converter.repository.AllCouchEncountersImpl;
-import org.motechproject.converter.support.CouchDAOBroker;
-import org.motechproject.couch.mrs.model.CouchEncounterImpl;
-import org.motechproject.mrs.domain.MRSEncounter;
-import org.motechproject.mrs.domain.MRSObservation;
-import org.motechproject.mrs.model.MRSEncounterDto;
-import org.motechproject.mrs.model.MRSPatientDto;
-import org.motechproject.mrs.services.MRSEncounterAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,86 +10,82 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import org.motechproject.callflow.service.FlowSessionService;
+
+import org.motechproject.converter.old.domain.FlowSessionRecord;
+import org.motechproject.converter.old.domain.CallDetailRecord;
+import org.motechproject.converter.old.domain.CallDisposition;
+import org.motechproject.converter.old.repository.AllFlowSessionRecords;
+import org.motechproject.ivr.domain.CallEventLog;
+
 /**
- * Converts encounters to a newer data model. The CouchMRS module
- * must be updated between the call to saveEncounters and convertEncounters
- *
+ * Converts Flow Session Records to a newer data model.
+ * 
+ * readRecords() reads "old" style flow session records into memory, 
+ * using Call Flow and IVR repository and domain classes that are 
+ * duplicated in this module and modified to accommodate the "old" 
+ * AUTHENTICATOIN_FAILED call disposition.
+ * 
+ * writeRecords() updates each record in memory and in the repository.
  */
 @Controller
-public class MrsEntityConverterController {
+public class FlowSessionRecordConverterController {
+    private static final String PIN_FAILURE_CALL_EVENT = "Pin Failure";
+    private static final String VERBOICE_CALL_SID = "CallSid";
 
-    private Logger logger = LoggerFactory.getLogger("motech-mrs-entity-converter");
+    private Logger logger = LoggerFactory.getLogger("motech-flow-session-record-converter");
 
-    private List<MRSEncounter> encountersInMemory = new ArrayList<MRSEncounter>();
-
-    @Autowired
-    private MRSEncounterAdapter encounterAdapter;
-
-    @Autowired
-    private AllCouchEncountersImpl allEncounters;
+    private List<FlowSessionRecord> recordsInMemory;
 
     @Autowired
-    private CouchDAOBroker broker;
+    private AllFlowSessionRecords allFlowSessionRecords;
 
-    @RequestMapping("/saveEncounters")
+    @RequestMapping("/readRecords")
     @ResponseBody
-    public void saveEncounters(HttpServletRequest request) {
-
-        encountersInMemory = new ArrayList<MRSEncounter>();
-
-        List<CouchEncounterImpl> encounters = allEncounters.getAll();
-
-        for (CouchEncounterImpl encounter : encounters) {
-            MRSEncounter fullEncounter = broker.buildFullEncounter(encounter);
-            convertAndSaveEncounterInMemory(fullEncounter, encounter.getPatientId());
-            allEncounters.remove(encounter);
-        }
-
-        logger.debug("All encounters saved in memory, # of encounters: " + encountersInMemory.size());
+    public void readRecords(HttpServletRequest request) {
+        recordsInMemory = allFlowSessionRecords.getAll();
+        logger.debug("Read flow session records into memory: " + recordsInMemory.size());
     }
 
-    @RequestMapping("/convertEncounters")
+    @RequestMapping("/writeRecords")
     @ResponseBody
-    public void convertEncounters(HttpServletRequest request) {
-        for (MRSEncounter encounter : encountersInMemory) {
-            encounterAdapter.createEncounter(encounter);
+    public void writeRecords(HttpServletRequest request) {
+        for (FlowSessionRecord oldRecord : recordsInMemory) {
+            updateRecord(oldRecord);
+            allFlowSessionRecords.update(oldRecord);
         }
-
-        logger.debug("All encounters saved to DB, # of encounters: " + encountersInMemory.size());
+        logger.debug("Updated flow session records in repository: " + recordsInMemory.size());
     }
 
-    @RequestMapping("/fixIds")
-    @ResponseBody
-    public void fixIds() {
-        for (MRSEncounter encounter : encountersInMemory) {
-            Set<? extends MRSObservation> observations =  encounter.getObservations();
-            if (observations != null) {
-                for (MRSObservation obs : observations) {
-                    obs.setPatientId(encounter.getPatient().getPatientId());
+    private void updateRecord(FlowSessionRecord oldRecord) {
+        CallDetailRecord callDetail = oldRecord.getCallDetailRecord();
+        if (null != callDetail) {
+
+            // stop using unofficial AUTHENTICATON_FAILED
+            // instead, make sure there's a "Pin failure" call event
+            if (callDetail.getDisposition() == CallDisposition.AUTHENTICATION_FAILED) {
+                callDetail.setDisposition(CallDisposition.ANSWERED);
+
+                boolean hasPinFailureEvent = false;
+                List<CallEventLog> callEvents = callDetail.getCallEvents();
+                for (CallEventLog event : callEvents) {
+                    if (PIN_FAILURE_CALL_EVENT.equals(event.getName())) {
+                        hasPinFailureEvent = true;
+                        break;
+                    }
+                }
+
+                if (!hasPinFailureEvent) {
+                    CallEventLog pinFailureEvent = new CallEventLog(PIN_FAILURE_CALL_EVENT);
+                    callDetail.addCallEvent(pinFailureEvent);
                 }
             }
+
+            // move call Id from call detail to flow session record
+            String VerboiceCallSid = oldRecord.get(VERBOICE_CALL_SID);
+            if (null == VerboiceCallSid) {
+                oldRecord.set(VERBOICE_CALL_SID, callDetail.getCallId());
+            }
         }
-    }
-
-    private void convertAndSaveEncounterInMemory(MRSEncounter fullEncounter, String motechId) {
-        MRSEncounterDto convertedEncounter = new MRSEncounterDto();
-
-        //convertedEncounter.setCreator(fullEncounter.getCreator());
-        convertedEncounter.setDate(fullEncounter.getDate());
-        convertedEncounter.setEncounterId(fullEncounter.getEncounterId());
-        convertedEncounter.setEncounterType(fullEncounter.getEncounterType());
-        convertedEncounter.setFacility(fullEncounter.getFacility());
-        convertedEncounter.setObservations(fullEncounter.getObservations());
-        convertedEncounter.setPatient(fullEncounter.getPatient());
-        convertedEncounter.setProvider(fullEncounter.getProvider());
-
-        if (fullEncounter.getPatient() == null) {
-            logger.debug("Patient: " + motechId + " was null. Creating new one");
-            MRSPatientDto mrsPatient = new MRSPatientDto();
-            mrsPatient.setMotechId(motechId);
-            convertedEncounter.setPatient(mrsPatient);
-        }
-
-        encountersInMemory.add(convertedEncounter);
     }
 }

@@ -9,7 +9,7 @@
         </layout>
     </appender>
 
-    <logger name="motech-mrs-entity-converter">
+    <logger name="motech-flow-session-record-converter">
         <level value="DEBUG" />
         <appender-ref ref="CONSOLE" />
     </logger>

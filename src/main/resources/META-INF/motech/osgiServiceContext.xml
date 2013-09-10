@@ -1,64 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:osgi="http://www.springframework.org/schema/osgi"
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:osgi="http://www.springframework.org/schema/osgi"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 
-    <osgi:reference cardinality="0..1" id="mrsPatientAdapterOsgi" interface="org.motechproject.mrs.services.MRSPatientAdapter" bean-name="couchPatientAdapter"/>
+    <osgi:reference id="couchDbManager"
+        interface="org.motechproject.commons.couchdb.service.CouchDbManager" />
 
-    <osgi:reference cardinality="0..1" id="mrsFacilityAdapterOsgi" interface="org.motechproject.mrs.services.MRSFacilityAdapter" bean-name="couchFacilityAdapter"/>
-    
-    <osgi:reference cardinality="0..1" id="mrsUserAdapterOsgi" interface="org.motechproject.mrs.services.MRSUserAdapter" bean-name="facilityAdapter"/>
-
-    <osgi:reference cardinality="0..1" id="mrsEncounterAdapterOsgi" interface="org.motechproject.mrs.services.MRSEncounterAdapter" bean-name="couchEncounterAdapter"/>
-    
-    <osgi:reference cardinality="0..1" id="couchPersonAdapter" interface="org.motechproject.mrs.services.MRSPersonAdapter" bean-name="couchPersonAdapter"/>
-
-    <osgi:reference cardinality="0..1" id="couchProviderAdapter" interface="org.motechproject.mrs.services.MRSProviderAdapter" bean-name="couchProviderAdapter"/>
-
-    <osgi:reference cardinality="0..1" id="eventRelayOsgi" interface="org.motechproject.event.listener.EventRelay" />
-
-    <osgi:reference id="eventListenerRegistryServiceOsgi" cardinality="0..1"
-        interface="org.motechproject.event.listener.EventListenerRegistryService" />
-
-    <osgi:reference id="platformSettingsServiceOsgi" cardinality="0..1"
-        interface="org.motechproject.server.config.service.PlatformSettingsService" />
-
-    <osgi:reference id="couchDbManager" interface="org.motechproject.commons.couchdb.service.CouchDbManager" />
-
-    <bean id="couchPersonDatabaseConnector" factory-bean="couchDbManager"
+    <bean id="flowSession" factory-bean="couchDbManager"
         factory-method="getConnector">
-        <constructor-arg value="motech-person-repository" />
-    </bean>
-
-    <bean id="couchConceptDatabaseConnector" factory-bean="couchDbManager"
-          factory-method="getConnector">
-        <constructor-arg value="motech-concept-repository" />
-    </bean>
-
-    <bean id="couchProviderDatabaseConnector" factory-bean="couchDbManager"
-        factory-method="getConnector">
-        <constructor-arg value="motech-provider-repository" />
-    </bean>
-
-    <bean id="couchPatientDatabaseConnector" factory-bean="couchDbManager"
-        factory-method="getConnector">
-        <constructor-arg value="motech-patient-repository" />
-    </bean>
-
-    <bean id="couchFacilityDatabaseConnector" factory-bean="couchDbManager"
-        factory-method="getConnector">
-        <constructor-arg value="motech-facility-repository" />
-    </bean>
-
-    <bean id="couchEncounterDatabaseConnector" factory-bean="couchDbManager"
-        factory-method="getConnector">
-        <constructor-arg value="motech-encounter-repository" />
-    </bean>
-
-
-    <bean id="couchObservationDatabaseConnector" factory-bean="couchDbManager"
-        factory-method="getConnector">
-        <constructor-arg value="motech-observation-repository" />
+        <constructor-arg value="flowSession" />
     </bean>
 </beans>
