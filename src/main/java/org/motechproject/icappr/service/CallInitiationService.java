@@ -6,8 +6,8 @@ import org.motechproject.icappr.constants.CallRequestDataKeys;
 import org.motechproject.icappr.constants.MotechConstants;
 import org.motechproject.icappr.domain.Request;
 import org.motechproject.icappr.domain.RequestTypes;
-import org.motechproject.ivr.service.CallRequest;
-import org.motechproject.ivr.service.IVRService;
+import org.motechproject.ivr.service.contract.CallRequest;
+import org.motechproject.ivr.service.contract.IVRService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,7 @@ public class CallInitiationService {
 
         payload.putAll(request.getPayload());
 
-        String callbackStatusUrl = settings.getMotechUrl() + "/module/verboice/ivr/callstatus";
+        String callbackStatusUrl = settings.getMotechUrl() + "/module/verboice/web-api/ivr/callstatus";
 
 
         payload.put(CallRequestDataKeys.STATUS_CALLBACK_URL, callbackStatusUrl);

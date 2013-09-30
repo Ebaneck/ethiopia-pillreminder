@@ -71,6 +71,9 @@ public class TestDataController {
         encounter.setEncounterId(UUID.randomUUID().toString());
 
         addObservation(encounter, "not sure it matters", answer, patient.getMotechId());
+        addObservation(encounter, "conceptname2", answer + "2", patient.getMotechId());
+        addObservation(encounter, "conceptname3", answer + "2", patient.getMotechId());
+        addObservation(encounter, "conceptname4", answer + answer, patient.getMotechId());
 
         encounterAdapter.createEncounter(encounter);
     }
