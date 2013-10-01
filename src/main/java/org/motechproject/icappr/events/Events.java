@@ -62,6 +62,9 @@ public interface Events {
     public static final String NO_APPOINTMENT_CONCERNS = BASE_SUBJECT + "NoAppointmentConcern";
 
     public static final String FAILED_PIN = BASE_SUBJECT + "FailedPin";
+    
+    // Raising this event just facilitates reporting
+    public static final String STOP_REQUEST = BASE_SUBJECT + "Reporting.StopRequest";
 
     public static final String PIN_FAILURE = BASE_SUBJECT + "PinFailure";
 }
