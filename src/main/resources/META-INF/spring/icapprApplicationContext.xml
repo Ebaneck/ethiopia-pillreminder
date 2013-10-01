@@ -19,7 +19,6 @@
         <property name="configFiles">
             <list>
                 <value>classpath:icap-pillreminder.properties</value>
-                <value>classpath:pentaho-report.properties</value>
             </list>
         </property>
     </bean>

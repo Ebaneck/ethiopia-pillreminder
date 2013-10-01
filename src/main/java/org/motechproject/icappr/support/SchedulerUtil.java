@@ -156,19 +156,4 @@ public class SchedulerUtil {
             logger.error("Did not schedule job that was in the past");
         }
     }
-
-    @PostConstruct
-    public void scheduleReportingJobs() {
-        MotechEvent dailyEvent = new MotechEvent(Events.DAILY_REPORT_EVENT);
-
-        CronSchedulableJob dailyJob = new CronSchedulableJob(dailyEvent, settings.getDailyReportingCronExpresesion());
-
-        scheduleCronJob(dailyJob);
-
-        MotechEvent weeklyEvent = new MotechEvent(Events.WEEKLY_REPORT_EVENT);
-
-        CronSchedulableJob weeklyJob = new CronSchedulableJob(weeklyEvent, settings.getWeeklyReportingCronExpresesion());
-
-        scheduleCronJob(weeklyJob);       
-    }
 }

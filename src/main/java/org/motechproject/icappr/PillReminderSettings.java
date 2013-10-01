@@ -31,19 +31,10 @@ public class PillReminderSettings {
     private static final String UPDATE_FORM_XMLNS_PROPERTY = "update.form.xmlns";
     private static final String STOP_FORM_XMLNS_PROPERTY = "stop.form.xmlns";
     private static final String DEMO_FORM_XMLNS_PROPERTY = "demo.form.xmlns";
-    private static final String DAILY_REPORT_FILE_NAME_PROPERTY = "daily.report.filename";
-    private static final String REPORTING_JAR_NAME_PROPERTY = "reporting.jar.name";
-    private static final String REPORTING_JAR_DIRECTORY_PROPERTY = "reporting.jar.directory";
     private static final String CALL_RETRY_INTERVAL_IN_MINUTES_PROPERTY = "call.retry.interval.minutes";
     private static final String RETRY_COUNT_PROPERTY = "num.call.retries";
-    private static final String CRON_JOB_PROPERTY = "report.cron.expression";
-    private static final String WEEKLY_CRON_JOB_PROPERTY = "weekly.report.cron";
-    private static final String DAILY_REPORT_NAME_PROPERTY = "daily.report.name";
-    private static final String WEEKLY_REPORT_NAME_PROPERTY = "weekly.report.name";
-    private static final String RETRY_TEST_ON_PROPERTY = "retry.test.on";
-    private static final String WEEKLY_DIRECTORY_PROPERTY = "weekly.report.output.directory";
-    private static final String DAILY_DIRECTORY_PROPERTY = "daily.report.output.directory";
     private static final String RETRY_ENABLED_PROPERTY = "retry.enabled";
+    private static final String RETRY_TEST_ON_PROPERTY = "retry.test.on";
 
     //languages (english is default)
     private static final String AMHARIC = "amharic";
@@ -155,18 +146,6 @@ public class PillReminderSettings {
         }
     }
 
-    public String getDailyReportFileName() {
-        return settingsFacade.getProperty(DAILY_REPORT_FILE_NAME_PROPERTY);
-    }
-
-    public String getReportingJarDirectory() {
-        return settingsFacade.getProperty(REPORTING_JAR_DIRECTORY_PROPERTY);
-    }
-
-    public String getReportingJarName() {
-        return settingsFacade.getProperty(REPORTING_JAR_NAME_PROPERTY);
-    }
-
     public int getRetryIntervalMinutes() {
         return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_INTERVAL_IN_MINUTES_PROPERTY));
     }
@@ -175,36 +154,8 @@ public class PillReminderSettings {
         return settingsFacade.getProperty(RETRY_COUNT_PROPERTY);
     }
 
-    public String getReportingCronExpresesion() {
-        return settingsFacade.getProperty(CRON_JOB_PROPERTY);
-    }
-
-    public String getDailyReportingCronExpresesion() {
-        return settingsFacade.getProperty(CRON_JOB_PROPERTY);
-    }
-
-    public String getWeeklyReportingCronExpresesion() {
-        return settingsFacade.getProperty(WEEKLY_CRON_JOB_PROPERTY);
-    }
-
-    public String getDailyReportName() {
-        return settingsFacade.getProperty(DAILY_REPORT_NAME_PROPERTY);
-    }
-
-    public String getWeeklyReportName() {
-        return settingsFacade.getProperty(WEEKLY_REPORT_NAME_PROPERTY);
-    }
-
     public String retryTestOn() {
         return settingsFacade.getProperty(RETRY_TEST_ON_PROPERTY);
-    }
-
-    public String getWeeklyOutputDirectory() {
-        return settingsFacade.getProperty(WEEKLY_DIRECTORY_PROPERTY);
-    }
-
-    public String getDailyOutputDirectory() {
-        return settingsFacade.getProperty(DAILY_DIRECTORY_PROPERTY);
     }
 
     public String getRetryEnabled() {
