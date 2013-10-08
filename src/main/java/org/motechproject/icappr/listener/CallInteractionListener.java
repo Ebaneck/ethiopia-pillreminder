@@ -5,8 +5,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
-import org.motechproject.callflow.service.FlowSessionService;
-import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
 import org.motechproject.icappr.constants.MotechConstants;
@@ -44,9 +42,6 @@ public class CallInteractionListener {
     private MRSEncounterAdapter encounterAdapter;
 
     @Autowired
-    private FlowSessionService flowSessionService;
-
-    @Autowired
     private MRSPatientAdapter patientAdapter;
 
     @Autowired
@@ -55,9 +50,7 @@ public class CallInteractionListener {
     @MotechListener(subjects = {Events.YES_YELLOW_SKIN_OR_EYES, Events.YES_SKIN_RASH_OR_ITCHY_SKIN, Events.YES_ABDOMINAL_PAIN_OR_VOMITING, Events.TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET } )
     public void handleSideEffectEvents(MotechEvent event) {
         String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
-
-        FlowSession flowSession = flowSessionService.getSession(flowSessionId);
-        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
+        String motechId = (String) event.getParameters().get(MotechConstants.MOTECH_ID);
 
         MRSEncounter sideEffectEncounter = encounterAdapter.getEncounterById(flowSessionId);
 
@@ -71,9 +64,7 @@ public class CallInteractionListener {
     @MotechListener(subjects = {Events.NO_YELLOW_SKIN_OR_EYES, Events.NO_SKIN_RASH_OR_ITCHY_SKIN, Events.NO_ABDOMINAL_PAIN_OR_VOMITING, Events.NO_TINGLING_OR_NUMBNESS_OF_HANDS_OR_FEET } )
     public void handleNoSideEffectEvents(MotechEvent event) {
         String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
-
-        FlowSession flowSession = flowSessionService.getSession(flowSessionId);
-        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
+        String motechId = (String) event.getParameters().get(MotechConstants.MOTECH_ID);
 
         MRSEncounter sideEffectEncounter = encounterAdapter.getEncounterById(flowSessionId);
 
@@ -87,9 +78,7 @@ public class CallInteractionListener {
     @MotechListener(subjects = {Events.YES_MEDICATION_YESTERDAY, Events.YES_MEDICATION_TWO_DAYS_AGO, Events.YES_MEDICATION_THREE_DAYS_AGO } )
     public void handleAdherenceSurveyYesAnswers(MotechEvent event) {
         String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
-
-        FlowSession flowSession = flowSessionService.getSession(flowSessionId);
-        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
+        String motechId = (String) event.getParameters().get(MotechConstants.MOTECH_ID);
 
         MRSEncounter sideEffectEncounter = encounterAdapter.getEncounterById(flowSessionId);
 
@@ -103,9 +92,7 @@ public class CallInteractionListener {
     @MotechListener(subjects = {Events.NO_MEDICATION_YESTERDAY, Events.NO_MEDICATION_TWO_DAYS_AGO, Events.NO_MEDICATION_THREE_DAYS_AGO } )
     public void handleAdherenceSurveyNoAnswers(MotechEvent event) {
         String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
-
-        FlowSession flowSession = flowSessionService.getSession(flowSessionId);
-        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
+        String motechId = (String) event.getParameters().get(MotechConstants.MOTECH_ID);
 
         MRSEncounter sideEffectEncounter = encounterAdapter.getEncounterById(flowSessionId);
 
@@ -119,9 +106,7 @@ public class CallInteractionListener {
     @MotechListener(subjects = {Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS, Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS, Events.NO_ADHERENCE_CONCERNS, Events.NO_APPOINTMENT_CONCERNS} )
     public void handleAppointmentConcern(MotechEvent event) {
         String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
-
-        FlowSession flowSession = flowSessionService.getSession(flowSessionId);
-        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
+        String motechId = (String) event.getParameters().get(MotechConstants.MOTECH_ID);
 
         MRSPatient patient = patientAdapter.getPatientByMotechId(motechId);
 
@@ -146,10 +131,7 @@ public class CallInteractionListener {
     @MotechListener(subjects = Events.PIN_FAILURE)
     public void handlePinFailure(MotechEvent event) {
         String flowSessionId = (String) event.getParameters().get(FLOW_SESSION_ID);
-
-        FlowSession flowSession = flowSessionService.getSession(flowSessionId);
-        
-        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
+        String motechId = (String) event.getParameters().get(MotechConstants.MOTECH_ID);
 
         createEncounter(motechId, event, flowSessionId, YES_ANSWER, PIN_FAILURE, DateTime.now());
     }

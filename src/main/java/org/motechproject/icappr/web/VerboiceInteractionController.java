@@ -15,7 +15,6 @@ import org.motechproject.icappr.events.Events;
 import org.motechproject.icappr.support.FlowSessionHandler;
 import org.motechproject.ivr.domain.CallDetailRecord;
 import org.motechproject.ivr.domain.CallDisposition;
-import org.motechproject.ivr.domain.CallEvent;
 import org.motechproject.ivr.domain.CallEventLog;
 import org.motechproject.server.config.SettingsFacade;
 import org.slf4j.Logger;
@@ -70,10 +69,14 @@ public class VerboiceInteractionController {
     @ResponseBody
     public String sideEffect(HttpServletRequest request) {
         String callSid = request.getParameter(CALL_SID);
+        String motechCallId = request.getParameter(MotechConstants.MOTECH_CALL_ID);
         String question = request.getParameter(QUESTION_NAME);
         String choice = request.getParameter(ANSWER);
         String eventToRaise = Events.INPUT_ERROR_EVENT;
 
+        FlowSession flowSession = flowSessionService.getSession(motechCallId);
+        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
+        
         logger.debug("Side Effect Interaction - " + "CallSid: " + callSid + " Question: " + question + " Choice: " + choice);
 
         if (YES_INPUT.equals(choice)) {
@@ -101,6 +104,7 @@ public class VerboiceInteractionController {
         MotechEvent event = new MotechEvent(eventToRaise);
         event.getParameters().put(FLOW_SESSION_ID, callSid);
         event.getParameters().put(INPUT_VALUE, choice);
+        event.getParameters().put(MotechConstants.MOTECH_ID, motechId);
 
         eventRelay.sendEventMessage(event);
 
@@ -111,8 +115,12 @@ public class VerboiceInteractionController {
     @ResponseBody
     public String adherenceAnswer(HttpServletRequest request) {
         String callSid = request.getParameter(CALL_SID);
+        String motechCallId = request.getParameter(MotechConstants.MOTECH_CALL_ID);
         String concern = request.getParameter(CONCERN_TYPE);
         String choice = request.getParameter(ANSWER);
+        
+        FlowSession flowSession = flowSessionService.getSession(motechCallId);
+        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
 
         logger.debug("Concern Interaction - " + "CallSid: " + callSid + " Concern: " + concern + " Choice: " + choice);
 
@@ -126,8 +134,10 @@ public class VerboiceInteractionController {
 
             MotechEvent event = new MotechEvent(eventToRaise);
             event.getParameters().put(FLOW_SESSION_ID, callSid);
+            event.getParameters().put(MotechConstants.MOTECH_ID, motechId);
 
             eventRelay.sendEventMessage(event);
+            
         } else if (NO_INPUT.equals(choice)) {
             String eventToRaise = Events.INPUT_ERROR_EVENT;
             switch (concern) {
@@ -137,6 +147,7 @@ public class VerboiceInteractionController {
 
             MotechEvent event = new MotechEvent(eventToRaise);
             event.getParameters().put(FLOW_SESSION_ID, callSid);
+            event.getParameters().put(MotechConstants.MOTECH_ID, motechId);
 
             eventRelay.sendEventMessage(event);
         }
@@ -149,16 +160,18 @@ public class VerboiceInteractionController {
     public String getData(HttpServletRequest request) {
         String requestType = request.getParameter(REQUEST_TYPE);
         String callSid = request.getParameter(CALL_SID);
-
+        String motechCallId = request.getParameter(MotechConstants.MOTECH_CALL_ID);
+        
         logger.debug("Data Interaction - " + "CallSid: " + callSid + " Data request type: " + requestType);
 
-        FlowSession flowSession = flowSessionService.getSession(callSid);
-
+        FlowSession flowSession = flowSessionService.getSession(motechCallId);
         if (flowSession == null) {
-            logger.debug("No flow session for data for CallSid: " + callSid + " and request type: " + requestType);
+            logger.debug("No flow session for data for motech_call_id: " + motechCallId);
             return null;
         }
-
+        
+        String motechId = flowSession.get(MotechConstants.MOTECH_ID);
+        
         if (MotechConstants.REMINDER_DAYS.equals(requestType)) {
             return "{\"dataResult\": \"" + flowSession.get(MotechConstants.REMINDER_DAYS) + "\"}";
         } else if (MotechConstants.THREE_FAILED_LOGINS.equals(requestType)) {
@@ -171,6 +184,7 @@ public class VerboiceInteractionController {
 
             MotechEvent event = new MotechEvent(Events.PIN_FAILURE);
             event.getParameters().put(FLOW_SESSION_ID, callSid);
+            event.getParameters().put(MotechConstants.MOTECH_ID, motechId);
 
             eventRelay.sendEventMessage(event);
 

@@ -2,6 +2,7 @@ package org.motechproject.icappr.web;
 
 import javax.servlet.http.HttpServletRequest;
 import org.motechproject.icappr.support.FlowSessionHandler;
+import org.motechproject.icappr.constants.MotechConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/ivr")
 public class PinAuthenticationController {
-
-    private static final String MOTECH_CALL_ID = "motech_call_id";
     
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
@@ -36,7 +35,7 @@ public class PinAuthenticationController {
         logger.info("Authenticating pin...");
 
         String pin = request.getParameter("pin");
-        String callId = request.getParameter(MOTECH_CALL_ID);
+        String callId = request.getParameter(MotechConstants.MOTECH_CALL_ID);
 
         if (flowSessionHandler.digitsMatchPatientPin(callId, pin)) {
             return "{\"result\": \"true\"}";
