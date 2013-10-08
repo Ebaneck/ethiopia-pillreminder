@@ -129,11 +129,9 @@ public class CallInteractionListener {
             return;
         }
 
-        String phoneNumber = flowSession.getPhoneNumber();
         DateTime timeOfConcern = DateTime.now();
 
         MotechEvent concernEvent = new MotechEvent(event.getSubject() + "+DATA");
-        concernEvent.getParameters().put(MotechConstants.PHONE_NUM, phoneNumber);
         concernEvent.getParameters().put(MotechConstants.CONCERN_TIME, timeOfConcern);
         concernEvent.getParameters().put(MotechConstants.MOTECH_ID, motechId);
 
