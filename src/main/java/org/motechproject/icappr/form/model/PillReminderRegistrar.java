@@ -45,12 +45,7 @@ public class PillReminderRegistrar {
 
         messageCampaignEnroller.enrollInDailyMessageCampaign(registration.getCaseId(), registration.getPreferredCallTime());
 
-        DateTime iptInitiationDate;
-        try {
-            iptInitiationDate = DateTime.parse(registration.getIptInitiationDate());
-        } catch (IllegalArgumentException e) {
-            iptInitiationDate = DateTime.now();
-        }
+        DateTime iptInitiationDate = DateTime.now();
 
         DateTime nextAppointmentDate = null;
 
