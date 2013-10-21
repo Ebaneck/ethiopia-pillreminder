@@ -17,4 +17,6 @@ public interface MrsConstants {
     final String IPT_INITIATION_DATE = "ipt_initiation_date";
     final String STUDY_SITE = "study_site";
     final String PATIENT_MRN = "mrn";
+    final String DAY_ENROLLED = "dayEnrolled";
+
 }

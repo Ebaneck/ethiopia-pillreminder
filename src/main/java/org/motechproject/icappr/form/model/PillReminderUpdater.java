@@ -2,6 +2,7 @@ package org.motechproject.icappr.form.model;
 
 import org.joda.time.DateTime;
 import org.motechproject.icappr.service.MessageCampaignEnroller;
+import org.motechproject.icappr.support.EnrollmentValidator;
 import org.motechproject.icappr.support.SchedulerUtil;
 import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.services.MRSPatientAdapter;
@@ -42,15 +43,18 @@ public class PillReminderUpdater {
             return;
         }
 
-        messageCampaignEnroller.unenroll(motechId);
         schedulerUtil.unscheduleAllIcapprJobs(motechId);
 
-        if (update.getPreferredReminderFrequency().matches("daily")) {
-            messageCampaignEnroller.enrollInDailyMessageCampaign(update.getCaseId(), update.getPreferredCallTime());
-        }
+        if (EnrollmentValidator.patientCanUpdateReminderFrequency(patient, DateTime.now())) {
+            messageCampaignEnroller.unenroll(motechId);
 
-        if (update.getPreferredReminderFrequency().matches("weekly")) {
-            messageCampaignEnroller.enrollInWeeklyMessageCampaign(update);
+            if (update.getPreferredReminderFrequency().matches("daily")) {
+                messageCampaignEnroller.enrollInDailyMessageCampaign(update.getCaseId(), update.getPreferredCallTime());
+            }
+
+            if (update.getPreferredReminderFrequency().matches("weekly")) {
+                messageCampaignEnroller.enrollInWeeklyMessageCampaign(update);
+            }
         }
 
         schedulerUtil.scheduleAdherenceSurvey(DateTime.parse(update.getTodaysDate()), motechId, false, phoneNumber);
