@@ -7,7 +7,7 @@ import org.motechproject.mrs.domain.MRSPatient;
 
 public final class EnrollmentValidator {
 
-    private static final int ONE_MONTH = 1;
+    private static final int DAYS = 20;
 
     public static boolean patientCanUpdateReminderFrequency(MRSPatient patient, DateTime updateTime) {
 
@@ -15,7 +15,7 @@ public final class EnrollmentValidator {
 
         DateTime dateFirstEnrolled = DateTime.parse(value);
 
-        if (dateFirstEnrolled.plusMonths(ONE_MONTH).isBefore(updateTime)) {
+        if (dateFirstEnrolled.plusDays(DAYS).isBefore(updateTime)) {
             return false;
         }
 
