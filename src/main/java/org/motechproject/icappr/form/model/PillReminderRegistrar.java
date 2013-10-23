@@ -51,6 +51,10 @@ public class PillReminderRegistrar {
         } catch (IllegalArgumentException e) {
             iptInitiationDate = DateTime.now();
         }
+        
+        if (iptInitiationDate.isBeforeNow()) {
+            iptInitiationDate = DateTime.now();
+        }
 
         DateTime nextAppointmentDate = null;
 
