@@ -1,7 +1,5 @@
 package org.motechproject.icappr.listener;
 
-import java.util.List;
-
 import org.joda.time.DateTime;
 import org.motechproject.callflow.service.FlowSessionService;
 import org.motechproject.decisiontree.core.FlowSession;
@@ -15,7 +13,6 @@ import org.motechproject.icappr.support.SchedulerUtil;
 import org.motechproject.ivr.domain.CallDetailRecord;
 import org.motechproject.ivr.domain.CallDisposition;
 import org.motechproject.ivr.domain.EventKeys;
-import org.motechproject.mrs.domain.MRSPatient;
 import org.motechproject.mrs.services.MRSEncounterAdapter;
 import org.motechproject.mrs.services.MRSPatientAdapter;
 import org.motechproject.scheduler.MotechSchedulerService;
@@ -51,15 +48,14 @@ public class EndOfCallRetryListener {
     @MotechListener(subjects = EventKeys.END_OF_CALL_EVENT)
     public void handleEndOfCall(MotechEvent event) {
 
-        logger.trace("Handling end of call");
+        logger.info("Handling end of call");
 
         if (!"true".equals(pillReminderSettings.getRetryEnabled())) {
-            logger.trace("Retry is disabled.");
+            logger.info("Retry is disabled.");
             return;
         }
 
         CallDetailRecord record = (CallDetailRecord) event.getParameters().get("call_detail_record");
-
         if (record == null) {
             logger.debug("No call detail record found");
             return;
@@ -67,7 +63,6 @@ public class EndOfCallRetryListener {
 
         String callId = record.getCallId();
         CallDisposition disposition = record.getDisposition();
-
         logger.debug("End of call ID: " + callId + " and disposition: " + disposition.toString());
 
         if (CallDisposition.BUSY.equals(disposition) || CallDisposition.NO_ANSWER.equals(disposition)) {
@@ -82,21 +77,64 @@ public class EndOfCallRetryListener {
     private void retryCall(CallDetailRecord record) {
         String callId = record.getCallId();
         FlowSession session = flowSessionService.getSession(callId);
-
         if (session == null) {
             logger.debug("No session for call Id: " + callId + " was found");
             return;
         }
 
         String motechId = session.get(MotechConstants.MOTECH_ID);
-
         if (patientAdapter.getPatientByMotechId(motechId) == null && pillReminderSettings.retryTestOn().equals("false")) {
-            // Demo "patients" are persisted as MRS Person objects - no retry
-            // calls are made here
-            logger.trace("Demo mode, no retry call for busy and no answer");
+            logger.info("Demo mode, no retry call for busy and no answer");
             return;
         }
 
+        String retriesLeft = session.get(MotechConstants.RETRIES_LEFT);
+        int retries = 0;
+        if (retriesLeft != null) {
+            retries = Integer.parseInt(retriesLeft);
+        }
+        if (retries == 0) {
+            logger.info("No retries left for call with Id: " + callId);
+            return;
+        }
+
+        DateTime nowTime = DateTime.now();
+        DateTime preferredTimeToday = preferredCallTimeForSameDay(session, record, nowTime);
+        if (callTimeInRetryWindow(nowTime, preferredTimeToday)) {
+            // retry the call soon
+            int delayMinutes;
+            if (retries == 1) {
+                delayMinutes = settings.getRetryLongDelayMinutes();
+            } else if (retries == 2) {
+                delayMinutes = settings.getRetryMediumDelayMinutes();
+            } else {
+                delayMinutes = settings.getRetryShortDelayMinutes();
+            }
+
+            scheduleRetryCall(callId, nowTime.plusMinutes(delayMinutes));
+            return;
+
+        } else {
+            // retry tomorrow, or never
+            String requestType = session.get(MotechConstants.REQUEST_TYPE);
+            switch (requestType) {
+            case RequestTypes.ADHERENCE_CALL:
+            case RequestTypes.SIDE_EFFECT_CALL:
+                scheduleRetryCall(callId, preferredTimeToday.plusDays(1));
+                return;
+            case RequestTypes.APPOINTMENT_CALL:
+            case RequestTypes.SECOND_APPOINTMENT_CALL:
+            case RequestTypes.PILL_REMINDER_CALL:
+                logger.info("Abandoning retry outside retry window for call: " + callId);
+                return;
+            }
+        }
+    }
+
+    private void scheduleRetryCall(String callId, DateTime retryCallTime) {
+        FlowSession session = flowSessionService.getSession(callId);
+
+        String motechId = session.get(MotechConstants.MOTECH_ID);
         String phoneNum = session.getPhoneNumber();
         String requestType = session.get(MotechConstants.REQUEST_TYPE);
         String language = session.get(MotechConstants.LANGUAGE);
@@ -106,51 +144,10 @@ public class EndOfCallRetryListener {
         if (retriesLeft != null) {
             retries = Integer.parseInt(retriesLeft);
         }
-
-        if (retries == 0) {
-            logger.trace("No retries left for call with Id: " + callId);
-            return;
-        }
-
-        DateTime retryCallTime = DateTime.now();
-        DateTime preferredCallTime = getPreferredCallTimeForDay(session, record, retryCallTime);
-
-        if (callTimeInPreferredRetryWindow(retryCallTime, preferredCallTime)) {
-            // retry the call after a delay
-            int delayMinutes;
-            if (retries == 1) {
-                delayMinutes = settings.getRetryDelayLongMinutes();
-            } else if (retries == 2) {
-                delayMinutes = settings.getRetryDelayMediumMinutes();
-            } else {
-                delayMinutes = settings.getRetryDelayShortMinutes();
-            }
-            retryCallTime = retryCallTime.plusMinutes(delayMinutes);
-
-        } else {
-            // retry tomorrow or just abandon the retry
-            switch (requestType) {
-            case RequestTypes.APPOINTMENT_CALL:
-            case RequestTypes.SECOND_APPOINTMENT_CALL:
-            case RequestTypes.PILL_REMINDER_CALL:
-                retryCallTime = null;
-                break;
-            case RequestTypes.ADHERENCE_CALL:
-            case RequestTypes.SIDE_EFFECT_CALL:
-                retryCallTime = retryCallTime.plusDays(1);
-            }
-        }
-        
-        if (null == retryCallTime) {
-            logger.trace("Abandoning retry outside preferred window for call: " + callId);
-            return;
-        }
-
         retries--;
         logger.debug("Rescheduling retry call for session: " + callId + " (retries left: " + retries + ")");
 
         String subject = null;
-
         switch (requestType) {
         case RequestTypes.ADHERENCE_CALL:
             subject = Events.ADHERENCE_ASSESSMENT_CALL;
@@ -170,7 +167,6 @@ public class EndOfCallRetryListener {
         }
 
         MotechEvent event = new MotechEvent(subject);
-
         event.getParameters().put(MotechSchedulerService.JOB_ID_KEY, callId + "-" + requestType);
         event.getParameters().put(MotechConstants.PHONE_NUM, phoneNum);
         event.getParameters().put(MotechConstants.LANGUAGE, language);
@@ -180,17 +176,16 @@ public class EndOfCallRetryListener {
         SchedulerUtil.injectParameterData(motechId, phoneNum, event.getParameters());
 
         RunOnceSchedulableJob job = new RunOnceSchedulableJob(event, retryCallTime.toDate());
-
         schedulerService.safeScheduleRunOnceJob(job);
     }
 
-    private boolean callTimeInPreferredRetryWindow(DateTime callTime, DateTime preferredTime) {
+    private boolean callTimeInRetryWindow(DateTime callTime, DateTime preferredTime) {
         int retryWindowMinutes = settings.getRetryWindowMinutes();
-        DateTime latestRetryTime = callTime.plusMinutes(retryWindowMinutes);
+        DateTime latestRetryTime = preferredTime.plusMinutes(retryWindowMinutes);
         return callTime.isAfter(latestRetryTime.getMillis());
     }
 
-    private DateTime getPreferredCallTimeForDay(FlowSession session, CallDetailRecord record, DateTime day) {
+    private DateTime preferredCallTimeForSameDay(FlowSession session, CallDetailRecord record, DateTime day) {
 
         String requestType = session.get(MotechConstants.REQUEST_TYPE);
         DateTime baseDate = day.withTime(0, 0, 0, 0);
@@ -210,11 +205,8 @@ public class EndOfCallRetryListener {
                     settings.getSideEffectsMinuteOfHours());
 
         case RequestTypes.PILL_REMINDER_CALL:
-            // want to look up patient preferred call time of day
-            // but this is buried in the scheduler and not saved with patient or
-            // message campaign
-            // so use actual call start time as surrogate, should be fine unless
-            // severe scheduling or events error
+            // actual preferred call time is buried in the scheduler
+            // use start time of failed call as surrogate
             DateTime callStartTime = record.getStartDate();
             return baseDate.withHourOfDay(callStartTime.getHourOfDay()).withMinuteOfHour(
                     callStartTime.getMinuteOfHour());

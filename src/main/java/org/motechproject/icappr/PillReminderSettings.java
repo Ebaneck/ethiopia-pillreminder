@@ -31,9 +31,9 @@ public class PillReminderSettings {
     private static final String UPDATE_FORM_XMLNS_PROPERTY = "update.form.xmlns";
     private static final String STOP_FORM_XMLNS_PROPERTY = "stop.form.xmlns";
     private static final String DEMO_FORM_XMLNS_PROPERTY = "demo.form.xmlns";
-    private static final String CALL_RETRY_DELAY_SHORT_MINUTES_PROPERTY = "call.retry.delay.short.minutes";
-    private static final String CALL_RETRY_DELAY_MEDIUM_MINUTES_PROPERTY = "call.retry.delay.medium.minutes";
-    private static final String CALL_RETRY_DELAY_LONG_MINUTES_PROPERTY = "call.retry.delay.long.minutes";
+    private static final String CALL_RETRY_SHORT_DELAY_MINUTES_PROPERTY = "call.retry.short.delay.minutes";
+    private static final String CALL_RETRY_MEDIUM_DELAY_MINUTES_PROPERTY = "call.retry.medium.delay.minutes";
+    private static final String CALL_RETRY_LONG_DELAY_MINUTES_PROPERTY = "call.retry.long.delay.minutes";
     private static final String CALL_RETRY_WINDOW_MINUTES_PROPERTY = "call.retry.window.minutes";
     private static final String RETRY_COUNT_PROPERTY = "num.call.retries";
     private static final String RETRY_ENABLED_PROPERTY = "retry.enabled";
@@ -148,18 +148,18 @@ public class PillReminderSettings {
         }
     }
 
-    public int getRetryDelayShortMinutes() {
-        return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_DELAY_SHORT_MINUTES_PROPERTY));
+    public int getRetryShortDelayMinutes() {
+        return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_SHORT_DELAY_MINUTES_PROPERTY));
     }
-    
-    public int getRetryDelayMediumMinutes() {
-        return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_DELAY_MEDIUM_MINUTES_PROPERTY));
+
+    public int getRetryMediumDelayMinutes() {
+        return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_MEDIUM_DELAY_MINUTES_PROPERTY));
     }
-    
-    public int getRetryDelayLongMinutes() {
-        return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_DELAY_LONG_MINUTES_PROPERTY));
+
+    public int getRetryLongDelayMinutes() {
+        return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_LONG_DELAY_MINUTES_PROPERTY));
     }
-    
+
     public int getRetryWindowMinutes() {
         return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_WINDOW_MINUTES_PROPERTY));
     }
