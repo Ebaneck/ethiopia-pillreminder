@@ -18,11 +18,12 @@ public class PillReminderUpdater {
 
     private MessageCampaignEnroller messageCampaignEnroller;
     private SchedulerUtil schedulerUtil;
-    
+
     private MRSPatientAdapter patientAdapter;
 
     @Autowired
-    public PillReminderUpdater(MessageCampaignEnroller messageCampaignEnroller, SchedulerUtil schedulerUtil, MRSPatientAdapter patientAdapter) {
+    public PillReminderUpdater(MessageCampaignEnroller messageCampaignEnroller, SchedulerUtil schedulerUtil,
+            MRSPatientAdapter patientAdapter) {
         this.messageCampaignEnroller = messageCampaignEnroller;
         this.schedulerUtil = schedulerUtil;
         this.patientAdapter = patientAdapter;
@@ -34,16 +35,17 @@ public class PillReminderUpdater {
         String motechId = update.getCaseId();
 
         logger.debug("Re-enrolling: " + motechId);
-        
+
         MRSPatient patient = patientAdapter.getPatientByMotechId(motechId);
 
         if (patient == null) {
-            //this scenario only happens when a case has had test forms submitted against it (which creates a case), and then an update form is submitted. This should not be allowed due to no registration
+            // this scenario only happens when a case has had test forms
+            // submitted against it (which creates a case), and then an update
+            // form is submitted. This should not be allowed due to no
+            // registration
             logger.debug("Received update form for ID: " + motechId + " but no corresponending patient exists");
             return;
         }
-
-        schedulerUtil.unscheduleAllIcapprJobs(motechId);
 
         if (EnrollmentValidator.patientCanUpdateReminderFrequency(patient, DateTime.now())) {
             messageCampaignEnroller.unenroll(motechId);
@@ -57,8 +59,17 @@ public class PillReminderUpdater {
             }
         }
 
-        schedulerUtil.scheduleAdherenceSurvey(DateTime.parse(update.getTodaysDate()), motechId, false, phoneNumber);
-        schedulerUtil.scheduleSideEffectsSurvey(DateTime.parse(update.getTodaysDate()), motechId, false, phoneNumber);
-        schedulerUtil.scheduleAppointments(DateTime.parse(update.getNextAppointment()), motechId, false, phoneNumber);
+        String appointmentToday = update.getAppointmentToday();
+        if (null != appointmentToday && appointmentToday.matches("yes")) {
+
+            logger.debug("Re-scheduling adherence, side effect, and appointment calls for: " + motechId);
+
+            schedulerUtil.unscheduleAllIcapprJobs(motechId);
+            schedulerUtil.scheduleAdherenceSurvey(DateTime.parse(update.getTodaysDate()), motechId, false, phoneNumber);
+            schedulerUtil.scheduleSideEffectsSurvey(DateTime.parse(update.getTodaysDate()), motechId, false, phoneNumber);
+            schedulerUtil.scheduleAppointments(DateTime.parse(update.getNextAppointment()), motechId, false, phoneNumber);
+        } else {
+            logger.debug("Not re-scheduling calls for: " + motechId);
+        }
     }
 }
