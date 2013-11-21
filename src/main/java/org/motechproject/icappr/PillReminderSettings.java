@@ -31,12 +31,15 @@ public class PillReminderSettings {
     private static final String UPDATE_FORM_XMLNS_PROPERTY = "update.form.xmlns";
     private static final String STOP_FORM_XMLNS_PROPERTY = "stop.form.xmlns";
     private static final String DEMO_FORM_XMLNS_PROPERTY = "demo.form.xmlns";
-    private static final String CALL_RETRY_INTERVAL_IN_MINUTES_PROPERTY = "call.retry.interval.minutes";
+    private static final String CALL_RETRY_DELAY_SHORT_MINUTES_PROPERTY = "call.retry.delay.short.minutes";
+    private static final String CALL_RETRY_DELAY_MEDIUM_MINUTES_PROPERTY = "call.retry.delay.medium.minutes";
+    private static final String CALL_RETRY_DELAY_LONG_MINUTES_PROPERTY = "call.retry.delay.long.minutes";
+    private static final String CALL_RETRY_WINDOW_MINUTES_PROPERTY = "call.retry.window.minutes";
     private static final String RETRY_COUNT_PROPERTY = "num.call.retries";
     private static final String RETRY_ENABLED_PROPERTY = "retry.enabled";
     private static final String RETRY_TEST_ON_PROPERTY = "retry.test.on";
 
-    //languages (english is default)
+    // languages (english is default)
     private static final String AMHARIC = "amharic";
     private static final String SOMALI = "somali";
     private static final String HARARI = "harari";
@@ -45,7 +48,8 @@ public class PillReminderSettings {
     @Autowired
     private SettingsFacade settingsFacade;
 
-    public PillReminderSettings() { }
+    public PillReminderSettings() {
+    }
 
     @Autowired
     public PillReminderSettings(SettingsFacade settingsFacade) {
@@ -86,29 +90,25 @@ public class PillReminderSettings {
 
     public int getAppointmentMinuteOfHour() {
         return Integer.parseInt(settingsFacade.getProperty(APPOINTMENT_MINUTE_OF_HOUR_PROPERTY));
-
     }
 
     public int getAdherenceMinuteOfHour() {
         return Integer.parseInt(settingsFacade.getProperty(ADHERENCE_MINUTE_OF_HOUR_PROPERTY));
-
     }
 
     public int getSideEffectsMinuteOfHours() {
         return Integer.parseInt(settingsFacade.getProperty(SIDE_EFFECTS_MINUTE_OF_HOUR_PROPERTY));
-
     }
 
     public int getEATtoUTCHourDifference() {
         return Integer.parseInt(settingsFacade.getProperty(EAT_TO_UTC_HOUR_DIFFERENCE_PROPERTY));
-
     }
 
     public int getAppointmentHourOfDay() {
         return Integer.parseInt(settingsFacade.getProperty(APPOINTMENT_HOUR_OF_DAY_PROPERTY));
     }
 
-    public int getAdherenceDaysLater() { 
+    public int getAdherenceDaysLater() {
         return Integer.parseInt(settingsFacade.getProperty(ADHERENCE_DAYS_LATER_PROPERTY));
     }
 
@@ -138,16 +138,30 @@ public class PillReminderSettings {
 
     private String getLanguage(String language) {
         switch (language) {
-            case AMHARIC:
-            case SOMALI:
-            case HARARI: 
-            case OROMIFFA: return language;
-            default: return "english";
+        case AMHARIC:
+        case SOMALI:
+        case HARARI:
+        case OROMIFFA:
+            return language;
+        default:
+            return "english";
         }
     }
 
-    public int getRetryIntervalMinutes() {
-        return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_INTERVAL_IN_MINUTES_PROPERTY));
+    public int getRetryDelayShortMinutes() {
+        return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_DELAY_SHORT_MINUTES_PROPERTY));
+    }
+    
+    public int getRetryDelayMediumMinutes() {
+        return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_DELAY_MEDIUM_MINUTES_PROPERTY));
+    }
+    
+    public int getRetryDelayLongMinutes() {
+        return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_DELAY_LONG_MINUTES_PROPERTY));
+    }
+    
+    public int getRetryWindowMinutes() {
+        return Integer.parseInt(settingsFacade.getProperty(CALL_RETRY_WINDOW_MINUTES_PROPERTY));
     }
 
     public String getRetryCount() {
