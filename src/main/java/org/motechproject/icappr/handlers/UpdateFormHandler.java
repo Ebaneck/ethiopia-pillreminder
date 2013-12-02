@@ -35,7 +35,7 @@ public class UpdateFormHandler {
         update.setPreferredCallTime(getValue(topFormElement, "pref_call_time"));
         update.setNextAppointment(getValue(topFormElement, "next_appointment"));
         update.setTodaysDate(getValue(topFormElement, "today"));
-        update.setAppointmentToday(getValue(topFormElement, "appointment_today"));
+        update.setLastAppointment(getValue(topFormElement, "last_appointment"));
 
         pillReminderUpdater.reenroll(update);
     }

@@ -1,6 +1,7 @@
 package org.motechproject.icappr.form.model;
 
 import org.joda.time.DateTime;
+import org.motechproject.icappr.events.Events;
 import org.motechproject.icappr.service.MessageCampaignEnroller;
 import org.motechproject.icappr.support.EnrollmentValidator;
 import org.motechproject.icappr.support.SchedulerUtil;
@@ -59,17 +60,22 @@ public class PillReminderUpdater {
             }
         }
 
-        String appointmentToday = update.getAppointmentToday();
-        if (null != appointmentToday && appointmentToday.matches("yes")) {
+        String nextAppointment = update.getNextAppointment();
+        if (null != nextAppointment) {
+            schedulerUtil.unscheduleIcapprAppointmentJobs(motechId);
 
-            logger.debug("Re-scheduling adherence, side effect, and appointment calls for: " + motechId);
+            schedulerUtil.scheduleAppointments(DateTime.parse(update.getNextAppointment()), motechId, false,
+                    phoneNumber);
+        }
 
-            schedulerUtil.unscheduleAllIcapprJobs(motechId);
+        String lastAppointment = update.getLastAppointment();
+        if (null != lastAppointment) {
+            schedulerUtil.unscheduleIcapprSideEffectJobs(motechId);
+            schedulerUtil.unscheduleIcapprAdherenceJobs(motechId);
+
+            schedulerUtil.scheduleSideEffectsSurvey(DateTime.parse(update.getTodaysDate()), motechId, false,
+                    phoneNumber);
             schedulerUtil.scheduleAdherenceSurvey(DateTime.parse(update.getTodaysDate()), motechId, false, phoneNumber);
-            schedulerUtil.scheduleSideEffectsSurvey(DateTime.parse(update.getTodaysDate()), motechId, false, phoneNumber);
-            schedulerUtil.scheduleAppointments(DateTime.parse(update.getNextAppointment()), motechId, false, phoneNumber);
-        } else {
-            logger.debug("Not re-scheduling calls for: " + motechId);
         }
     }
 }

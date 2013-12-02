@@ -8,7 +8,7 @@ public class PillReminderUpdate extends PillReminderForm {
     private String preferredCallTime;
     private String nextAppointment;
     private String todaysDate;
-    private String appointmentToday;
+    private String lastAppointment;
     
     public String getPhoneNumber() {
         return phoneNumber;
@@ -46,10 +46,10 @@ public class PillReminderUpdate extends PillReminderForm {
     public void setPreferredReminderDay(String preferredReminderDay) {
         this.preferredReminderDay = preferredReminderDay;
     }
-    public String getAppointmentToday() {
-        return appointmentToday;
+    public String getLastAppointment() {
+        return lastAppointment;
     }
-    public void setAppointmentToday(String appointmentToday) {
-        this.appointmentToday = appointmentToday;
+    public void setLastAppointment(String lastAppointment) {
+        this.lastAppointment = lastAppointment;
     }
 }
