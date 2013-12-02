@@ -25,10 +25,7 @@ public final class EnrollmentValidator {
             return true;
         }
 
-        if (dateFirstEnrolled.plusDays(DAYS).isBefore(updateTime)) {
-            return false;
-        }
-
-        return true;
+        DateTime updateThreshold = dateFirstEnrolled.plusDays(DAYS);
+        return updateThreshold.isBefore(updateTime);
     }
 }
