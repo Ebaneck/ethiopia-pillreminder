@@ -110,6 +110,22 @@ public class SchedulerUtil {
         schedulerService.safeUnscheduleRunOnceJob(Events.APPOINTMENT_SCHEDULE_CALL, externalId);
         schedulerService.safeUnscheduleRunOnceJob(Events.SECOND_APPOINTMENT_SCHEDULE_CALL, externalId);
     }
+    
+    public void unscheduleIcapprSideEffectJobs(String externalId) {
+        logger.info("Unscheduling side effect jobs for: " + externalId);
+        schedulerService.safeUnscheduleRunOnceJob(Events.SIDE_EFFECTS_SURVEY_CALL, externalId);
+    }
+    
+    public void unscheduleIcapprAdherenceJobs(String externalId) {
+        logger.info("Unscheduling adherence jobs for: " + externalId);
+        schedulerService.safeUnscheduleRunOnceJob(Events.ADHERENCE_ASSESSMENT_CALL, externalId);
+    }
+    
+    public void unscheduleIcapprAppointmentJobs(String externalId) {
+        logger.info("Unscheduling appointment jobs for: " + externalId);
+        schedulerService.safeUnscheduleRunOnceJob(Events.APPOINTMENT_SCHEDULE_CALL, externalId);
+        schedulerService.safeUnscheduleRunOnceJob(Events.SECOND_APPOINTMENT_SCHEDULE_CALL, externalId);
+    }
 
     public static void injectParameterData(String externalId, String phoneNumber, Map<String, Object> parameters) {
         parameters.put(MotechSchedulerService.JOB_ID_KEY, externalId);

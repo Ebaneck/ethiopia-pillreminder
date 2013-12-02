@@ -2,6 +2,7 @@ package org.motechproject.icappr.listener;
 
 import org.joda.time.DateTime;
 import org.motechproject.callflow.service.FlowSessionService;
+import org.motechproject.callflow.domain.IvrEvent;
 import org.motechproject.decisiontree.core.FlowSession;
 import org.motechproject.event.MotechEvent;
 import org.motechproject.event.listener.annotations.MotechListener;
@@ -25,6 +26,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class EndOfCallRetryListener {
 
+    private static final String IVR_FAILED_STATUS = "ivr.failed";
+
     private Logger logger = LoggerFactory.getLogger("motech-icappr");
 
     @Autowired
@@ -45,7 +48,7 @@ public class EndOfCallRetryListener {
     @Autowired
     private MRSEncounterAdapter encounterAdapter;
 
-    @MotechListener(subjects = EventKeys.END_OF_CALL_EVENT)
+    @MotechListener(subjects = { EventKeys.END_OF_CALL_EVENT, IVR_FAILED_STATUS })
     public void handleEndOfCall(MotechEvent event) {
 
         logger.info("Handling end of call");
@@ -132,6 +135,12 @@ public class EndOfCallRetryListener {
     }
 
     private void scheduleRetryCall(String callId, DateTime retryCallTime) {
+
+        if (DateTime.now().isAfter(retryCallTime)) {
+            logger.info("Retry would be in the past for call with Id: " + callId);
+            return;
+        }
+
         FlowSession session = flowSessionService.getSession(callId);
 
         String motechId = session.get(MotechConstants.MOTECH_ID);
@@ -182,7 +191,7 @@ public class EndOfCallRetryListener {
     private boolean callTimeInRetryWindow(DateTime callTime, DateTime preferredTime) {
         int retryWindowMinutes = settings.getRetryWindowMinutes();
         DateTime latestRetryTime = preferredTime.plusMinutes(retryWindowMinutes);
-        return callTime.isAfter(latestRetryTime.getMillis());
+        return callTime.isBefore(latestRetryTime.getMillis());
     }
 
     private DateTime preferredCallTimeForSameDay(FlowSession session, CallDetailRecord record, DateTime day) {
