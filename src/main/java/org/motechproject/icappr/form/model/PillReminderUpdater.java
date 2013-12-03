@@ -60,22 +60,27 @@ public class PillReminderUpdater {
             }
         }
 
-        String nextAppointment = update.getNextAppointment();
-        if (null != nextAppointment) {
+        DateTime nextDate = parseDate(update.getNextAppointment());
+        if (null != nextDate) {
             schedulerUtil.unscheduleIcapprAppointmentJobs(motechId);
 
-            schedulerUtil.scheduleAppointments(DateTime.parse(update.getNextAppointment()), motechId, false,
-                    phoneNumber);
+            schedulerUtil.scheduleAppointments(nextDate, motechId, false, phoneNumber);
         }
 
-        String lastAppointment = update.getLastAppointment();
-        if (null != lastAppointment) {
+        DateTime lastDate = parseDate(update.getLastAppointment());
+        if (null != lastDate) {
             schedulerUtil.unscheduleIcapprSideEffectJobs(motechId);
             schedulerUtil.unscheduleIcapprAdherenceJobs(motechId);
 
-            schedulerUtil.scheduleSideEffectsSurvey(DateTime.parse(update.getTodaysDate()), motechId, false,
-                    phoneNumber);
-            schedulerUtil.scheduleAdherenceSurvey(DateTime.parse(update.getTodaysDate()), motechId, false, phoneNumber);
+            schedulerUtil.scheduleSideEffectsSurvey(lastDate, motechId, false, phoneNumber);
+            schedulerUtil.scheduleAdherenceSurvey(lastDate, motechId, false, phoneNumber);
         }
+    }
+
+    private DateTime parseDate(String dateString) {
+        if (null == dateString) {
+            return null;
+        }
+        return DateTime.parse(dateString);
     }
 }
