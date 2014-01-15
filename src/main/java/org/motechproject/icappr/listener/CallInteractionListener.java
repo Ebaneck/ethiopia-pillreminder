@@ -123,7 +123,7 @@ public class CallInteractionListener {
         switch (event.getSubject()) {
             case Events.SEND_RA_MESSAGE_ADHERENCE_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Adherence", DateTime.now() ); break;
             case Events.SEND_RA_MESSAGE_APPOINTMENT_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Appointment", DateTime.now() ); break;
-            case Events.NO_ADHERENCE_CONCERNS: createEncounter(motechId, event, flowSessionId, NO_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Adherence", DateTime.now()); break;
+            case Events.NO_ADHERENCE_CONCERNS: createEncounter(motechId, event, flowSessionId, YES_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Adherence", DateTime.now()); break;
             case Events.NO_APPOINTMENT_CONCERNS: createEncounter(motechId, event, flowSessionId, NO_ANSWER, PATIENT_CONCERN_ENCOUNTER + ".Appointment", DateTime.now()); break;
         }
     }
