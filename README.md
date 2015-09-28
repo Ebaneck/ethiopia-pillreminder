@@ -1,7 +1,7 @@
-ethiopia-pillreminder
+pillreminder
 =====================
 
-MOTECH implementation modules for a pill reminder project in Ethiopia
+ pill reminder project 
 
 IVR UI Test Notes:
   Because call initiation to VerboiceIVRController to handle the call request is done via "redirect.vm," this file name needs to be changed based on which decision tree we are using. 
